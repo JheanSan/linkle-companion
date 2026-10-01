@@ -1,0 +1,45 @@
+# gradle
+.gradle/
+build/
+out/
+classes/
+
+# IDEs
+*.launch
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+.vscode/
+bin/
+.classpath
+.project
+
+# OS
+*.DS_Store
+Thumbs.db
+
+# fabric dev runs
+run/
+
+# java crash/profiling dumps
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr
+
+# local-only: reference material (never commit reference images), tools, test servers
+references/
+tools/
+testserver/
+
+# python
+__pycache__/
+*.pyc
+
+# datagen cache
+src/main/generated/.cache/
+
+# local Claude Code settings
+.claude/settings.local.json

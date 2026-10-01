@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"id": "linkle_companion",
+	"version": "${version}",
+	"name": "Linkle Companion",
+	"description": "Adds Linkle, a dual-crossbow follower companion with personality. Unofficial fan project.",
+	"authors": ["Linkle Companion contributors"],
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["dev.linklecompanion.LinkleCompanion"],
+		"client": ["dev.linklecompanion.client.LinkleCompanionClient"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
