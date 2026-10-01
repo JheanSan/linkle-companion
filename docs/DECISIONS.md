@@ -21,7 +21,11 @@ One line per decision: what was decided and why.
 
 ## Launcher
 - Using the existing portable **Freesm Launcher 2.3.1** at `C:\Users\Admin\Downloads\Games\FreesmLauncher-Windows-MinGW-w64-Portable-2.3.1` (found in Downloads/Games). It is portable mode, so instances live in its `instances/` folder. Only `dev-linkle_companion*` instances are created or touched.
-- Offline testing uses the launcher's `-o DevTester` CLI flag (launch offline with a given player name). This avoids reading or editing `accounts.json`.
+- Tried the launcher's `-o DevTester` flag (offline mode with a name). Result: Freesm 2.3.1 ignored the name and joined the local test server as the default account's profile name (no real credentials: offline mode sends a dummy token, auth returned 401). The game was closed right away, the test server's user cache was cleared, and `-o` is no longer used. Lesson: in this Freesm version the offline *name* is only honored through an offline *account*.
+- An offline account "DevTester" must be added in the launcher UI (Settings > Accounts > Add Offline). The launcher is a portable Qt app that the desktop-automation tools can't drive, and editing `accounts.json` is off limits, so this is listed in PROGRESS.md under "Needs a human". After that, tests launch with `freesmlauncher.exe -l <instance> -a DevTester`.
+- Meanwhile, game play-tests run in the Loom dev client with `--username DevTester` (no launcher account involved) joining the real Fabric test server, plus Fabric client game tests for screenshots.
+- The launcher's shared `libraries/` cache was missing 33 vanilla/LWJGL files from an earlier interrupted download; they were fetched from the official Mojang/LWJGL URLs listed in the launcher's own metadata and SHA-1 verified (script kept in the session scratchpad, not the repo). Assets were already complete.
+- Minecraft 26.3 servers default to `white-list=true`; the test server whitelists only DevTester.
 
 ## Character design
 - Hair is **blonde** braided twin tails (not brown as in the brief): every public description consulted says blonde, and recognizability matters most.
