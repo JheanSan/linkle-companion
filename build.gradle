@@ -32,11 +32,12 @@ fabricApi {
 	configureDataGeneration()
 
 	// Server game tests (src/gametest) run as part of ./gradlew build.
+	// ./gradlew runClientGameTest opens the game and takes showcase screenshots of Linkle.
 	configureTests {
 		createSourceSet = true
 		modId = "linkle_companion_gametest"
 		enableGameTests = true
-		enableClientGameTests = false
+		enableClientGameTests = true
 		eula = true
 	}
 }

@@ -1,14 +1,17 @@
 package dev.linklecompanion.client.render;
 
 import dev.linklecompanion.LinkleCompanion;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
 
 /**
- * Everything the model needs to draw one frame of Linkle. Extends the player's render state so the
- * vanilla player model and its layers (armor, held items, stuck arrows) work unchanged.
+ * Everything the model needs to draw one frame of Linkle.
+ *
+ * <p>Note: this deliberately does NOT extend the player's AvatarRenderState. Minecraft sends every
+ * AvatarRenderState to the player renderer (which would draw Steve), and skin mods hook that
+ * renderer; keeping Linkle separate avoids both.
  */
-public class LinkleRenderState extends AvatarRenderState {
+public class LinkleRenderState extends HumanoidRenderState {
 	public Identifier texture = LinkleCompanion.id("textures/entity/linkle/classic.png");
 	public boolean knockedOut;
 	public boolean aiming;

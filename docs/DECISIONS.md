@@ -12,8 +12,12 @@ One line per decision: what was decided and why.
 - Java package `dev.linklecompanion`: the author has no fixed domain or GitHub user yet, and this is neutral and easy to rename.
 - `fabric.mod.json` uses `"minecraft": "~26.3"` so any 26.3.x patch works and other versions get a clear loader error.
 
-## Installs on this machine
-- None needed so far: Temurin JDK 25.0.4, Git 2.55.0 and Python 3.14.7 were already installed; Gradle comes from the wrapper (9.7.1, downloaded into the Gradle user home).
+## Installs and downloads on this machine
+- No system installs were needed: Temurin JDK 25.0.4, Git 2.55.0 and Python 3.14.7 were already installed.
+- Gradle 9.7.1 (via the wrapper, into `~/.gradle`), plus Minecraft 26.3, Loom and Fabric API dependencies (via Gradle): needed to build.
+- Fabric server launcher `testserver/fabric-server-launch.jar` (MC 26.3, Loader 0.19.5, installer 1.1.2) from meta.fabricmc.net: a real dedicated server for multiplayer and install tests. `testserver/` is git-ignored.
+- Fabric API 0.161.0+26.3 for test instances is copied from the Gradle cache (downloaded from maven.fabricmc.net, the same file Modrinth hosts), not downloaded again.
+- Python scripts use only the standard library (no pip packages).
 
 ## Launcher
 - Using the existing portable **Freesm Launcher 2.3.1** at `C:\Users\Admin\Downloads\Games\FreesmLauncher-Windows-MinGW-w64-Portable-2.3.1` (found in Downloads/Games). It is portable mode, so instances live in its `instances/` folder. Only `dev-linkle_companion*` instances are created or touched.
@@ -22,3 +26,24 @@ One line per decision: what was decided and why.
 ## Character design
 - Hair is **blonde** braided twin tails (not brown as in the brief): every public description consulted says blonde, and recognizability matters most.
 - No crest or emblem on the hood: the Hylian crest is a trademarked symbol.
+
+## Architecture
+- Base class `TamableAnimal`: vanilla owner storage, sitting, teams and the owner-defense target goals for free; claim and pet mods already treat tamed animals as pets.
+- One Linkle per player is tracked with a Fabric data attachment on the player (`linkle_companion:companion`: Linkle UUID + "generation"). A replaced Linkle leaves (dropping her items) the next time her chunk loads and her owner is online.
+- Knockout is done by overriding `die()` in her own class (no mixin, no event): it covers every damage path. `/kill` and the void (`#bypasses_invulnerability`) still really kill her, so admins keep control.
+- Owner damage to Linkle is blocked (accidental hits are common with a melee owner); her bolts never damage friends (Fabric `ALLOW_DAMAGE` event) and she doesn't shoot when a friend is in the line of fire.
+- Crossbow loading uses vanilla item use (`startUsingItem`) so the crossbow's own pull/charged visuals and sounds are real; firing is custom so the damage config, pickup rules and per-hand origin can apply.
+- Her crossbows get Quick Charge II, Unbreakable and no enchant glint: Linkle's style is fast double shots, and the glint looked noisy on a character. If a data pack removes Quick Charge, she logs one warning and reloads at normal speed.
+- Starting arrows: a new Linkle brings 32 arrows (config `startingArrows`) because `infiniteArrows` defaults to false; without that she would be useless out of the box.
+- Default `infiniteArrows = false`: keeps her balanced in survival; the brief says infinite only "if the config says so".
+- Vanilla `mobGriefing` gamerule gates her picking up arrow items, like vanilla mob looting.
+- Renderer uses a `HumanoidRenderState`, not the player's `AvatarRenderState`: Minecraft 26.3 sends every AvatarRenderState to the player renderer (it drew Steve). This also keeps player-skin mods from touching her.
+- Twin tails are part of her model (4 cubes under the head) instead of a separate render layer: same look, one draw call; the config toggle hides them. Their texture comes from the unused skin area (24,0)-(40,8) (the same area vanilla uses for the "deadmau5 ears"), so any custom skin works.
+- Stuck-arrow layer dropped: the vanilla `ArrowLayer` only works with player render states.
+- Signature move is named "Twin Cyclone" (original name).
+- Summon item "Wanderer's Compass": original name; not consumed, so it doubles as a recall whistle. Recipe: compass + 2 crossbows + green dye + gold ingot using `c:` tags.
+- Wild Linkle: vanilla `/summon linkle_companion:linkle` makes an ownerless Linkle you can befriend by right-clicking (if you don't already have one). `/linkle summon` (op level 2 by default) gives you one directly.
+- Commands use Fabric's permission API (`linkle_companion.command.<name>` nodes) with vanilla op levels as the fallback.
+- Datagen and game-test code: datagen classes live in the main source set (Fabric docs default, a few KB, never run in game); game tests live in their own `src/gametest` source set and are not shipped.
+- `fabric.mod.json` has no `contact` URLs yet: the GitHub repo doesn't exist; RELEASE.md tells the author to add them.
+- No mixins at all so far: everything uses Fabric API events or overrides inside the mod's own classes.

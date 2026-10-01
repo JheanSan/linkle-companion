@@ -195,12 +195,35 @@ def make_skin(variant):
 
     # ---------------- hat layer: hair volume ----------------
     hat = cube_faces(32, 0, 8, 8, 8)
-    paint(img, hat["top"], lambda x, y, w, h: HAIR["light"] if (x * 2 + y) % 6 == 0 else HAIR["base"])
+
+    def hat_top(x, y, w, h):
+        # top of the head: centre parting running front to back, soft highlights
+        if x in (3, 4):
+            return HAIR["shade"] if x == 3 else HAIR["base"]
+        if (x + y) % 4 == 0:
+            return HAIR["light"]
+        return HAIR["base"] if x not in (0, 7) else HAIR["shade"]
+
+    def hat_back(x, y, w, h):
+        # back of the head: hair strands falling from the parting, two braid roots at the bottom corners
+        if y == 7:
+            return HAIR["dark"] if x in (0, 1, 6, 7) else None
+        if y >= 5 and x in (0, 1, 6, 7):
+            return HAIR["shade"] if (x + y) % 2 else HAIR["base"]
+        if x in (3, 4) and y < 2:
+            return HAIR["shade"]
+        if x in (1, 6) or (x in (2, 5) and y >= 3):
+            return HAIR["shade"] if y % 2 else HAIR["base"]
+        if (x + y) % 5 == 0:
+            return HAIR["light"]
+        return HAIR["base"] if y < 6 else HAIR["shade"]
+
+    paint(img, hat["top"], hat_top)
     paint(img, hat["front"], lambda x, y, w, h: (HAIR["base"] if y == 0 else
                                                  (HAIR["shade"] if y == 1 and x not in (2, 3, 4, 5) else None)))
     paint(img, hat["right"], lambda x, y, w, h: HAIR["base"] if y < 2 or (y < 6 and x < 3) else None)
     paint(img, hat["left"], lambda x, y, w, h: HAIR["base"] if y < 2 or (y < 6 and x > 4) else None)
-    paint(img, hat["back"], lambda x, y, w, h: HAIR["base"] if y < 6 else (HAIR["shade"] if x not in (0, 7) else None))
+    paint(img, hat["back"], hat_back)
 
     # ---------------- body (8x12x4 at 16,16) ----------------
     body = cube_faces(16, 16, 8, 12, 4)

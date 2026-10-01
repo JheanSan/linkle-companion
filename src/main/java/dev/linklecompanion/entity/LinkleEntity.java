@@ -186,7 +186,7 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 
 	/** Called once when a brand-new Linkle is created for a player. */
 	public void setupNew(ServerPlayer owner, int generation) {
-		this.tame(owner);
+		makeOwned(owner);
 		this.generation = generation;
 		this.setVariant(LinkleVariant.byId(LinkleConfig.get().defaultVariant));
 		this.giveCrossbows();
@@ -202,7 +202,7 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 
 	/** Called when a wild Linkle (from /summon) joins a player. */
 	public void setupBefriended(ServerPlayer owner, int generation) {
-		this.tame(owner);
+		makeOwned(owner);
 		this.generation = generation;
 		if (this.getMainHandItem().isEmpty() || this.getOffhandItem().isEmpty()) {
 			this.giveCrossbows();
@@ -222,8 +222,19 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 		// Always an adult, always with her crossbows, even when spawned by /summon.
 		this.setAge(0);
 		this.giveCrossbows();
-		this.setVariant(LinkleVariant.byId(LinkleConfig.get().defaultVariant));
+		// A name given at spawn (e.g. /summon ... {CustomName:"Azure"}) picks the skin, like a name tag.
+		LinkleVariant fromName = this.hasCustomName() ? LinkleVariant.fromName(this.getCustomName().getString()) : null;
+		this.setVariant(fromName != null ? fromName : LinkleVariant.byId(LinkleConfig.get().defaultVariant));
 		return data;
+	}
+
+	/**
+	 * Like vanilla tame(), but without firing the vanilla "tame an animal" advancement trigger:
+	 * a summoned companion shouldn't hand out vanilla advancements.
+	 */
+	private void makeOwned(ServerPlayer owner) {
+		this.setTame(true, true);
+		this.setOwner(owner);
 	}
 
 	/** Gives her the two signature crossbows (unbreakable, quick-charge, no glint). */

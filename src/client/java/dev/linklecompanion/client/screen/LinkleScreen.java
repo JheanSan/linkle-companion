@@ -65,6 +65,6 @@ public class LinkleScreen extends AbstractContainerScreen<LinkleMenu> {
 		Component mode = Component.translatable("mode.linkle_companion." + linkle.getMode().id());
 		graphics.text(this.font, mode, 98, 74, LABEL_COLOR, false);
 		graphics.text(this.font, health, 98, 83, LABEL_COLOR, false);
-		graphics.text(this.font, ammo, 128, 83, arrows == 0 && !infinite ? 0xFFAA2222 : LABEL_COLOR, false);
+		graphics.text(this.font, ammo, 98, this.inventoryLabelY, arrows == 0 && !infinite ? 0xFFAA2222 : LABEL_COLOR, false);
 	}
 }

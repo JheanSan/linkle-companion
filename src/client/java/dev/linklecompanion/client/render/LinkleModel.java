@@ -7,12 +7,14 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.player.PlayerModel;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 
 /**
- * The vanilla slim-arm player model plus two twin tails (four small cubes) on the head.
+ * The vanilla slim-arm player mesh (with its sleeve, jacket and pants overlay layers) plus two
+ * twin tails (four small cubes) on the head.
  *
  * <p>The tails read their texture from an area of the skin that vanilla never uses
  * ((24,0) to (40,8)), so any 64x64 skin works: if that area is empty, the tails are invisible.
@@ -20,7 +22,7 @@ import net.minecraft.util.Mth;
  * <p>Extra poses on top of vanilla: dual-crossbow aim, crossbow inspection, the volley spin pose
  * and the knocked-out slump. Charging uses the vanilla crossbow charge pose.
  */
-public class LinkleModel extends PlayerModel {
+public class LinkleModel extends HumanoidModel<LinkleRenderState> {
 	private static final float TAIL_REST_FLARE = 0.12F;
 
 	private final ModelPart rightTail;
@@ -29,7 +31,8 @@ public class LinkleModel extends PlayerModel {
 	private final ModelPart leftTailEnd;
 
 	public LinkleModel(ModelPart root) {
-		super(root, true);
+		// Translucent like the player model, so skins with semi-transparent overlay pixels look right.
+		super(root, RenderTypes::entityTranslucent);
 		this.rightTail = this.head.getChild("right_tail");
 		this.rightTailEnd = this.rightTail.getChild("right_tail_end");
 		this.leftTail = this.head.getChild("left_tail");
@@ -56,13 +59,10 @@ public class LinkleModel extends PlayerModel {
 	}
 
 	@Override
-	public void setupAnim(AvatarRenderState state) {
+	public void setupAnim(LinkleRenderState state) {
 		super.setupAnim(state);
-		if (!(state instanceof LinkleRenderState linkle)) {
-			return;
-		}
-		poseArms(linkle);
-		poseTails(linkle);
+		poseArms(state);
+		poseTails(state);
 	}
 
 	private void poseArms(LinkleRenderState state) {
@@ -88,12 +88,12 @@ public class LinkleModel extends PlayerModel {
 			return;
 		}
 		if (state.aiming && !state.isUsingItem) {
-			// Both crossbows raised toward the target, converging slightly.
+			// Both crossbows raised toward the target, angled slightly outward so each one reads clearly.
 			rightArm.xRot = -Mth.HALF_PI + head.xRot;
-			rightArm.yRot = head.yRot - 0.06F;
+			rightArm.yRot = head.yRot + 0.3F;
 			rightArm.zRot = 0.0F;
 			leftArm.xRot = -Mth.HALF_PI + head.xRot;
-			leftArm.yRot = head.yRot + 0.06F;
+			leftArm.yRot = head.yRot - 0.3F;
 			leftArm.zRot = 0.0F;
 			return;
 		}
