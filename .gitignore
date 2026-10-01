@@ -43,3 +43,7 @@ src/main/generated/.cache/
 
 # local Claude Code settings
 .claude/settings.local.json
+
+# local build logs
+build-log.txt
+*.log

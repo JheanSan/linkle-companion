@@ -5,8 +5,8 @@ Linkle Companion skin generator.
 Paints the ORIGINAL 64x64 slim-arm skins (and the mod icon) used by the mod.
 Pure Python standard library, no packages needed:
 
-    python scripts/skin/generate_skins.py            # writes skins + icon into src/main/resources
-    python scripts/skin/generate_skins.py --preview  # also writes enlarged previews to build/skin-preview
+    python scripts/art/generate_skins.py            # writes skins + icon into src/main/resources
+    python scripts/art/generate_skins.py --preview  # also writes enlarged previews to build/skin-preview
 
 The art is drawn from a general description of the character (blonde braided
 twin tails, green hooded tunic, white shirt, dark corset, short skirt, brown

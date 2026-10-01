@@ -1,0 +1,35 @@
+{
+  "parent": "linkle_companion:root",
+  "criteria": {
+    "summoned_linkle": {
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "linkle_companion:linkle"
+          }
+        }
+      },
+      "trigger": "minecraft:summoned_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.linkle_companion.friend.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "id": "linkle_companion:wanderers_compass"
+    },
+    "title": {
+      "translate": "advancements.linkle_companion.friend.title"
+    }
+  },
+  "requirements": [
+    [
+      "summoned_linkle"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

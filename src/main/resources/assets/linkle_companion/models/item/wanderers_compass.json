@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "linkle_companion:item/wanderers_compass"
+  }
+}

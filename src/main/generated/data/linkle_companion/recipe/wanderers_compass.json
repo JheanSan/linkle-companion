@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "#c:tools/crossbow",
+    "D": "#c:dyes/green",
+    "G": "#c:ingots/gold",
+    "M": "minecraft:compass"
+  },
+  "pattern": [
+    " D ",
+    "CMC",
+    " G "
+  ],
+  "result": {
+    "id": "linkle_companion:wanderers_compass"
+  }
+}

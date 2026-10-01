@@ -1,0 +1,33 @@
+{
+  "criteria": {
+    "has_compass": {
+      "conditions": {
+        "items": [
+          {
+            "items": "linkle_companion:wanderers_compass"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:gui/advancements/backgrounds/adventure",
+    "description": {
+      "translate": "advancements.linkle_companion.root.description"
+    },
+    "icon": {
+      "id": "linkle_companion:wanderers_compass"
+    },
+    "title": {
+      "translate": "advancements.linkle_companion.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_compass"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

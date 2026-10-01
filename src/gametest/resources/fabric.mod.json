@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"id": "linkle_companion_gametest",
+	"version": "1.0.0",
+	"name": "Linkle Companion game tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-gametest": [
+			"dev.linklecompanion.gametest.LinkleGameTests"
+		]
+	},
+	"depends": {
+		"linkle_companion": "*"
+	}
+}

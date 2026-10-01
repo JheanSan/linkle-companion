@@ -3,18 +3,32 @@
 	"id": "linkle_companion",
 	"version": "${version}",
 	"name": "Linkle Companion",
-	"description": "Adds Linkle, a dual-crossbow follower companion with personality. Unofficial fan project.",
-	"authors": ["Linkle Companion contributors"],
+	"description": "Adds Linkle, a dual-crossbow follower companion with her own personality. Craft a Wanderer's Compass to summon her.\n\nUnofficial fan project. Linkle is a character from Hyrule Warriors, owned by Nintendo and Koei Tecmo. Not affiliated with or endorsed by them.",
+	"authors": [
+		"Linkle Companion contributors"
+	],
 	"license": "MIT",
+	"icon": "assets/linkle_companion/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": ["dev.linklecompanion.LinkleCompanion"],
-		"client": ["dev.linklecompanion.client.LinkleCompanionClient"]
+		"main": [
+			"dev.linklecompanion.LinkleCompanion"
+		],
+		"client": [
+			"dev.linklecompanion.client.LinkleCompanionClient"
+		],
+		"fabric-datagen": [
+			"dev.linklecompanion.datagen.LinkleDataGenerator"
+		]
 	},
 	"depends": {
 		"fabricloader": ">=0.19.5",
 		"minecraft": "~26.3",
 		"java": ">=25",
-		"fabric-api": "*"
+		"fabric-api": ">=0.161.0"
+	},
+	"custom": {
+		"linkle_companion:disclaimer": "Unofficial fan project. Linkle is a character from Hyrule Warriors, owned by Nintendo and Koei Tecmo. Not affiliated with or endorsed by them.",
+		"linkle_companion:asset_license": "Original textures and icon: CC BY 4.0 (see ASSETS.md)"
 	}
 }
