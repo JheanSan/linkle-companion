@@ -3,6 +3,7 @@ package dev.linklecompanion.dialogue;
 import dev.linklecompanion.config.LinkleConfig;
 import dev.linklecompanion.entity.LinkleEntity;
 import dev.linklecompanion.network.DialoguePayload;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.core.Holder;
@@ -160,8 +161,15 @@ public final class LinkleDialogue {
 		nextAllowed[topic.ordinal()] = now + topic.cooldownTicks / divisor;
 		lastLineTime = now;
 		String key = topic.key(linkle.getRandom().nextInt(topic.lineCount()));
+		DialoguePayload payload = new DialoguePayload(linkle.getId(), linkle.getVariant().id(), key);
+		// Everyone who can see her gets the line (speech bubble); the owner always does.
 		if (ServerPlayNetworking.canSend(owner, DialoguePayload.TYPE)) {
-			ServerPlayNetworking.send(owner, new DialoguePayload(linkle.getVariant().id(), key));
+			ServerPlayNetworking.send(owner, payload);
+		}
+		for (ServerPlayer viewer : PlayerLookup.tracking(linkle)) {
+			if (viewer != owner && ServerPlayNetworking.canSend(viewer, DialoguePayload.TYPE)) {
+				ServerPlayNetworking.send(viewer, payload);
+			}
 		}
 		return true;
 	}

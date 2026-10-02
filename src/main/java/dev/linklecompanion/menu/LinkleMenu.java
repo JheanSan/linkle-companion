@@ -1,6 +1,7 @@
 package dev.linklecompanion.menu;
 
 import dev.linklecompanion.entity.LinkleEntity;
+import dev.linklecompanion.network.LinkleActionPayload;
 import dev.linklecompanion.registry.ModMenus;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -76,7 +77,8 @@ public class LinkleMenu extends AbstractContainerMenu {
 	public boolean stillValid(Player player) {
 		return linkle != null && linkle.isAlive() && !linkle.isRemoved()
 			&& (player.level().isClientSide() || linkle.isOwnedBy(player))
-			&& player.isWithinEntityInteractionRange(linkle, 4.0);
+			&& player.level() == linkle.level()
+			&& player.distanceToSqr(linkle) <= LinkleActionPayload.INVENTORY_RANGE * LinkleActionPayload.INVENTORY_RANGE;
 	}
 
 	@Override

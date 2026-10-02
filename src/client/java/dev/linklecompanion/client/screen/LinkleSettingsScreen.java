@@ -48,7 +48,7 @@ public class LinkleSettingsScreen extends OptionsSubScreen {
 		list.addSmall(
 			bool("hairEnabled", c.hairEnabled, v -> c.hairEnabled = v),
 			bool("hairSway", c.hairSway, v -> c.hairSway = v),
-			choice("dialogueDisplay", c.dialogueDisplay, v -> c.dialogueDisplay = v, "hud", "actionbar", "off"),
+			choice("dialogueDisplay", c.dialogueDisplay, v -> c.dialogueDisplay = v, "bubble", "hud", "actionbar", "off"),
 			choice("dialoguePosition", c.dialoguePosition, v -> c.dialoguePosition = v, "top_left", "top_center", "top_right"),
 			slider("dialogueSeconds", 2, 20, c.dialogueSeconds, v -> c.dialogueSeconds = v, "seconds")
 		);

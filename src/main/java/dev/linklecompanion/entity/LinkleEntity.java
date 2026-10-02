@@ -122,6 +122,10 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 	private boolean warnedNoQuickCharge;
 	/** Was the owner within 32 blocks at the last check? Used to follow through portals. */
 	private boolean nearOwner;
+	/** Stuck detection: where she was at the last check and how many checks in a row she didn't move. */
+	private double stuckCheckX;
+	private double stuckCheckZ;
+	private int stuckChecks;
 
 	/** Client only: ticks since the current volley spin started (drives the spin animation). */
 	public int volleyAnimTicks;
@@ -458,11 +462,37 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 		if (phase == 0) {
 			LivingEntity owner = this.getOwner();
 			nearOwner = owner != null && owner.level() == level && this.distanceToSqr(owner) < 32.0 * 32.0;
+			checkStuck(owner);
 			checkOwnership(level);
 			tryEatFood();
 			slowRegen();
 		} else if (phase == 10) {
 			pickUpArrows(level);
+		}
+	}
+
+	/**
+	 * Unstuck: in Follow mode, if she is too far from her owner and hasn't moved for about 3 seconds
+	 * (stuck in a hole, behind water, no path), she teleports to a safe spot next to her owner.
+	 * Runs once a second.
+	 */
+	private void checkStuck(@Nullable LivingEntity owner) {
+		double movedX = this.getX() - stuckCheckX;
+		double movedZ = this.getZ() - stuckCheckZ;
+		stuckCheckX = this.getX();
+		stuckCheckZ = this.getZ();
+		LinkleConfig config = LinkleConfig.get();
+		boolean shouldBeFollowing = config.teleportToOwner && this.getMode() == LinkleMode.FOLLOW && !this.isPaused()
+			&& this.getTarget() == null && !this.isPassenger() && owner instanceof ServerPlayer player && !player.isSpectator()
+			&& owner.level() == this.level()
+			&& this.distanceToSqr(owner) > (config.followStartDistance + 1.0) * (config.followStartDistance + 1.0);
+		if (!shouldBeFollowing || movedX * movedX + movedZ * movedZ > 0.25) {
+			stuckChecks = 0;
+			return;
+		}
+		if (++stuckChecks >= 3) {
+			stuckChecks = 0;
+			LinkleSummoning.teleportToOwner(this, (ServerPlayer) owner);
 		}
 	}
 

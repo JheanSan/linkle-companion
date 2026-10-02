@@ -2,6 +2,7 @@ package dev.linklecompanion.client.hud;
 
 import dev.linklecompanion.LinkleCompanion;
 import dev.linklecompanion.config.LinkleConfig;
+import dev.linklecompanion.entity.LinkleEntity;
 import dev.linklecompanion.entity.LinkleVariant;
 import dev.linklecompanion.network.DialoguePayload;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
@@ -38,7 +39,10 @@ public final class DialogueHud implements HudElement {
 	private static Identifier face = skinFor(LinkleVariant.CLASSIC);
 	private static long shownAt;
 
-	/** Called when the server says Linkle spoke. */
+	/**
+	 * Called when the server says a Linkle spoke. "bubble": above her head (any Linkle you can see).
+	 * "hud" / "actionbar": only lines from your own Linkle. "off": nothing.
+	 */
 	public static void show(DialoguePayload payload) {
 		String mode = LinkleConfig.get().dialogueDisplay;
 		Component text = Component.translatable(payload.key());
@@ -46,6 +50,15 @@ public final class DialogueHud implements HudElement {
 			return;
 		}
 		Minecraft minecraft = Minecraft.getInstance();
+		if ("bubble".equals(mode)) {
+			SpeechBubbles.show(payload.entityId(), text);
+			return;
+		}
+		boolean mine = minecraft.level != null && minecraft.player != null
+			&& minecraft.level.getEntity(payload.entityId()) instanceof LinkleEntity linkle && linkle.isOwnedByPlayer(minecraft.player);
+		if (!mine) {
+			return;
+		}
 		if ("actionbar".equals(mode)) {
 			minecraft.gui.hud.setOverlayMessage(Component.translatable("hud.linkle_companion.says", text), false);
 			return;

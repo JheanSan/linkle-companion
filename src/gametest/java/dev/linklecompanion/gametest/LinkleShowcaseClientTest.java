@@ -121,10 +121,17 @@ public class LinkleShowcaseClientTest implements FabricClientGameTest {
 				player.level().addFreshEntity(linkle);
 			});
 			context.waitTicks(10);
+			// Speech bubble (default), then the corner box.
 			server.runOnServer(srv -> ServerPlayNetworking.send(srv.getPlayerList().getPlayers().get(0),
-				new DialoguePayload("classic", "dialogue.linkle_companion.greeting.2")));
+				new DialoguePayload(find(srv).getId(), "classic", "dialogue.linkle_companion.greeting.2")));
 			context.waitTicks(20);
-			shot(context, "12_dialogue_hud");
+			shot(context, "12a_speech_bubble");
+			context.runOnClient(client -> dev.linklecompanion.config.LinkleConfig.get().dialogueDisplay = "hud");
+			server.runOnServer(srv -> ServerPlayNetworking.send(srv.getPlayerList().getPlayers().get(0),
+				new DialoguePayload(find(srv).getId(), "classic", "dialogue.linkle_companion.greeting.2")));
+			context.waitTicks(20);
+			shot(context, "12b_dialogue_box");
+			context.runOnClient(client -> dev.linklecompanion.config.LinkleConfig.get().dialogueDisplay = "bubble");
 			server.runOnServer(srv -> {
 				ServerPlayer player = srv.getPlayerList().getPlayers().get(0);
 				LinkleEntity linkle = find(srv);

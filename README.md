@@ -17,7 +17,7 @@ fights beside you and talks to you.
 - **A real companion**: one Linkle per player, saved with your world, works in single player,
   LAN and on dedicated servers.
 - **Follows you everywhere**: keeps a comfortable distance, jogs to catch up, teleports when she
-  falls behind, goes through portals with you, opens doors, avoids lava, fire and cliffs, and steps
+  falls behind or gets stuck (in a hole, behind water) for a few seconds, goes through portals with you, opens doors, avoids lava, fire and cliffs, and steps
   aside when you walk into her in tight spaces.
 - **Three modes** (right-click her): **Follow**, **Stay** (she sits and waits) and **Guard**
   (she holds the spot and defends the area around it).
@@ -33,8 +33,8 @@ fights beside you and talks to you.
 - **Inventory**: 9 pocket slots plus armor slots (sneak + right-click). She uses arrows from her
   pockets, eats food when hurt, and picks up arrows lying next to her.
 - **Personality**: short original lines when night falls, when she's hurt, when you're hurt, when you
-  enter a new kind of biome, after a big fight, when you feed her... shown in a small box with her
-  face (or in the action bar). Cooldowns keep her from chattering too much.
+  enter a new kind of biome, after a big fight, when you feed her... shown in a speech bubble above
+  her head (or a corner box with her face, or the action bar). Cooldowns keep her from chattering too much.
 - **Idle life**: she looks at you, glances around, checks her crossbows, sits down in Stay mode.
 - **Looks**: the player model with slim arms, an original skin, twin braids that sway as she moves,
   and four extra outfits (crimson, azure, violet, snow).
@@ -59,7 +59,7 @@ fights beside you and talks to you.
 | Action | What happens |
 |---|---|
 | Right-click Linkle | Switch mode: Follow -> Stay -> Guard -> Follow |
-| Sneak + right-click | Open her inventory (armor + 9 pockets) |
+| Sneak + right-click (or **J**) | Open her inventory: armor + 9 pockets, take or give anything |
 | Right-click with food | Feed her (heals, wakes her up when knocked out, or she saves it for later) |
 | Right-click with arrows | Hand her the whole stack |
 | Name tag | Rename her. Names ending in an outfit name pick that outfit, e.g. "Azure" or "Linkle Snow" |
@@ -73,14 +73,15 @@ Change them in **Options > Controls > Key Binds > Linkle Companion**.
 |---|---|
 | **G** | Call Linkle to you |
 | **H** | Switch her mode (Follow / Stay / Guard) |
+| **J** | Open her inventory (within 16 blocks) |
 | (unbound) | Open Linkle settings |
 
 ### Settings menu
 Open it from **Mod Menu** (Mods > Linkle Companion > Configure) if you have Mod Menu, or with the
 **⚙ button** in Linkle's inventory (sneak + right-click her). Mod Menu is optional.
 
-- **Your game**: braids on/off, braid sway, where her lines appear (speech box, action bar, off),
-  box position and how long lines stay.
+- **Your game**: braids on/off, braid sway, where her lines appear (speech bubble above her head,
+  corner box, action bar, off), box position and how long lines stay.
 - **General**: a master switch (**Linkle enabled**: off = she can't be summoned and an existing
   Linkle sits and pauses), chattiness (quiet / normal / chatty), default outfit, one per player.
 - **Following**: follow distances, teleport on/off and distance, follow through portals, guard radius.
@@ -166,7 +167,7 @@ The easiest way is the in-game settings menu above. Everything is saved in
 | `defaultVariant` | classic | Outfit of new Linkles |
 | `hairEnabled` | true | Show the twin braids (client) |
 | `hairSway` | true | Let the braids sway (client) |
-| `dialogueDisplay` | hud | `hud`, `actionbar` or `off` (client) |
+| `dialogueDisplay` | bubble | `bubble` (above her head), `hud` (corner box), `actionbar` or `off` (client) |
 | `dialoguePosition` | top_left | `top_left`, `top_center` or `top_right` (client) |
 | `dialogueSeconds` | 5 | How long a line stays in the box (client) |
 | `enabled` | true | Master switch (off: no summoning, existing Linkle pauses) |

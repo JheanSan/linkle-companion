@@ -3,6 +3,10 @@ package dev.linklecompanion.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.linklecompanion.LinkleCompanion;
+import dev.linklecompanion.client.hud.SpeechBubbles;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.world.entity.EntityAttachment;
 import dev.linklecompanion.config.LinkleConfig;
 import dev.linklecompanion.entity.LinkleEntity;
 import dev.linklecompanion.entity.LinkleVariant;
@@ -34,6 +38,8 @@ public class LinkleRenderer extends HumanoidMobRenderer<LinkleEntity, LinkleRend
 	/** Hitbox is 1.75 tall vs the player's 1.8, so draw the player-sized model a little smaller. */
 	private static final float MODEL_SCALE = 0.9375F * (1.75F / 1.8F);
 	private static final Vec3 SITTING_OFFSET = new Vec3(0.0, -0.56, 0.0);
+	/** Speech bubbles are drawn within 32 blocks. */
+	private static final double SPEECH_DISTANCE_SQR = 32.0 * 32.0;
 
 	/** One texture id per skin, made once (no per-frame allocation). Resource packs can replace any of them. */
 	private static final Map<LinkleVariant, Identifier> TEXTURES = new EnumMap<>(LinkleVariant.class);
@@ -76,6 +82,25 @@ public class LinkleRenderer extends HumanoidMobRenderer<LinkleEntity, LinkleRend
 		LinkleConfig config = LinkleConfig.get();
 		state.hairEnabled = config.hairEnabled;
 		state.hairSway = config.hairSway;
+		state.speech = state.distanceToCameraSq < SPEECH_DISTANCE_SQR ? SpeechBubbles.get(entity.getId()) : null;
+		state.speechAttachment = state.speech != null
+			? entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getYRot(partialTicks))
+			: null;
+	}
+
+	@Override
+	public void submit(LinkleRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
+		super.submit(state, poseStack, collector, camera);
+		if (state.speech == null || state.speechAttachment == null) {
+			return;
+		}
+		// Speech bubble: one name-tag style line per row, stacked above her name (if she has one).
+		int lines = state.speech.size();
+		int bottom = state.nameTag != null ? -11 : 0;
+		for (int i = 0; i < lines; i++) {
+			int offset = bottom - (lines - 1 - i) * 10;
+			collector.submitNameTag(poseStack, state.speechAttachment, offset, state.speech.get(i), true, state.lightCoords, camera);
+		}
 	}
 
 	/** Vanilla crossbow charge pose while loading; otherwise she simply holds her crossbows. */

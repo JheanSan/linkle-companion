@@ -21,6 +21,9 @@ import net.minecraft.server.level.ServerPlayer;
 public record LinkleActionPayload(int action) implements CustomPacketPayload {
 	public static final int RECALL = 0;
 	public static final int CYCLE_MODE = 1;
+	public static final int OPEN_INVENTORY = 2;
+	/** The inventory hotkey works within this distance (blocks). */
+	public static final double INVENTORY_RANGE = 16.0;
 
 	public static final Type<LinkleActionPayload> TYPE = new Type<>(LinkleCompanion.id("action"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, LinkleActionPayload> CODEC = StreamCodec.composite(
@@ -59,6 +62,13 @@ public record LinkleActionPayload(int action) implements CustomPacketPayload {
 				LinkleMode next = linkle.getMode().next();
 				linkle.setMode(next);
 				player.sendOverlayMessage(Component.translatable("message.linkle_companion.mode." + next.id()));
+			}
+			case OPEN_INVENTORY -> {
+				if (linkle.level() != player.level() || linkle.distanceToSqr(player) > INVENTORY_RANGE * INVENTORY_RANGE) {
+					player.sendOverlayMessage(Component.translatable("message.linkle_companion.too_far"));
+					return;
+				}
+				linkle.openInventory(player);
 			}
 			default -> {
 			}

@@ -27,6 +27,10 @@ public final class LinkleConfig {
 	private static final String FILE_NAME = LinkleCompanion.MOD_ID + ".json";
 
 	private static LinkleConfig instance = new LinkleConfig();
+	private static final int CURRENT_VERSION = 2;
+
+	/** Format version of the file, for one-time upgrades of old settings. */
+	public int configVersion = 0;
 
 	// ---------------- server / gameplay ----------------
 
@@ -82,8 +86,11 @@ public final class LinkleConfig {
 	public boolean hairEnabled = true;
 	/** Let the twin tails sway with movement. */
 	public boolean hairSway = true;
-	/** Where Linkle's lines appear: "hud" (small box), "actionbar" or "off". */
-	public String dialogueDisplay = "hud";
+	/**
+	 * Where Linkle's lines appear: "bubble" (speech bubble above her head, everyone nearby sees it),
+	 * "hud" (small box in a screen corner), "actionbar" or "off". Box and action bar only show your own Linkle.
+	 */
+	public String dialogueDisplay = "bubble";
 	/** Corner of the dialogue box: "top_left", "top_center" or "top_right". */
 	public String dialoguePosition = "top_left";
 	/** Seconds a line stays in the dialogue box. */
@@ -96,6 +103,7 @@ public final class LinkleConfig {
 	/** Puts every option back to its default (used by the settings screen's Reset button). */
 	public static void resetToDefaults() {
 		instance = new LinkleConfig();
+		instance.configVersion = CURRENT_VERSION;
 	}
 
 	/** Resets only this player's own options (looks and dialogue display), leaving gameplay alone. */
@@ -125,6 +133,11 @@ public final class LinkleConfig {
 		}
 
 		instance = loaded == null ? new LinkleConfig() : loaded;
+		if (instance.configVersion < 2 && "hud".equals(instance.dialogueDisplay)) {
+			// Version 2 made speech bubbles the default; move files that only had the old default.
+			instance.dialogueDisplay = "bubble";
+		}
+		instance.configVersion = CURRENT_VERSION;
 		instance.validate();
 		save();
 	}
@@ -155,7 +168,7 @@ public final class LinkleConfig {
 			LinkleCompanion.LOGGER.warn("Config: unknown defaultVariant '{}', using 'classic'.", defaultVariant);
 			defaultVariant = "classic";
 		}
-		dialogueDisplay = oneOf(dialogueDisplay, "dialogueDisplay", "hud", "actionbar", "off");
+		dialogueDisplay = oneOf(dialogueDisplay, "dialogueDisplay", "bubble", "hud", "actionbar", "off");
 		dialoguePosition = oneOf(dialoguePosition, "dialoguePosition", "top_left", "top_center", "top_right");
 		chattiness = oneOf(chattiness, "chattiness", "normal", "quiet", "chatty");
 		dialogueSeconds = (int) clamp(dialogueSeconds, 2, 20, 5, "dialogueSeconds");

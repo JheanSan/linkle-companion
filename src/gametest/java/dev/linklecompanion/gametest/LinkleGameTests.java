@@ -242,6 +242,26 @@ public class LinkleGameTests implements CustomTestMethodInvoker {
 		helper.succeed();
 	}
 
+	/** Walled into a pit, too far to follow but not far enough for the normal teleport: she gets herself out. */
+	@GameTest(maxTicks = 200)
+	public void unstucksWhenTrapped(GameTestHelper helper) {
+		// A 1x1 pit with 3-block walls around (3, 1, 3).
+		for (int x = 2; x <= 4; x++) {
+			for (int z = 2; z <= 4; z++) {
+				for (int y = 1; y <= 3; y++) {
+					if (x != 3 || z != 3) {
+						helper.setBlock(x, y, z, Blocks.STONE);
+					}
+				}
+			}
+		}
+		ServerPlayer owner = player(helper, 3.5, 13.5);
+		LinkleEntity linkle = linkleFor(helper, owner, 3, 3);
+		helper.assertTrue(linkle.distanceTo(owner) > LinkleConfig.get().followStartDistance + 1, "Setup: she must be out of follow range");
+		helper.assertTrue(linkle.distanceTo(owner) < LinkleConfig.get().teleportDistance, "Setup: but inside normal teleport range");
+		helper.succeedWhen(() -> helper.assertTrue(linkle.distanceTo(owner) < 5.0F, "She should get unstuck and reach her owner"));
+	}
+
 	/** Her bolts can't hurt villagers (or other friends), but still hurt monsters. */
 	@GameTest
 	public void noFriendlyFire(GameTestHelper helper) {

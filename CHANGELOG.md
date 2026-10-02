@@ -16,5 +16,8 @@ First release, for Minecraft 26.3 (Fabric Loader 0.19.5+, Fabric API 0.161.0+).
 - In-game settings menu (Mod Menu "Configure" button or the ⚙ button in her inventory) with
   tooltips, a master on/off switch, chattiness, dialogue box position and time, and toggles for
   teleporting, portals, the volley, auto-eat and arrow pickup. Reset to defaults.
-- Hotkeys: G calls Linkle, H switches her mode (rebindable).
+- Hotkeys: G calls Linkle, H switches her mode, J opens her inventory from up to 16 blocks (rebindable).
+- Speech bubbles above her head (default); everyone nearby sees them.
+- She teleports to you when she's stuck (no progress for ~3 seconds) instead of standing there.
+- Cuter skin: white eyes with lash corners, rosier cheeks, softer mouth; new portrait icon.
 - JSON config.

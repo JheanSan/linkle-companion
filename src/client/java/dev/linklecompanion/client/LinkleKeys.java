@@ -12,8 +12,8 @@ import net.minecraft.client.Minecraft;
 
 /**
  * Hotkeys, all rebindable in Options > Controls > Key Binds > "Linkle Companion":
- * G calls Linkle to you, H switches her mode, and "Linkle settings" (unbound by default)
- * opens the settings screen.
+ * G calls Linkle to you, H switches her mode, J opens her inventory (within 16 blocks), and
+ * "Linkle settings" (unbound by default) opens the settings screen.
  */
 public final class LinkleKeys {
 	private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(LinkleCompanion.id("keys"));
@@ -21,6 +21,7 @@ public final class LinkleKeys {
 	private static KeyMapping recall;
 	private static KeyMapping cycleMode;
 	private static KeyMapping settings;
+	private static KeyMapping inventory;
 
 	private LinkleKeys() {
 	}
@@ -28,6 +29,7 @@ public final class LinkleKeys {
 	public static void register() {
 		recall = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.linkle_companion.recall", InputConstants.KEY_G, CATEGORY));
 		cycleMode = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.linkle_companion.mode", InputConstants.KEY_H, CATEGORY));
+		inventory = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.linkle_companion.inventory", InputConstants.KEY_J, CATEGORY));
 		settings = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.linkle_companion.settings", InputConstants.UNKNOWN.getValue(), CATEGORY));
 		ClientTickEvents.END_CLIENT_TICK.register(LinkleKeys::tick);
 	}
@@ -38,6 +40,9 @@ public final class LinkleKeys {
 		}
 		while (cycleMode.consumeClick()) {
 			send(LinkleActionPayload.CYCLE_MODE);
+		}
+		while (inventory.consumeClick()) {
+			send(LinkleActionPayload.OPEN_INVENTORY);
 		}
 		while (settings.consumeClick()) {
 			if (minecraft.gui.screen() == null) {

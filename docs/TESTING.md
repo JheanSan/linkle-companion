@@ -24,7 +24,9 @@
 - [ ] Mod Menu > Linkle Companion > Configure opens the settings; the gear button in her inventory does too.
 - [ ] Turn **Linkle enabled** off: she sits and stops fighting/talking; the compass refuses. Turn it on: she resumes.
 - [ ] Change box position / time, chattiness quiet and chatty, braids off. Reset to defaults works.
-- [ ] Press **G** far from her: she comes to you. Press **H**: her mode changes with a message.
+- [ ] Press **G** far from her: she comes to you. Press **H**: her mode changes with a message. Press **J** within 16 blocks: her inventory opens.
+- [ ] Her lines appear as a speech bubble above her head; a friend nearby sees them too.
+- [ ] Trap her in a hole or behind water while you walk off: within ~3 seconds she teleports to you.
 - [ ] On a server you don't host: gameplay options are greyed out with a tooltip.
 
 ### Gameplay by hand (single player, survival)

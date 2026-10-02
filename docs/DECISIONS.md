@@ -38,6 +38,14 @@ One line per decision: what was decided and why.
 - Gameplay options are owned by whoever runs the world; on someone else's server they are greyed out with a tooltip instead of silently doing nothing.
 - Hotkeys default to G (call her) and H (switch mode): both unused by vanilla 26.3; rebindable.
 
+- Speech bubbles above her head are the default way her lines appear (author's request). They use the vanilla
+  name-tag drawing, are sent to every player tracking her, and are wrapped once on arrival. The corner box and
+  action bar remain options and show only your own Linkle's lines. Config version 2 moves old files from the
+  old default (`hud`) to `bubble` once.
+- Unstuck: once a second, if she is in Follow mode, not fighting, farther than follow range and hasn't moved
+  half a block for 3 checks, she teleports to a safe spot next to her owner (respects "teleport when far").
+- Inventory hotkey J works within 16 blocks; the menu stays open within the same range.
+
 ## Character design
 - Hair is **blonde** braided twin tails (not brown as in the brief): every public description consulted says blonde, and recognizability matters most.
 - No crest or emblem on the hood: the Hylian crest is a trademarked symbol.

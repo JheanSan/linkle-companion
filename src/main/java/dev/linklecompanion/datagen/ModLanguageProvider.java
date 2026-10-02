@@ -75,6 +75,8 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 		builder.add("key.linkle_companion.recall", "Call Linkle to you");
 		builder.add("key.linkle_companion.mode", "Switch Linkle's mode");
 		builder.add("key.linkle_companion.settings", "Open Linkle settings");
+		builder.add("key.linkle_companion.inventory", "Open Linkle's inventory");
+		builder.add("message.linkle_companion.too_far", "Linkle is too far away to reach her pockets (get within 16 blocks).");
 
 		// Settings screen
 		String o = "options.linkle_companion.";
@@ -92,15 +94,16 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 		builder.add(o + "unit.count", "%s");
 		option(builder, "hairEnabled", "Twin braids", "Show Linkle's twin braids. Turn off if a custom skin looks odd with them.");
 		option(builder, "hairSway", "Braid sway", "Let the braids swing as she walks and spins.");
-		option(builder, "dialogueDisplay", "Her lines", "Where Linkle's lines appear: a small box with her face, the action bar above your hotbar, or nowhere.");
-		builder.add(o + "dialogueDisplay.hud", "Speech box");
+		option(builder, "dialogueDisplay", "Her lines", "Where Linkle's lines appear: in a speech bubble above her head (everyone nearby sees it), in a small corner box with her face, on the action bar above your hotbar, or nowhere. The box and action bar only show your own Linkle.");
+		builder.add(o + "dialogueDisplay.bubble", "Above her head");
+		builder.add(o + "dialogueDisplay.hud", "Corner box");
 		builder.add(o + "dialogueDisplay.actionbar", "Action bar");
 		builder.add(o + "dialogueDisplay.off", "Off");
-		option(builder, "dialoguePosition", "Box position", "Where the speech box sits on your screen.");
+		option(builder, "dialoguePosition", "Box position", "Where the corner box sits on your screen (when \"Her lines\" is set to Corner box).");
 		builder.add(o + "dialoguePosition.top_left", "Top left");
 		builder.add(o + "dialoguePosition.top_center", "Top center");
 		builder.add(o + "dialoguePosition.top_right", "Top right");
-		option(builder, "dialogueSeconds", "Box time", "How long each line stays in the speech box.");
+		option(builder, "dialogueSeconds", "Line time", "How long each line stays visible (speech bubble or box).");
 		option(builder, "enabled", "Linkle enabled", "Master switch. Off: Linkle can't be summoned, and an existing Linkle sits down and pauses (no fighting, no talking). Turn it back on and she carries on.");
 		option(builder, "chattiness", "Chattiness", "How often she talks. Quiet: only important moments (knocked out, low health, gifts...). Chatty: twice as often.");
 		builder.add(o + "chattiness.normal", "Normal");

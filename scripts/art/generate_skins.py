@@ -99,10 +99,11 @@ def paint(img, rect, fn):
 # Palettes
 # --------------------------------------------------------------------------
 
-SKIN = {"base": (246, 208, 176), "shade": (226, 180, 146), "light": (253, 224, 196),
-        "blush": (240, 168, 150), "mouth": (196, 112, 102)}
-HAIR = {"light": (255, 232, 140), "base": (240, 200, 88), "shade": (204, 154, 56), "dark": (150, 104, 36)}
-EYES = {"white": (250, 250, 250), "iris": (48, 116, 206), "pupil": (28, 52, 110), "brow": (176, 126, 46)}
+SKIN = {"base": (250, 218, 192), "shade": (236, 194, 166), "light": (255, 230, 208),
+        "blush": (246, 172, 170), "mouth": (234, 146, 146)}
+HAIR = {"light": (255, 238, 150), "base": (244, 206, 98), "shade": (218, 168, 68), "dark": (172, 122, 46)}
+# Eyes: white sclera, two-tone blue iris (light on top), dark lashes above.
+EYES = {"white": (255, 255, 255), "iris": (86, 156, 240), "pupil": (40, 92, 186), "lash": (74, 48, 34)}
 SHIRT = {"base": (238, 234, 224), "shade": (206, 198, 184)}
 CORSET = {"base": (70, 46, 34), "shade": (52, 34, 25), "light": (98, 66, 46)}
 GOLD = {"base": (224, 178, 64), "light": (255, 222, 120), "dark": (160, 116, 36)}
@@ -142,31 +143,30 @@ def make_skin(variant):
             return HAIR["shade"]
         return HAIR["light"] if (x + y) % 5 == 0 else HAIR["base"]
 
+    # Face, row by row (x = 0 is her right side, on the viewer's left).
+    # H = hair, h = hair shade, d = hair dark, L = hair light, s = skin, S = skin shade, l = skin light,
+    # w = eye white, i = iris, p = iris dark, k = lashes, b = blush, m = mouth
+    face_rows = [
+        "hLHHHLHh",
+        "hHHhHHHh",
+        "hHlHhlHh",
+        "hkllllkh",
+        "hwisSiwh",
+        "dwpssbwd",
+        "Sbsmmsbs",
+        "SsssssSS",
+    ]
+    face_colors = {"H": HAIR["base"], "h": HAIR["shade"], "d": HAIR["dark"], "L": HAIR["light"],
+                   "s": SKIN["base"], "S": SKIN["shade"], "l": SKIN["light"], "w": EYES["white"],
+                   "i": EYES["iris"], "p": EYES["pupil"], "k": EYES["lash"], "b": SKIN["blush"],
+                   "m": SKIN["mouth"]}
+    # keep the face symmetric: build each row from its left half mirrored
+    face_rows = [row[:4] + row[:4][::-1] for row in face_rows]
+    face_rows[5] = "dwpsspwd"
+    face_rows[6] = "SbsmmsbS"
+
     def face_front(x, y, w, h):
-        # rows 0-1 bangs, row 2 fringe tips, rows 3-7 face
-        if y == 0:
-            return HAIR["base"] if x not in (2, 5) else HAIR["light"]
-        if y == 1:
-            return HAIR["shade"] if x in (0, 7) else (HAIR["base"] if x != 3 else HAIR["shade"])
-        if y == 2:
-            if x in (0, 7):
-                return HAIR["shade"]
-            if x in (1, 6):
-                return HAIR["base"]
-            if x in (3, 4):
-                return HAIR["shade"]  # little fringe tip in the middle
-            return SKIN["base"]
-        if x in (0, 7):  # side hair framing the face
-            return HAIR["shade"] if y < 6 else (SKIN["shade"] if y == 7 else HAIR["dark"])
-        if y == 3:
-            return EYES["brow"] if x in (1, 2, 5, 6) else SKIN["base"]
-        if y == 4:
-            return {1: EYES["white"], 2: EYES["iris"], 5: EYES["iris"], 6: EYES["white"]}.get(x, SKIN["base"])
-        if y == 5:
-            return {1: SKIN["blush"], 2: EYES["pupil"], 5: EYES["pupil"], 6: SKIN["blush"]}.get(x, SKIN["base"])
-        if y == 6:
-            return SKIN["mouth"] if x in (3, 4) else SKIN["base"]
-        return SKIN["shade"] if x in (1, 6) else SKIN["base"]
+        return face_colors[face_rows[y][x]]
 
     def head_side(x, y, w, h):
         # x=0 is the back edge for the right face; mirrored below for the left face
@@ -450,27 +450,41 @@ def downscale(img, factor):
     return out
 
 
-def make_icon(skin, scale=12):
-    """128x128 icon: the face (plus hat layer) and twin tails, on a soft round badge."""
+def make_icon(skin):
+    """128x128 icon: a portrait of the skin (head, hat layer, twin braids, tunic shoulders) on a round badge."""
     size = 128
     icon = Image(size, size)
     cx = cy = size / 2
     for y in range(size):
         for x in range(size):
             d = ((x + 0.5 - cx) ** 2 + (y + 0.5 - cy) ** 2) ** 0.5
-            if d < 62:
-                t = d / 62
-                icon.set(x, y, (int(52 + 40 * (1 - t)), int(110 + 60 * (1 - t)), int(64 + 30 * (1 - t))))
+            if d < 61:
+                t = d / 61
+                icon.set(x, y, (int(60 + 46 * (1 - t)), int(118 + 62 * (1 - t)), int(70 + 36 * (1 - t))))
             elif d < 64:
-                icon.set(x, y, (28, 70, 36))
-    face_px = 8 * scale  # 96
-    ox = (size - face_px) // 2
-    oy = 18
-    # tails first, so the face sits on top
-    for tx in (ox - 2 * scale + 4, ox + face_px - 4):
-        blit_face(icon, skin, cube_faces(24, 0, 2, 5, 2)["front"], tx, oy + 3 * scale, scale // 2 * 1)
-    blit_face(icon, skin, cube_faces(0, 0, 8, 8, 8)["front"], ox, oy, scale)
-    blit_face(icon, skin, cube_faces(32, 0, 8, 8, 8)["front"], ox, oy, scale)
+                icon.set(x, y, (30, 72, 38))
+
+    head = 10                      # pixels per skin pixel for the head: 80x80
+    hx, hy = (size - 8 * head) // 2, 12
+    # shoulders: top 4 rows of the body front + jacket (tunic, collar, compass), under the chin
+    body = 10
+    bx, by = hx, hy + 8 * head - 2
+    for cube in ((16, 16, 8, 12, 4), (16, 32, 8, 12, 4)):
+        rect = cube_faces(*cube)["front"]
+        blit_face(icon, skin, (rect[0], rect[1], rect[2], 4), bx, by, body)
+    # braids: front face of both braid segments, hanging just outside the face from ear height
+    braid = 7
+    for side, bxp in ((0, hx - 2 * braid + 3), (1, hx + 8 * head - 3)):
+        top = hy + 4 * head
+        blit_face(icon, skin, cube_faces(24, 0, 2, 5, 2)["front"], bxp, top, braid)
+        blit_face(icon, skin, cube_faces(32, 0, 2, 5, 2)["front"], bxp, top + 5 * braid, braid)
+    blit_face(icon, skin, cube_faces(0, 0, 8, 8, 8)["front"], hx, hy, head)
+    blit_face(icon, skin, cube_faces(32, 0, 8, 8, 8)["front"], hx, hy, head)
+    # keep everything inside the round badge
+    for y in range(size):
+        for x in range(size):
+            if ((x + 0.5 - cx) ** 2 + (y + 0.5 - cy) ** 2) ** 0.5 >= 64:
+                icon.set(x, y, None) if False else icon.px[y].__setitem__(x, None)
     return icon
 
 

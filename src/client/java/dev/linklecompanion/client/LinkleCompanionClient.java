@@ -1,6 +1,8 @@
 package dev.linklecompanion.client;
 
 import dev.linklecompanion.client.hud.DialogueHud;
+import dev.linklecompanion.client.hud.SpeechBubbles;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import dev.linklecompanion.client.render.LinkleModel;
 import dev.linklecompanion.client.render.LinkleRenderer;
 import dev.linklecompanion.client.screen.LinkleScreen;
@@ -24,5 +26,7 @@ public class LinkleCompanionClient implements ClientModInitializer {
 		HudElementRegistry.addLast(DialogueHud.ID, new DialogueHud());
 		ClientPlayNetworking.registerGlobalReceiver(DialoguePayload.TYPE, (payload, context) -> DialogueHud.show(payload));
 		LinkleKeys.register();
+		// Entity ids are reused between worlds, so forget bubbles when leaving one.
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> SpeechBubbles.clear());
 	}
 }
