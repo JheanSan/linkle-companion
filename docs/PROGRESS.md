@@ -62,5 +62,11 @@ Honest status of the work. Updated after every feature.
   fabric.mod.json, version 1.0.0+mc26.3, no gametest classes).
 - Tag-triggered release workflow publishes to GitHub Releases, and to Modrinth/CurseForge once ids and tokens are set.
 
+## Release status (2026-10-02)
+- GitHub: public at github.com/JheanSan/linkle-companion (history uses the noreply email, no AI co-author trailers).
+- CurseForge: project 1721991 created, 1.0.0 file uploaded and waiting for moderation.
+- Modrinth: complete draft (linkle-companion), NOT submitted. Modrinth rule 6.2 forbids publishing projects whose
+  contents are primarily AI output, which applies here; the author decides whether to ask Modrinth staff first.
+
 ## Next step
-- Author: create the GitHub repo, push, then upload to Modrinth and CurseForge following docs/RELEASE.md.
+- Wait for CurseForge moderation; answer any moderator message from the CurseForge author dashboard.
