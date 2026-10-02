@@ -218,12 +218,10 @@ def make_skin(variant):
             return HAIR["light"]
         return HAIR["base"] if y < 6 else HAIR["shade"]
 
-    paint(img, hat["top"], hat_top)
-    paint(img, hat["front"], lambda x, y, w, h: (HAIR["base"] if y == 0 else
-                                                 (HAIR["shade"] if y == 1 and x not in (2, 3, 4, 5) else None)))
-    paint(img, hat["right"], lambda x, y, w, h: HAIR["base"] if y < 2 or (y < 6 and x < 3) else None)
-    paint(img, hat["left"], lambda x, y, w, h: HAIR["base"] if y < 2 or (y < 6 and x > 4) else None)
-    paint(img, hat["back"], hat_back)
+    # The outer "hat" layer is left empty on purpose: a puffy hair shell around the head read like a
+    # hat. The strand details go straight onto the head instead (no gaps allowed on the base layer).
+    paint(img, head["top"], hat_top)
+    paint(img, head["back"], lambda x, y, w, h: hat_back(x, y, w, h) or HAIR["dark"])
 
     # ---------------- body (8x12x4 at 16,16) ----------------
     body = cube_faces(16, 16, 8, 12, 4)

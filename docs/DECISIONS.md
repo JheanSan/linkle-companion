@@ -49,6 +49,8 @@ One line per decision: what was decided and why.
 ## Character design
 - Hair is **blonde** braided twin tails (not brown as in the brief): every public description consulted says blonde, and recognizability matters most.
 - No crest or emblem on the hood: the Hylian crest is a trademarked symbol.
+- No outer hair layer (the skin's "hat" layer is empty): the puffy hair shell read like a hat (author's feedback).
+  Hair detail is painted directly on the head; the twin braids are separate model cubes.
 
 ## Architecture
 - Base class `TamableAnimal`: vanilla owner storage, sitting, teams and the owner-defense target goals for free; claim and pet mods already treat tamed animals as pets.
