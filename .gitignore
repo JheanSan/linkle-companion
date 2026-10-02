@@ -47,3 +47,4 @@ src/main/generated/.cache/
 # local build logs
 build-*.txt
 *.log
+run-joinserver/

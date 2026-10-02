@@ -25,6 +25,20 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
+
+	runs {
+		// Dev client always plays as the offline test name "DevTester".
+		client {
+			programArgs "--username", "DevTester"
+		}
+		// ./gradlew runJoinTestServer: dev client that joins the local test server in testserver/.
+		joinTestServer {
+			client()
+			name = "Join local test server"
+			runDir = "run-joinserver"
+			programArgs "--username", "DevTester", "--quickPlayMultiplayer", "127.0.0.1:25566"
+		}
+	}
 }
 
 fabricApi {
