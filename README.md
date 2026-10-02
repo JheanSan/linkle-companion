@@ -56,11 +56,11 @@ fights beside you and talks to you.
 1. Craft a **Wanderer's Compass** (it appears in your recipe book once you have a compass or a
    crossbow):
 
-   ```
-   .  Green dye  .
-   Crossbow  Compass  Crossbow
-   .  Gold ingot .
-   ```
+   | | | |
+   |:---:|:---:|:---:|
+   | | 🟩 Green dye | |
+   | 🏹 Crossbow | 🧭 Compass | 🏹 Crossbow |
+   | | 🟨 Gold ingot | |
 2. Use it. Linkle appears next to you with 32 arrows.
 3. Use the compass again any time to call her back to you. It isn't used up.
 
