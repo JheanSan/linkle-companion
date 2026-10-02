@@ -474,6 +474,24 @@ def make_icon(skin, scale=12):
     return icon
 
 
+def reencode_with_java(paths):
+    """Re-save PNGs with Java's standard ImageIO encoder (same pixels).
+
+    The tiny encoder above writes valid PNGs, but production game launches crashed
+    natively far more often with them than with mainstream-encoded files (see
+    docs/DECISIONS.md), so every shipped PNG goes through ImageIO.
+    """
+    import shutil
+    import subprocess
+    java = shutil.which("java")
+    tool = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ReencodePng.java")
+    if java is None:
+        print("WARNING: java not found; PNGs were NOT re-encoded. Run: java scripts/art/ReencodePng.java <files>")
+        return
+    subprocess.run([java, tool] + list(paths), check=True, stdout=subprocess.DEVNULL)
+    print("re-encoded with ImageIO:", len(paths), "path(s)")
+
+
 def main():
     want_preview = "--preview" in sys.argv
     skins = {}
@@ -487,6 +505,7 @@ def main():
     print("wrote", os.path.relpath(os.path.join(SKIN_DIR, "custom.png"), ROOT))
     make_icon(skins["classic"]).save(ICON_PATH)
     print("wrote", os.path.relpath(ICON_PATH, ROOT))
+    reencode_with_java([SKIN_DIR, ICON_PATH])
 
     if want_preview:
         for name, skin in skins.items():

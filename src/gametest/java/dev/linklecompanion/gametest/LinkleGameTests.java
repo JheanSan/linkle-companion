@@ -190,6 +190,37 @@ public class LinkleGameTests implements CustomTestMethodInvoker {
 		helper.succeed();
 	}
 
+	/** A name ending in an outfit name picks that outfit; other names keep the outfit. */
+	@GameTest
+	public void nameTagPicksSkin(GameTestHelper helper) {
+		ServerPlayer owner = player(helper, 2, 2);
+		LinkleEntity linkle = linkleFor(helper, owner, 3, 3);
+		linkle.setCustomName(net.minecraft.network.chat.Component.literal("Linkle Azure"));
+		helper.assertTrue(linkle.getVariant() == dev.linklecompanion.entity.LinkleVariant.AZURE, "'Linkle Azure' should pick azure");
+		linkle.setCustomName(net.minecraft.network.chat.Component.literal("Bob"));
+		helper.assertTrue(linkle.getVariant() == dev.linklecompanion.entity.LinkleVariant.AZURE, "Other names keep the outfit");
+		helper.succeed();
+	}
+
+	/** When hurt, she eats food from her pockets on her own. */
+	@GameTest(maxTicks = 120)
+	public void eatsFoodWhenHurt(GameTestHelper helper) {
+		ServerPlayer owner = player(helper, 2, 2);
+		LinkleEntity linkle = linkleFor(helper, owner, 3, 3);
+		linkle.getInventory().addItem(new ItemStack(Items.BREAD, 3));
+		linkle.setHealth(8.0F);
+		helper.succeedWhen(() -> {
+			int bread = 0;
+			for (int slot = 0; slot < linkle.getInventory().getContainerSize(); slot++) {
+				if (linkle.getInventory().getItem(slot).is(Items.BREAD)) {
+					bread += linkle.getInventory().getItem(slot).getCount();
+				}
+			}
+			helper.assertTrue(bread < 3, "She should eat some bread");
+			helper.assertTrue(linkle.getHealth() > 8.0F, "Eating should heal her");
+		});
+	}
+
 	/** Her bolts can't hurt villagers (or other friends), but still hurt monsters. */
 	@GameTest
 	public void noFriendlyFire(GameTestHelper helper) {

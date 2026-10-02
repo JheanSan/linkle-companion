@@ -15,7 +15,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from generate_skins import Image, ROOT  # noqa: E402
+from generate_skins import Image, ROOT, reencode_with_java  # noqa: E402
 
 ASSETS = os.path.join(ROOT, "src", "main", "resources", "assets", "linkle_companion", "textures")
 
@@ -161,6 +161,7 @@ def main():
     gui_path = os.path.join(ASSETS, "gui", "linkle_inventory.png")
     make_gui().save(gui_path)
     print("wrote", os.path.relpath(gui_path, ROOT))
+    reencode_with_java([item_path, gui_path])
 
 
 if __name__ == "__main__":

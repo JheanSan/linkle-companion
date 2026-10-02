@@ -51,3 +51,7 @@ One line per decision: what was decided and why.
 - Datagen and game-test code: datagen classes live in the main source set (Fabric docs default, a few KB, never run in game); game tests live in their own `src/gametest` source set and are not shipped.
 - `fabric.mod.json` has no `contact` URLs yet: the GitHub repo doesn't exist; RELEASE.md tells the author to add them.
 - No mixins at all so far: everything uses Fabric API events or overrides inside the mod's own classes.
+
+## Textures
+- All shipped PNGs are re-saved with Java's standard ImageIO encoder (`scripts/art/ReencodePng.java`, called by both art scripts). Reason: production launches with the hand-written encoder's PNGs crashed natively (0xC0000005, during resource loading or when Linkle first came into view) in 5 of 13 launches; with ImageIO-encoded files, 1 crash in 20; with no mod at all, 0 in 14. The old files were structurally valid, so the exact cause inside the native decoder is unknown; the re-encode is the evidence-based fix.
+- Bolt aiming uses the real gravity drop for her 3.15-speed bolts (`0.0028 * distance^2`) instead of vanilla's `0.2 * distance`, which is tuned for slow mob arrows and made her overshoot at range.

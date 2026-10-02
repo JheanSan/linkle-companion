@@ -47,6 +47,11 @@
 - [ ] Claim mod (e.g. Flan) protecting an area: she doesn't pick up arrows or damage things there that the
       claim forbids for mobs.
 
+### Stability
+- [ ] Launch the game 10+ times with the mod on your own PC (and a friend's with a different GPU) and join a
+      world where Linkle is visible. Report any instant game exit without a crash report (see
+      COMPATIBILITY.md, "Intermittent native game crash").
+
 ### Before release
 - [ ] All boxes above that you care about.
 - [ ] `./gradlew build` green, GitHub Actions green.

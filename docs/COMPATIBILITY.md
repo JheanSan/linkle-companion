@@ -46,13 +46,13 @@ Fabric Loader 0.19.5, Fabric API 0.161.0+26.3, Linkle Companion 1.0.0, Java 25, 
 - **Not a Linkle issue, seen in the logs**: Flan logs errors for its built-in data about mods that weren't
   installed (Mekanism, AE2, Create...); Better Pets logs a failed data function; AppleSkin's Mod Menu page
   needs Cloth Config; some mod probes for JEI classes. All harmless for this test.
-- **Intermittent game crash in the production launch on this PC**: the game process sometimes exits
-  with a native access violation (0xC0000005) during startup or right after joining, with no Java crash
-  log (Windows Error Reporting is disabled on this machine, so no dump either). Seen 5 times in about
-  20 production launches with Linkle; not seen in the dev client (~15 launches), the client game tests
-  or the server, and not reproducible on demand (11 clean runs in a row before the compat run).
-  Control runs without Linkle: see PROGRESS.md for the final tally. Linkle contains no native code.
-  Please report it if you see it on another machine.
+- **Intermittent native game crash (fixed as far as could be measured)**: in production launches the game
+  process sometimes exited with an access violation (0xC0000005) during resource loading or right
+  after Linkle came into view, with no Java crash log. Measured on this PC:
+  original textures 5 crashes / 13 launches; no mod at all 0 / 14; after re-encoding all textures with a
+  standard PNG encoder 1 / 20. The remaining single crash can't be told apart from chance or the
+  machine itself. Never seen in the dev client, the client game tests or on the server.
+  Please report it (with your GPU and driver) if you see it.
 - A zombie stuck in terrain 19 blocks away was left alone: Linkle only engages threats within 14 blocks
   of her owner (by design, so she doesn't wander off hunting).
 
