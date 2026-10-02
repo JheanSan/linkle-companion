@@ -31,8 +31,9 @@ public final class LinkleCommand {
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(Commands.literal("linkle")
+			// Always listed, so players without permission get a helpful message instead of
+			// "Incorrect argument". The permission is checked when it runs.
 			.then(Commands.literal("summon")
-				.requires(PermissionPredicates.require(LinkleCompanion.id("command.summon"), PermissionLevel.GAMEMASTERS))
 				.executes(ctx -> summon(ctx, false))
 				.then(Commands.literal("new").executes(ctx -> summon(ctx, true))))
 			.then(Commands.literal("recall")
@@ -56,7 +57,14 @@ public final class LinkleCommand {
 				.then(Commands.literal("confirm").executes(LinkleCommand::dismiss))));
 	}
 
+	private static final java.util.function.Predicate<CommandSourceStack> CAN_SUMMON =
+		PermissionPredicates.require(LinkleCompanion.id("command.summon"), PermissionLevel.GAMEMASTERS);
+
 	private static int summon(CommandContext<CommandSourceStack> ctx, boolean forceNew) throws CommandSyntaxException {
+		if (!CAN_SUMMON.test(ctx.getSource())) {
+			ctx.getSource().sendFailure(Component.translatable("message.linkle_companion.summon_needs_cheats"));
+			return 0;
+		}
 		ServerPlayer player = ctx.getSource().getPlayerOrException();
 		LinkleSummoning.Result result = LinkleSummoning.summonOrRecall(player, forceNew);
 		String key = switch (result) {

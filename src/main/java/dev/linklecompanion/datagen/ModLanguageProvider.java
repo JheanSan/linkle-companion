@@ -66,6 +66,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 		}
 
 		// Messages added with the settings screen and hotkeys
+		builder.add("message.linkle_companion.summon_needs_cheats", "/linkle summon is a cheat command (needs operator / Allow Commands). In survival, craft a Wanderer's Compass instead: green dye on top, crossbow - compass - crossbow, gold ingot below. In single player: Esc > Open to LAN > Allow Commands: ON.");
 		builder.add("message.linkle_companion.disabled", "Linkle is turned off in the Linkle Companion settings.");
 		builder.add("message.linkle_companion.no_loaded", "Your Linkle isn't nearby (or isn't loaded). Use the Wanderer's Compass to summon her.");
 

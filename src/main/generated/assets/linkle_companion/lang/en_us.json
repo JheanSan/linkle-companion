@@ -97,6 +97,7 @@
   "message.linkle_companion.not_yours": "This Linkle travels with someone else.",
   "message.linkle_companion.recalled": "Linkle is back at your side.",
   "message.linkle_companion.skin_set": "Linkle's skin is now: %s",
+  "message.linkle_companion.summon_needs_cheats": "/linkle summon is a cheat command (needs operator / Allow Commands). In survival, craft a Wanderer's Compass instead: green dye on top, crossbow - compass - crossbow, gold ingot below. In single player: Esc > Open to LAN > Allow Commands: ON.",
   "message.linkle_companion.summoned": "Linkle has joined you!",
   "message.linkle_companion.unknown_mode": "Unknown mode. Use follow, stay or guard.",
   "message.linkle_companion.unknown_skin": "Unknown skin. Use classic, crimson, azure, violet, snow or custom.",
