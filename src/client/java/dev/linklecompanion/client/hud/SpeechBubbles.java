@@ -23,6 +23,8 @@ public final class SpeechBubbles {
 	}
 
 	private static final Map<Integer, Bubble> BUBBLES = new HashMap<>();
+	/** True while a screen draws a preview of her (e.g. her inventory): no bubble there. */
+	private static boolean suppressed;
 
 	private SpeechBubbles() {
 	}
@@ -34,6 +36,9 @@ public final class SpeechBubbles {
 
 	/** The wrapped lines this Linkle is saying right now, or null. */
 	public static @Nullable List<Component> get(int entityId) {
+		if (suppressed) {
+			return null;
+		}
 		Bubble bubble = BUBBLES.get(entityId);
 		if (bubble == null) {
 			return null;
@@ -43,6 +48,16 @@ public final class SpeechBubbles {
 			return null;
 		}
 		return bubble.lines;
+	}
+
+	/** Runs a GUI preview render without speech bubbles. */
+	public static void withoutBubbles(Runnable render) {
+		suppressed = true;
+		try {
+			render.run();
+		} finally {
+			suppressed = false;
+		}
 	}
 
 	public static void clear() {

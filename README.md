@@ -1,4 +1,13 @@
+<p align="center"><img src="docs/branding/icon-512.png" width="128" alt="Linkle Companion icon"></p>
+
 # Linkle Companion
+
+[![Modrinth](https://img.shields.io/badge/Modrinth-linkle--companion-1bd96a?logo=modrinth)](https://modrinth.com/mod/linkle-companion)
+[![CurseForge](https://img.shields.io/badge/CurseForge-Linkle%20Companion-f16436?logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/linkle-companion)
+[![Build](https://github.com/JheanSan/linkle-companion/actions/workflows/build.yml/badge.svg)](https://github.com/JheanSan/linkle-companion/actions/workflows/build.yml)
+![Minecraft 26.3](https://img.shields.io/badge/Minecraft-26.3-62b47a)
+![Fabric](https://img.shields.io/badge/loader-Fabric-dbd0b4)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 A Fabric mod for Minecraft **26.3** that adds **Linkle**, a dual-crossbow companion who follows you,
 fights beside you and talks to you.
@@ -7,10 +16,11 @@ fights beside you and talks to you.
 > Koei Tecmo. Not affiliated with or endorsed by them. All code, textures and dialogue in this mod
 > are original.
 
-<!-- Screenshots / demo GIF go here, for example:
-![Linkle with her twin crossbows](docs/images/hero.png)
-![Twin Cyclone volley](docs/images/volley.gif)
--->
+| | |
+|---|---|
+| ![Linkle](docs/images/front.png) | ![Both crossbows raised](docs/images/dual-aim.png) |
+| ![Five outfits](docs/images/outfits.png) | ![Speech bubble above her head](docs/images/speech-bubble.png) |
+| ![Her inventory](docs/images/inventory.png) | ![Settings menu](docs/images/settings.png) |
 
 ## Features
 

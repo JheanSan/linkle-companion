@@ -49,3 +49,6 @@ build-*.txt
 *.log
 run-joinserver/
 run-cleaninstall/
+
+# release kits (made by scripts/release/make_release_kit.py)
+dist/

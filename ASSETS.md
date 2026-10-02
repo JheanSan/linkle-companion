@@ -10,7 +10,7 @@ All art in this mod is original and was made for this project.
 
 **CC BY 4.0**: https://creativecommons.org/licenses/by/4.0/
 You may share and adapt these assets for any purpose, including commercially, as long as you give
-credit ("Linkle Companion contributors") and link to the license.
+credit ("JheanSan / Linkle Companion") and link to the license.
 
 ## What is NOT included
 - No files, models, textures, sounds, logos or text from any Nintendo or Koei Tecmo game.

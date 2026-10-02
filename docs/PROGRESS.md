@@ -55,6 +55,12 @@ Honest status of the work. Updated after every feature.
 - Gameplay items that need hands-on play (corridor give-way, doors, cliffs, guard mode, claims) are on the
   manual list in TESTING.md.
 
+## Release prep (done, nothing uploaded)
+- Author JheanSan, links to github.com/JheanSan/linkle-companion and modrinth.com/mod/linkle-companion.
+- Store texts: docs/MODRINTH.md, docs/CURSEFORGE.md; gallery in docs/images, icon in docs/branding.
+- `python scripts/release/make_release_kit.py` builds, tests and fills `dist/` (jar verified: strict JSON
+  fabric.mod.json, version 1.0.0+mc26.3, no gametest classes).
+- Tag-triggered release workflow publishes to GitHub Releases, and to Modrinth/CurseForge once ids and tokens are set.
+
 ## Next step
-- Author: play in the open `dev-linkle_companion` instance and go through docs/TESTING.md.
-- Then follow docs/RELEASE.md.
+- Author: create the GitHub repo, push, then upload to Modrinth and CurseForge following docs/RELEASE.md.

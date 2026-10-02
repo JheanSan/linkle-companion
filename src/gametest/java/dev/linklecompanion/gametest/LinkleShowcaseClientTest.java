@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
+import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -156,7 +157,11 @@ public class LinkleShowcaseClientTest implements FabricClientGameTest {
 	}
 
 	private static void shot(ClientGameTestContext context, String name) {
-		Path path = context.takeScreenshot("linkle_" + name);
+		// World scenes in Full HD for the README and store galleries. Menus and HUD only lay out at the
+		// window's own size, so those shots are taken at normal size.
+		boolean hasGui = name.contains("dialogue") || name.contains("inventory") || name.contains("settings");
+		TestScreenshotOptions options = TestScreenshotOptions.of("linkle_" + name);
+		Path path = context.takeScreenshot(hasGui ? options : options.withSize(1920, 1080));
 		LinkleCompanion.LOGGER.info("Showcase screenshot: {}", path);
 	}
 

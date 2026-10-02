@@ -2,7 +2,8 @@ plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 }
 
-version = project.mod_version
+// e.g. 1.0.0+mc26.3: the store-friendly convention of naming the Minecraft version in the mod version.
+version = "${project.mod_version}+mc${project.minecraft_version}"
 group = project.maven_group
 
 base {

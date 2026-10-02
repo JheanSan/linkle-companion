@@ -3,10 +3,15 @@
 	"id": "linkle_companion",
 	"version": "${version}",
 	"name": "Linkle Companion",
-	"description": "Adds Linkle, a dual-crossbow follower companion with her own personality. Craft a Wanderer's Compass to summon her.\n\nUnofficial fan project. Linkle is a character from Hyrule Warriors, owned by Nintendo and Koei Tecmo. Not affiliated with or endorsed by them.",
+	"description": "Adds Linkle, a dual-crossbow follower companion with her own personality. Craft a Wanderer's Compass to summon her. Unofficial fan project: Linkle is a character from Hyrule Warriors, owned by Nintendo and Koei Tecmo. Not affiliated with or endorsed by them.",
 	"authors": [
-		"Linkle Companion contributors"
+		"JheanSan"
 	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/linkle-companion",
+		"sources": "https://github.com/JheanSan/linkle-companion",
+		"issues": "https://github.com/JheanSan/linkle-companion/issues"
+	},
 	"license": "MIT",
 	"icon": "assets/linkle_companion/icon.png",
 	"environment": "*",

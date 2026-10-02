@@ -1,6 +1,7 @@
 package dev.linklecompanion.client.screen;
 
 import dev.linklecompanion.LinkleCompanion;
+import dev.linklecompanion.client.hud.SpeechBubbles;
 import dev.linklecompanion.config.LinkleConfig;
 import dev.linklecompanion.entity.LinkleEntity;
 import dev.linklecompanion.menu.LinkleMenu;
@@ -46,8 +47,8 @@ public class LinkleScreen extends AbstractContainerScreen<LinkleMenu> {
 		graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, this.leftPos, this.topPos, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 		LinkleEntity linkle = this.menu.getLinkle();
 		if (linkle != null) {
-			InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, this.leftPos + 28, this.topPos + 18, this.leftPos + 92, this.topPos + 89,
-				30, 0.0625F, this.xMouse, this.yMouse, linkle);
+			SpeechBubbles.withoutBubbles(() -> InventoryScreen.extractEntityInInventoryFollowsMouse(graphics,
+				this.leftPos + 28, this.topPos + 18, this.leftPos + 92, this.topPos + 89, 30, 0.0625F, this.xMouse, this.yMouse, linkle));
 		}
 	}
 
