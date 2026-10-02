@@ -66,6 +66,31 @@ fights beside you and talks to you.
 | Use the Wanderer's Compass | Summon her, or call her back if she exists |
 | Sneak + use the compass | If your Linkle is lost in an unloaded area: summon a new one (the old one leaves) |
 
+### Hotkeys
+Change them in **Options > Controls > Key Binds > Linkle Companion**.
+
+| Key | What it does |
+|---|---|
+| **G** | Call Linkle to you |
+| **H** | Switch her mode (Follow / Stay / Guard) |
+| (unbound) | Open Linkle settings |
+
+### Settings menu
+Open it from **Mod Menu** (Mods > Linkle Companion > Configure) if you have Mod Menu, or with the
+**⚙ button** in Linkle's inventory (sneak + right-click her). Mod Menu is optional.
+
+- **Your game**: braids on/off, braid sway, where her lines appear (speech box, action bar, off),
+  box position and how long lines stay.
+- **General**: a master switch (**Linkle enabled**: off = she can't be summoned and an existing
+  Linkle sits and pauses), chattiness (quiet / normal / chatty), default outfit, one per player.
+- **Following**: follow distances, teleport on/off and distance, follow through portals, guard radius.
+- **Combat**: bolt damage, Twin Cyclone on/off and cooldown, infinite arrows, starting arrows,
+  picking up arrows.
+- **Health**: eat when hurt, real death, knockout time.
+
+Every option has a tooltip, and **Reset to defaults** puts everything back. On someone else's
+server the gameplay options are greyed out: the server's config decides there.
+
 ### Commands
 
 | Command | Who can use it | What it does |
@@ -122,8 +147,8 @@ mod too. A client with the mod can still join servers that don't have it.
 
 ## Configuration
 
-The file `config/linkle_companion.json` is created the first time you play. You never have to
-edit it. Wrong values are reset to the default with a note in the log.
+The easiest way is the in-game settings menu above. Everything is saved in
+`config/linkle_companion.json` (created the first time you play); you never have to edit it by hand. Wrong values are reset to the default with a note in the log.
 
 | Option | Default | Meaning |
 |---|---|---|
@@ -142,6 +167,15 @@ edit it. Wrong values are reset to the default with a note in the log.
 | `hairEnabled` | true | Show the twin braids (client) |
 | `hairSway` | true | Let the braids sway (client) |
 | `dialogueDisplay` | hud | `hud`, `actionbar` or `off` (client) |
+| `dialoguePosition` | top_left | `top_left`, `top_center` or `top_right` (client) |
+| `dialogueSeconds` | 5 | How long a line stays in the box (client) |
+| `enabled` | true | Master switch (off: no summoning, existing Linkle pauses) |
+| `chattiness` | normal | `quiet`, `normal` or `chatty` |
+| `teleportToOwner` | true | Teleport when left far behind |
+| `followThroughPortals` | true | Go through portals with you |
+| `volleyEnabled` | true | Use the Twin Cyclone |
+| `autoEat` | true | Eat food from her pockets when hurt |
+| `pickUpArrows` | true | Pick up arrow items next to her |
 
 ## Skins (use your own look)
 

@@ -65,10 +65,78 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 			}
 		}
 
+		// Messages added with the settings screen and hotkeys
+		builder.add("message.linkle_companion.disabled", "Linkle is turned off in the Linkle Companion settings.");
+		builder.add("message.linkle_companion.no_loaded", "Your Linkle isn't nearby (or isn't loaded). Use the Wanderer's Compass to summon her.");
+
+		// Hotkeys (Options > Controls > Key Binds)
+		builder.add("key.category.linkle_companion.keys", "Linkle Companion");
+		builder.add("key.linkle_companion.recall", "Call Linkle to you");
+		builder.add("key.linkle_companion.mode", "Switch Linkle's mode");
+		builder.add("key.linkle_companion.settings", "Open Linkle settings");
+
+		// Settings screen
+		String o = "options.linkle_companion.";
+		builder.add(o + "title", "Linkle Companion Settings");
+		builder.add(o + "reset", "Reset to defaults");
+		builder.add(o + "server_controlled", "Set by the server you're playing on. The server owner can change it in config/linkle_companion.json.");
+		builder.add(o + "section.client", "Your game: looks and dialogue");
+		builder.add(o + "section.general", "General");
+		builder.add(o + "section.movement", "Following");
+		builder.add(o + "section.combat", "Combat");
+		builder.add(o + "section.health", "Health");
+		builder.add(o + "unit.seconds", "%s s");
+		builder.add(o + "unit.blocks", "%s blocks");
+		builder.add(o + "unit.percent", "%s%%");
+		builder.add(o + "unit.count", "%s");
+		option(builder, "hairEnabled", "Twin braids", "Show Linkle's twin braids. Turn off if a custom skin looks odd with them.");
+		option(builder, "hairSway", "Braid sway", "Let the braids swing as she walks and spins.");
+		option(builder, "dialogueDisplay", "Her lines", "Where Linkle's lines appear: a small box with her face, the action bar above your hotbar, or nowhere.");
+		builder.add(o + "dialogueDisplay.hud", "Speech box");
+		builder.add(o + "dialogueDisplay.actionbar", "Action bar");
+		builder.add(o + "dialogueDisplay.off", "Off");
+		option(builder, "dialoguePosition", "Box position", "Where the speech box sits on your screen.");
+		builder.add(o + "dialoguePosition.top_left", "Top left");
+		builder.add(o + "dialoguePosition.top_center", "Top center");
+		builder.add(o + "dialoguePosition.top_right", "Top right");
+		option(builder, "dialogueSeconds", "Box time", "How long each line stays in the speech box.");
+		option(builder, "enabled", "Linkle enabled", "Master switch. Off: Linkle can't be summoned, and an existing Linkle sits down and pauses (no fighting, no talking). Turn it back on and she carries on.");
+		option(builder, "chattiness", "Chattiness", "How often she talks. Quiet: only important moments (knocked out, low health, gifts...). Chatty: twice as often.");
+		builder.add(o + "chattiness.normal", "Normal");
+		builder.add(o + "chattiness.quiet", "Quiet");
+		builder.add(o + "chattiness.chatty", "Chatty");
+		option(builder, "defaultVariant", "Default outfit", "The outfit of newly summoned Linkles. You can still change it later with a name tag or /linkle skin.");
+		for (var variant : dev.linklecompanion.entity.LinkleVariant.values()) {
+			String id = variant.id();
+			builder.add(o + "defaultVariant." + id, Character.toUpperCase(id.charAt(0)) + id.substring(1));
+		}
+		option(builder, "onePerPlayer", "One per player", "On: each player has one Linkle (summoning again calls her back). Off: every summon creates another Linkle.");
+		option(builder, "followStartDistance", "Start following at", "She starts walking toward you when you get farther than this.");
+		option(builder, "followStopDistance", "Stop following at", "She stops when she is this close to you.");
+		option(builder, "teleportToOwner", "Teleport when far", "Teleport to you when she falls far behind (Follow mode).");
+		option(builder, "teleportDistance", "Teleport distance", "How far behind she can fall before teleporting to you.");
+		option(builder, "followThroughPortals", "Follow through portals", "Go through Nether and End portals with you (Follow mode).");
+		option(builder, "guardRadius", "Guard radius", "In Guard mode she defends this area around her spot.");
+		option(builder, "damagePercent", "Bolt damage", "Damage of her bolts. 100% is like a normal crossbow.");
+		option(builder, "volleyEnabled", "Twin Cyclone", "Her spinning volley when enemies crowd her.");
+		option(builder, "volleyCooldownSeconds", "Cyclone cooldown", "Time between two Twin Cyclone volleys.");
+		option(builder, "infiniteArrows", "Infinite arrows", "She never runs out of arrows (her bolts can't be picked up).");
+		option(builder, "startingArrows", "Starting arrows", "Arrows a newly summoned Linkle brings with her.");
+		option(builder, "pickUpArrows", "Pick up arrows", "She collects arrow items lying right next to her (needs the mobGriefing game rule).");
+		option(builder, "autoEat", "Eat when hurt", "She eats food from her pockets when her health is low.");
+		option(builder, "realDeath", "Real death", "Off: she gets knocked out instead of dying. On: she can really die (her items drop).");
+		option(builder, "knockoutSeconds", "Knockout time", "How long she stays knocked out before getting up on her own. Food wakes her right away.");
+
 		// Advancements
 		builder.add("advancements.linkle_companion.root.title", "Linkle Companion");
 		builder.add("advancements.linkle_companion.root.description", "Craft a Wanderer's Compass");
 		builder.add("advancements.linkle_companion.friend.title", "A Friend in Green");
 		builder.add("advancements.linkle_companion.friend.description", "Summon or befriend Linkle");
+	}
+
+	/** A settings option: its name and its tooltip. */
+	private static void option(TranslationBuilder builder, String key, String name, String tooltip) {
+		builder.add("options.linkle_companion." + key, name);
+		builder.add("options.linkle_companion." + key + ".tooltip", tooltip);
 	}
 }

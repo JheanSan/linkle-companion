@@ -134,6 +134,9 @@ public class LinkleShowcaseClientTest implements FabricClientGameTest {
 			});
 			context.waitTicks(20);
 			shot(context, "13_inventory");
+			context.setScreen(() -> new dev.linklecompanion.client.screen.LinkleSettingsScreen(null));
+			context.waitTicks(10);
+			shot(context, "14_settings");
 		}
 	}
 

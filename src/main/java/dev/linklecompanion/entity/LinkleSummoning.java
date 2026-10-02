@@ -65,6 +65,10 @@ public final class LinkleSummoning {
 	 */
 	public static Result summonOrRecall(ServerPlayer player, boolean forceNew) {
 		LinkleConfig config = LinkleConfig.get();
+		if (!config.enabled) {
+			player.sendOverlayMessage(Component.translatable("message.linkle_companion.disabled"));
+			return Result.FAILED;
+		}
 		ModAttachments.CompanionData data = player.getAttached(ModAttachments.COMPANION);
 		LinkleEntity existing = findLoaded(player);
 
@@ -99,6 +103,10 @@ public final class LinkleSummoning {
 	/** A wild (ownerless) Linkle, e.g. from /summon, joins a player who has no Linkle yet. */
 	public static boolean befriend(LinkleEntity linkle, ServerPlayer player) {
 		LinkleConfig config = LinkleConfig.get();
+		if (!config.enabled) {
+			player.sendOverlayMessage(Component.translatable("message.linkle_companion.disabled"));
+			return false;
+		}
 		ModAttachments.CompanionData data = player.getAttached(ModAttachments.COMPANION);
 		if (config.onePerPlayer && data != null && findLoaded(player) != null) {
 			player.sendOverlayMessage(Component.translatable("message.linkle_companion.already_have"));

@@ -5,6 +5,8 @@ import dev.linklecompanion.config.LinkleConfig;
 import dev.linklecompanion.entity.LinkleEntity;
 import dev.linklecompanion.menu.LinkleMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -25,6 +27,17 @@ public class LinkleScreen extends AbstractContainerScreen<LinkleMenu> {
 	public LinkleScreen(LinkleMenu menu, Inventory inventory, Component title) {
 		super(menu, inventory, title, 176, LinkleMenu.IMAGE_HEIGHT);
 		this.inventoryLabelY = this.imageHeight - 94;
+	}
+
+	@Override
+	protected void init() {
+		super.init();
+		// Settings button in the top-right corner of the panel.
+		this.addRenderableWidget(Button.builder(Component.literal("⚙"), button ->
+				this.minecraft.gui.setScreen(new LinkleSettingsScreen(this)))
+			.bounds(this.leftPos + this.imageWidth - 21, this.topPos + 3, 16, 13)
+			.tooltip(Tooltip.create(Component.translatable("options.linkle_companion.title")))
+			.build());
 	}
 
 	@Override

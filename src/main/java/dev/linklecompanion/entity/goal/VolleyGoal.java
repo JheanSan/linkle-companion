@@ -47,7 +47,7 @@ public class VolleyGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		if (linkle.getVolleyCooldown() > 0 || !linkle.isTame() || linkle.isKnockedOut() || linkle.getMode() == LinkleMode.STAY) {
+		if (!LinkleConfig.get().volleyEnabled || linkle.getVolleyCooldown() > 0 || !linkle.isTame() || linkle.isKnockedOut() || linkle.getMode() == LinkleMode.STAY) {
 			return false;
 		}
 		LivingEntity target = linkle.getTarget();

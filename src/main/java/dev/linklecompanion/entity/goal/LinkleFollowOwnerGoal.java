@@ -70,7 +70,7 @@ public class LinkleFollowOwnerGoal extends Goal {
 	public void tick() {
 		double distanceSqr = linkle.distanceToSqr(owner);
 		double teleport = LinkleConfig.get().teleportDistance;
-		boolean tooFar = distanceSqr >= teleport * teleport;
+		boolean tooFar = LinkleConfig.get().teleportToOwner && distanceSqr >= teleport * teleport;
 		if (!tooFar) {
 			linkle.getLookControl().setLookAt(owner, 10.0F, linkle.getMaxHeadXRot());
 		}

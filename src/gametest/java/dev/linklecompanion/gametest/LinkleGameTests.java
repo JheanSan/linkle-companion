@@ -221,6 +221,27 @@ public class LinkleGameTests implements CustomTestMethodInvoker {
 		});
 	}
 
+	/** Master switch off: she sits, can't target anything, and summoning is refused. On again: back to normal. */
+	@GameTest
+	public void masterSwitchPauses(GameTestHelper helper) {
+		ServerPlayer owner = player(helper, 2, 2);
+		LinkleEntity linkle = linkleFor(helper, owner, 3, 3);
+		Zombie zombie = helper.spawnWithNoFreeWill(EntityTypes.ZOMBIE, new BlockPos(6, 1, 6));
+		boolean enabled = LinkleConfig.get().enabled;
+		LinkleConfig.get().enabled = false;
+		try {
+			helper.assertTrue(linkle.isOrderedToSit(), "Paused Linkle should sit");
+			helper.assertFalse(linkle.canAttack(zombie), "Paused Linkle can't attack");
+			helper.assertTrue(linkle.getMode() == LinkleMode.FOLLOW, "Pausing must not change her saved mode");
+			helper.assertTrue(LinkleSummoning.summonOrRecall(owner, true) == LinkleSummoning.Result.FAILED, "Summoning is refused while off");
+		} finally {
+			LinkleConfig.get().enabled = enabled;
+		}
+		helper.assertFalse(linkle.isOrderedToSit(), "Back on: she stands up again");
+		helper.assertTrue(linkle.canAttack(zombie), "Back on: she can fight again");
+		helper.succeed();
+	}
+
 	/** Her bolts can't hurt villagers (or other friends), but still hurt monsters. */
 	@GameTest
 	public void noFriendlyFire(GameTestHelper helper) {

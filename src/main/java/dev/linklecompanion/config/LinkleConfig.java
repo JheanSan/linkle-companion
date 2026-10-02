@@ -30,6 +30,11 @@ public final class LinkleConfig {
 
 	// ---------------- server / gameplay ----------------
 
+	/**
+	 * Master switch. When false, Linkle can't be summoned and any existing Linkle pauses:
+	 * she sits where she is, doesn't fight and doesn't talk. Turn it back on and she carries on.
+	 */
+	public boolean enabled = true;
 	/** Linkle starts walking toward you when she is farther than this (blocks). */
 	public double followStartDistance = 6.0;
 	/** Linkle stops walking once she is this close to you (blocks). */
@@ -58,6 +63,18 @@ public final class LinkleConfig {
 	public boolean onePerPlayer = true;
 	/** Skin variant for newly summoned Linkles: classic, crimson, azure, violet, snow or custom. */
 	public String defaultVariant = "classic";
+	/** Teleport to the owner when left far behind (Follow mode). */
+	public boolean teleportToOwner = true;
+	/** Go through portals together with the owner (Follow mode). */
+	public boolean followThroughPortals = true;
+	/** Use the Twin Cyclone volley when crowded. */
+	public boolean volleyEnabled = true;
+	/** Eat food from her pockets when hurt. */
+	public boolean autoEat = true;
+	/** Pick up arrow items lying next to her. */
+	public boolean pickUpArrows = true;
+	/** How often she talks: "quiet" (important lines only), "normal" or "chatty". */
+	public String chattiness = "normal";
 
 	// ---------------- client / looks ----------------
 
@@ -67,9 +84,28 @@ public final class LinkleConfig {
 	public boolean hairSway = true;
 	/** Where Linkle's lines appear: "hud" (small box), "actionbar" or "off". */
 	public String dialogueDisplay = "hud";
+	/** Corner of the dialogue box: "top_left", "top_center" or "top_right". */
+	public String dialoguePosition = "top_left";
+	/** Seconds a line stays in the dialogue box. */
+	public int dialogueSeconds = 5;
 
 	public static LinkleConfig get() {
 		return instance;
+	}
+
+	/** Puts every option back to its default (used by the settings screen's Reset button). */
+	public static void resetToDefaults() {
+		instance = new LinkleConfig();
+	}
+
+	/** Resets only this player's own options (looks and dialogue display), leaving gameplay alone. */
+	public static void resetClientOptions() {
+		LinkleConfig defaults = new LinkleConfig();
+		instance.hairEnabled = defaults.hairEnabled;
+		instance.hairSway = defaults.hairSway;
+		instance.dialogueDisplay = defaults.dialogueDisplay;
+		instance.dialoguePosition = defaults.dialoguePosition;
+		instance.dialogueSeconds = defaults.dialogueSeconds;
 	}
 
 	public static Path path() {
@@ -106,7 +142,7 @@ public final class LinkleConfig {
 	}
 
 	/** Clamps every value into a sane range so a typo can't break gameplay. */
-	void validate() {
+	public void validate() {
 		followStopDistance = clamp(followStopDistance, 1.0, 16.0, 3.0, "followStopDistance");
 		followStartDistance = clamp(followStartDistance, followStopDistance + 1.0, 32.0, Math.max(6.0, followStopDistance + 1.0), "followStartDistance");
 		teleportDistance = clamp(teleportDistance, followStartDistance + 2.0, 128.0, Math.max(16.0, followStartDistance + 2.0), "teleportDistance");
@@ -119,10 +155,21 @@ public final class LinkleConfig {
 			LinkleCompanion.LOGGER.warn("Config: unknown defaultVariant '{}', using 'classic'.", defaultVariant);
 			defaultVariant = "classic";
 		}
-		if (dialogueDisplay == null || !(dialogueDisplay.equals("hud") || dialogueDisplay.equals("actionbar") || dialogueDisplay.equals("off"))) {
-			LinkleCompanion.LOGGER.warn("Config: dialogueDisplay must be hud, actionbar or off; using 'hud'.");
-			dialogueDisplay = "hud";
+		dialogueDisplay = oneOf(dialogueDisplay, "dialogueDisplay", "hud", "actionbar", "off");
+		dialoguePosition = oneOf(dialoguePosition, "dialoguePosition", "top_left", "top_center", "top_right");
+		chattiness = oneOf(chattiness, "chattiness", "normal", "quiet", "chatty");
+		dialogueSeconds = (int) clamp(dialogueSeconds, 2, 20, 5, "dialogueSeconds");
+	}
+
+	/** Returns the value if it is one of the allowed ones, else the first allowed (default) with a log line. */
+	private static String oneOf(String value, String name, String... allowed) {
+		for (String option : allowed) {
+			if (option.equals(value)) {
+				return value;
+			}
 		}
+		LinkleCompanion.LOGGER.warn("Config: {} = '{}' is not one of {}; using '{}'.", name, value, String.join(", ", allowed), allowed[0]);
+		return allowed[0];
 	}
 
 	private static double clamp(double value, double min, double max, double fallback, String name) {

@@ -13,4 +13,8 @@ First release, for Minecraft 26.3 (Fabric Loader 0.19.5+, Fabric API 0.161.0+).
 - 9-slot inventory plus armor; eats food when hurt; uses and picks up arrows.
 - Original dialogue lines for night, biomes, fights, low health, gifts and more, in a small HUD box.
 - Original slim-arm skin with swaying twin braids and four outfits; resource-pack skin swapping.
+- In-game settings menu (Mod Menu "Configure" button or the ⚙ button in her inventory) with
+  tooltips, a master on/off switch, chattiness, dialogue box position and time, and toggles for
+  teleporting, portals, the volley, auto-eat and arrow pickup. Reset to defaults.
+- Hotkeys: G calls Linkle, H switches her mode (rebindable).
 - JSON config.

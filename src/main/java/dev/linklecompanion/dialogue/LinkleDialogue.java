@@ -1,5 +1,6 @@
 package dev.linklecompanion.dialogue;
 
+import dev.linklecompanion.config.LinkleConfig;
 import dev.linklecompanion.entity.LinkleEntity;
 import dev.linklecompanion.network.DialoguePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -139,18 +140,24 @@ public final class LinkleDialogue {
 		if (!(linkle.getOwner() instanceof ServerPlayer owner)) {
 			return false;
 		}
+		String chattiness = LinkleConfig.get().chattiness;
+		if (linkle.isPaused() || ("quiet".equals(chattiness) && !topic.important)) {
+			return false;
+		}
+		// Chatty halves the waits, normal uses them as they are.
+		int divisor = "chatty".equals(chattiness) ? 2 : 1;
 		long now = linkle.level().getGameTime();
 		if (now < nextAllowed[topic.ordinal()]) {
 			return false;
 		}
-		if (!topic.important && now - lastLineTime < GLOBAL_GAP_TICKS) {
+		if (!topic.important && now - lastLineTime < GLOBAL_GAP_TICKS / divisor) {
 			return false;
 		}
 		if (owner.level() != linkle.level() || owner.distanceToSqr(linkle) > 64.0 * 64.0) {
 			return false;
 		}
 
-		nextAllowed[topic.ordinal()] = now + topic.cooldownTicks;
+		nextAllowed[topic.ordinal()] = now + topic.cooldownTicks / divisor;
 		lastLineTime = now;
 		String key = topic.key(linkle.getRandom().nextInt(topic.lineCount()));
 		if (ServerPlayNetworking.canSend(owner, DialoguePayload.TYPE)) {

@@ -49,7 +49,8 @@ public final class LinkleEvents {
 		if (!(origin.getEntity(data.linkleId()) instanceof LinkleEntity linkle) || !linkle.isAlive() || !linkle.isOwnedByPlayer(player)) {
 			return;
 		}
-		if (linkle.getMode() != LinkleMode.FOLLOW || linkle.isKnockedOut()) {
+		if (!dev.linklecompanion.config.LinkleConfig.get().followThroughPortals
+			|| linkle.getMode() != LinkleMode.FOLLOW || linkle.isKnockedOut() || linkle.isPaused()) {
 			return;
 		}
 		// The player has already left, so use what she noticed during her last check (once a second).

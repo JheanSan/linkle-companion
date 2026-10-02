@@ -27,6 +27,17 @@ One line per decision: what was decided and why.
 - The launcher's shared `libraries/` cache was missing 33 vanilla/LWJGL files from an earlier interrupted download; they were fetched from the official Mojang/LWJGL URLs listed in the launcher's own metadata and SHA-1 verified (script kept in the session scratchpad, not the repo). Assets were already complete.
 - Minecraft 26.3 servers default to `white-list=true`; the test server whitelists only DevTester.
 
+- Later the author allowed using his own account ("Jean") for launcher testing. The instance is launched with
+  `freesmlauncher.exe -l dev-linkle_companion` (default account). Instance memory is 2 GB because the PC
+  often has under 3 GB free and the launcher otherwise stops at a "Low free memory" dialog.
+
+## Settings menu and hotkeys
+- Settings screen built from vanilla `OptionsSubScreen` + `OptionInstance`: looks and scrolls like vanilla settings, no extra library.
+- Mod Menu integration is compile-only (`clientCompileOnly` from maven.terraformersmc.com) plus a `modmenu` entrypoint and a `suggests` entry: players without Mod Menu are unaffected. A gear button in Linkle's inventory opens the same screen without Mod Menu.
+- "Mod on/off": a mod can't unload while the game runs, so the master switch `enabled` stops summoning and pauses existing Linkles (they sit, don't fight, don't talk) without touching their saved mode.
+- Gameplay options are owned by whoever runs the world; on someone else's server they are greyed out with a tooltip instead of silently doing nothing.
+- Hotkeys default to G (call her) and H (switch mode): both unused by vanilla 26.3; rebindable.
+
 ## Character design
 - Hair is **blonde** braided twin tails (not brown as in the brief): every public description consulted says blonde, and recognizability matters most.
 - No crest or emblem on the hood: the Hylian crest is a trademarked symbol.

@@ -20,6 +20,13 @@
       craft the compass in survival, summon her. Delete the instance afterwards.
 - [ ] Prism / Modrinth App auto-download of Fabric API (only possible once the mod is on Modrinth).
 
+### Settings menu and hotkeys
+- [ ] Mod Menu > Linkle Companion > Configure opens the settings; the gear button in her inventory does too.
+- [ ] Turn **Linkle enabled** off: she sits and stops fighting/talking; the compass refuses. Turn it on: she resumes.
+- [ ] Change box position / time, chattiness quiet and chatty, braids off. Reset to defaults works.
+- [ ] Press **G** far from her: she comes to you. Press **H**: her mode changes with a message.
+- [ ] On a server you don't host: gameplay options are greyed out with a tooltip.
+
 ### Gameplay by hand (single player, survival)
 - [ ] Crafting: the Wanderer's Compass recipe appears in the recipe book after picking up a compass or crossbow.
 - [ ] Use the compass: she appears with 32 arrows; use again far away: she comes back; sneak-use when she is

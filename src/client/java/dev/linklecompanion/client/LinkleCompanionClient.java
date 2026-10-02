@@ -23,5 +23,6 @@ public class LinkleCompanionClient implements ClientModInitializer {
 		MenuScreens.register(ModMenus.LINKLE, LinkleScreen::new);
 		HudElementRegistry.addLast(DialogueHud.ID, new DialogueHud());
 		ClientPlayNetworking.registerGlobalReceiver(DialoguePayload.TYPE, (payload, context) -> DialogueHud.show(payload));
+		LinkleKeys.register();
 	}
 }

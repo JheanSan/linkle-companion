@@ -2,12 +2,14 @@ package dev.linklecompanion;
 
 import dev.linklecompanion.config.LinkleConfig;
 import dev.linklecompanion.network.DialoguePayload;
+import dev.linklecompanion.network.LinkleActionPayload;
 import dev.linklecompanion.registry.ModAttachments;
 import dev.linklecompanion.registry.ModEntities;
 import dev.linklecompanion.registry.ModItems;
 import dev.linklecompanion.registry.ModMenus;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,8 @@ public class LinkleCompanion implements ModInitializer {
 		ModMenus.register();
 		ModAttachments.register();
 		PayloadTypeRegistry.clientboundPlay().register(DialoguePayload.TYPE, DialoguePayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(LinkleActionPayload.TYPE, LinkleActionPayload.CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(LinkleActionPayload.TYPE, LinkleActionPayload::handle);
 		LinkleEvents.register();
 		LOGGER.info("Linkle Companion ready");
 	}

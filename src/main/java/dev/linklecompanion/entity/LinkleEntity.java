@@ -316,6 +316,17 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 		}
 	}
 
+	/** True while the master switch in the settings is off: she sits and does nothing. */
+	public boolean isPaused() {
+		return !LinkleConfig.get().enabled;
+	}
+
+	@Override
+	public boolean isOrderedToSit() {
+		// Paused Linkles sit like in Stay mode, without changing their saved mode.
+		return super.isOrderedToSit() || isPaused();
+	}
+
 	public boolean isKnockedOut() {
 		return getState(STATE_KNOCKED_OUT);
 	}
@@ -433,6 +444,12 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 			tickKnockedOut(level);
 			return;
 		}
+		if (isPaused()) {
+			if (this.getTarget() != null) {
+				this.setTarget(null);
+			}
+			return;
+		}
 
 		dialogue.tick();
 
@@ -476,7 +493,7 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 	}
 
 	private void tryEatFood() {
-		if (eatCooldown > 0 || this.getHealth() > this.getMaxHealth() * 0.6F) {
+		if (!LinkleConfig.get().autoEat || eatCooldown > 0 || this.getHealth() > this.getMaxHealth() * 0.6F) {
 			return;
 		}
 		for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
@@ -512,7 +529,7 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 	}
 
 	private void pickUpArrows(ServerLevel level) {
-		if (LinkleConfig.get().infiniteArrows || !level.getGameRules().get(GameRules.MOB_GRIEFING)) {
+		if (!LinkleConfig.get().pickUpArrows || LinkleConfig.get().infiniteArrows || !level.getGameRules().get(GameRules.MOB_GRIEFING)) {
 			return;
 		}
 		AABB area = this.getBoundingBox().inflate(1.5, 0.5, 1.5);
@@ -664,7 +681,7 @@ public class LinkleEntity extends TamableAnimal implements CrossbowAttackMob {
 
 	@Override
 	public boolean canAttack(LivingEntity target) {
-		if (isKnockedOut() || isFriendlyTo(target) || target.is(ModTags.IGNORED_TARGETS)) {
+		if (isKnockedOut() || isPaused() || isFriendlyTo(target) || target.is(ModTags.IGNORED_TARGETS)) {
 			return false;
 		}
 		return super.canAttack(target);

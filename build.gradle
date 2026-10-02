@@ -11,7 +11,12 @@ base {
 
 repositories {
 	// Loom adds Mojang, Fabric and Maven Central automatically.
-	// This mod has no other dependencies, so nothing is needed here.
+	// Mod Menu is only needed at compile time for the optional "Configure" button.
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases/"
+		content { includeGroup "com.terraformersmc" }
+	}
 }
 
 loom {
@@ -60,6 +65,11 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// Optional integration: compile against Mod Menu's API only; it is not bundled or required.
+	clientCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
+		transitive = false
+	}
 }
 
 processResources {

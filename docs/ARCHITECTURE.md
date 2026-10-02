@@ -50,6 +50,7 @@ the mod's own classes. Nothing in vanilla is replaced.
 | `dialogue/Topic.java` | Every dialogue topic with its English lines, cooldown and priority. The single source for the lang file. |
 | `dialogue/LinkleDialogue.java` | Decides when she speaks (night, biome, fights, health, idle) with per-topic cooldowns and a global gap; sends the line to the owner. |
 | `network/DialoguePayload.java` | The tiny server-to-client packet: skin id + lang key. |
+| `network/LinkleActionPayload.java` | Client-to-server packet for the hotkeys (call her, switch mode); the server checks ownership and the master switch. |
 | `menu/LinkleMenu.java` | Inventory menu: 4 armor slots, 9 pockets, player inventory, shift-click rules. |
 | `item/WanderersCompassItem.java` | The summon item (summon, recall, sneak to replace a lost Linkle). |
 | `command/LinkleCommand.java` | `/linkle summon|recall|mode|skin|info|dismiss`, each with a Fabric permission node. |
@@ -64,7 +65,10 @@ the mod's own classes. Nothing in vanilla is replaced.
 | `render/LinkleModel.java` | The slim player mesh plus four cubes of twin braids; extra poses (dual aim, inspect, volley, knocked out) and the hair sway. |
 | `render/LinkleRenderer.java` | Picks the texture, arm poses, spin and knocked-out rotation; adds vanilla armor, held item, head item and elytra layers. |
 | `screen/LinkleScreen.java` | The inventory screen with a live preview of her and a status line. |
-| `hud/DialogueHud.java` | The speech box (her face from her own skin, name, line), or the action bar, or off. |
+| `hud/DialogueHud.java` | The speech box (her face from her own skin, name, line), or the action bar, or off. Position and time come from the settings. |
+| `screen/LinkleSettingsScreen.java` | The settings menu, built from vanilla option widgets (toggles, sliders, tooltips, scrolling). Gameplay options are greyed out on other people's servers. |
+| `LinkleKeys.java` | Hotkeys G (call her) and H (switch mode), plus an unbound "open settings" key. |
+| `LinkleModMenu.java` | Optional Mod Menu "Configure" button. Compiled against Mod Menu's API only; never required at runtime. |
 
 ## Performance notes
 - AI uses vanilla goals. Scans that look at other entities (threat search, arrow pickup, owner

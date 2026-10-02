@@ -26,7 +26,6 @@ import java.util.List;
 public final class DialogueHud implements HudElement {
 	public static final Identifier ID = LinkleCompanion.id("dialogue");
 
-	private static final long SHOW_MILLIS = 5500;
 	private static final long FADE_MILLIS = 600;
 	private static final int MAX_TEXT_WIDTH = 170;
 	private static final int FACE_SIZE = 24;
@@ -68,18 +67,24 @@ public final class DialogueHud implements HudElement {
 		if (line == null) {
 			return;
 		}
+		LinkleConfig config = LinkleConfig.get();
+		long showMillis = config.dialogueSeconds * 1000L + FADE_MILLIS;
 		long age = Util.getMillis() - shownAt;
-		if (age > SHOW_MILLIS) {
+		if (age > showMillis) {
 			line = null;
 			return;
 		}
-		float alpha = age < 200 ? age / 200.0F : age > SHOW_MILLIS - FADE_MILLIS ? (SHOW_MILLIS - age) / (float) FADE_MILLIS : 1.0F;
+		float alpha = age < 200 ? age / 200.0F : age > showMillis - FADE_MILLIS ? (showMillis - age) / (float) FADE_MILLIS : 1.0F;
 		alpha = Math.max(0.05F, Math.min(1.0F, alpha));
 
 		Font font = Minecraft.getInstance().font;
-		int x = 6;
-		int y = 6;
 		int width = FACE_SIZE + 14 + textWidth;
+		int y = 6;
+		int x = switch (config.dialoguePosition) {
+			case "top_center" -> (graphics.guiWidth() - width) / 2;
+			case "top_right" -> graphics.guiWidth() - width - 6;
+			default -> 6;
+		};
 		int height = Math.max(FACE_SIZE + 8, 18 + wrapped.size() * font.lineHeight);
 
 		graphics.fill(x, y, x + width, y + height, ARGB.color((int) (alpha * 180), 12, 20, 12));
