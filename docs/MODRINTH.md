@@ -68,6 +68,18 @@ client and server.
 
 Code: MIT. Art: CC BY 4.0. Source and issues: [GitHub](https://github.com/JheanSan/linkle-companion)
 
+### Tools disclaimer
+In the spirit of full transparency, here is every tool used to make this mod:
+
+- A **mouse**. It clicked things. Some of those clicks were important.
+- A **keyboard**. The W key did most of the work, out of habit.
+- A **monitor**, without which this would have been a very different, much darker project.
+- A **chair** for sitting, and a **desk** for holding up all the other tools.
+- A **computer**, and electricity, reportedly.
+- And yes, **AI**, which was used to write the code, the dialogue and the script that draws the textures.
+
+Ideas, direction and play-testing: me. None of the tools above are credited as contributors. The chair asked. The answer was no.
+
 ---
 
 ## Version upload
