@@ -32,7 +32,7 @@ Minecraft 26.x is unobfuscated: code uses Mojang's official names directly (no Y
 - Launcher: Freesm Launcher portable at
   `C:\Users\Admin\Downloads\Games\FreesmLauncher-Windows-MinGW-w64-Portable-2.3.1`. Only touch instances
   named `dev-linkle_companion*`. Never read/copy/log `accounts.json` or tokens. The author allowed launching
-  with his own default account: `freesmlauncher.exe -l dev-linkle_companion`. Do NOT use `-o <name>`.
+  with their own default account: `freesmlauncher.exe -l dev-linkle_companion`. Do NOT use `-o <name>`.
   Unattended play-tests: `./gradlew runJoinTestServer` or `cleanInstallClient` (offline name DevTester).
 - Test clients must start muted and be closed when the check is done (the author dislikes background game noise).
 - Test servers: `testserver/` (git-ignored); eula=true and online-mode=false only there.

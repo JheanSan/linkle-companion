@@ -27,7 +27,7 @@ One line per decision: what was decided and why.
 - The launcher's shared `libraries/` cache was missing 33 vanilla/LWJGL files from an earlier interrupted download; they were fetched from the official Mojang/LWJGL URLs listed in the launcher's own metadata and SHA-1 verified (script kept in the session scratchpad, not the repo). Assets were already complete.
 - Minecraft 26.3 servers default to `white-list=true`; the test server whitelists only DevTester.
 
-- Later the author allowed using his own account ("Jean") for launcher testing. The instance is launched with
+- Later the author allowed using their own account ("Jean") for launcher testing. The instance is launched with
   `freesmlauncher.exe -l dev-linkle_companion` (default account). Instance memory is 2 GB because the PC
   often has under 3 GB free and the launcher otherwise stops at a "Low free memory" dialog.
 
