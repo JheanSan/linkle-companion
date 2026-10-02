@@ -54,6 +54,17 @@ public class LinkleCombatClientTest implements FabricClientGameTest {
 				linkle.setupNew(player, 1);
 				player.level().addFreshEntity(linkle);
 			});
+			// Accuracy: a stationary husk (no sun damage) 12 blocks away must go down with few arrows.
+			context.waitTicks(20);
+			int arrowsAtStart = server.computeOnServer(srv -> arrows(linkle(srv)));
+			server.runCommand("summon minecraft:husk 1.5 " + Y + " 14.0 {NoAI:1b,PersistenceRequired:1b}");
+			int huskTicks = server.waitFor(srv -> !anyAlive(srv, "husk"), 600);
+			int arrowsForHusk = arrowsAtStart - server.computeOnServer(srv -> arrows(linkle(srv)));
+			LinkleCompanion.LOGGER.info("Combat play-test: still husk at 12 blocks killed after {} ticks with {} arrows", huskTicks, arrowsForHusk);
+			if (arrowsForHusk > 8) {
+				throw new AssertionError("Too many arrows for a still target at 12 blocks: " + arrowsForHusk);
+			}
+
 			server.runCommand("summon minecraft:villager 4.5 " + Y + " 9.5 {NoAI:1b}");
 			for (int i = 0; i < 4; i++) {
 				server.runCommand("summon minecraft:zombie " + (-3 + i * 2) + ".5 " + Y + " 17.5 {PersistenceRequired:1b}");
@@ -164,6 +175,15 @@ public class LinkleCombatClientTest implements FabricClientGameTest {
 			}
 		}
 		return zombies;
+	}
+
+	private static boolean anyAlive(MinecraftServer server, String path) {
+		for (Entity entity : all(server)) {
+			if (entity.isAlive() && entity.getType().builtInRegistryHolder().key().identifier().getPath().equals(path)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static int arrows(LinkleEntity linkle) {

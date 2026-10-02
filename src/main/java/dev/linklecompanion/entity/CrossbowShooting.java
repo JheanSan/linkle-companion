@@ -24,6 +24,8 @@ import net.minecraft.world.phys.Vec3;
 public final class CrossbowShooting {
 	private static final float BOLT_SPEED = 3.15F;
 	private static final float INACCURACY = 1.5F;
+	/** Bolt drop in blocks per (block of distance)^2 at BOLT_SPEED: 0.025 / 3.15^2, plus ~10% for drag. */
+	private static final double DROP_PER_BLOCK_SQUARED = 0.0028;
 
 	private CrossbowShooting() {
 	}
@@ -60,7 +62,10 @@ public final class CrossbowShooting {
 			double dx = target.getX() - arrow.getX();
 			double dz = target.getZ() - arrow.getZ();
 			double horizontal = Math.sqrt(dx * dx + dz * dz);
-			double dy = target.getY(0.3333333333333333) - arrow.getY() + horizontal * 0.2F;
+			// Aim at the middle of the target, raised by how far a bolt this fast drops on the way
+			// (gravity 0.05/tick over distance/speed ticks, plus ~10% for drag). Vanilla's
+			// "+ distance * 0.2" is tuned for slow mob arrows and overshoots badly at this speed.
+			double dy = target.getY(0.5) - arrow.getY() + horizontal * horizontal * DROP_PER_BLOCK_SQUARED;
 			arrow.shoot(dx, dy, dz, BOLT_SPEED, INACCURACY);
 			level.addFreshEntity(arrow);
 		});

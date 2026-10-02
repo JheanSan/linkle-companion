@@ -112,6 +112,13 @@ tasks.register("cleanInstallClient", net.fabricmc.loom.task.prod.ClientProductio
 	} else {
 		mods.from(cleanInstallMods)
 	}
+	// -Pcompat also loads the client-side mods downloaded into tools/compat (compatibility test).
+	if (project.hasProperty("compat")) {
+		mods.from(fileTree("tools/compat") {
+			include "*.jar"
+			exclude "flan-*", "lithostitched-*", "Terralith_*"
+		})
+	}
 	runDir = layout.projectDirectory.dir("run-cleaninstall")
 	jvmArgs.add("-XX:ErrorFile=" + layout.buildDirectory.file("crashlogs/hs_err_%p.log").get().asFile.path)
 	programArgs.addAll("--username", "DevTester")
