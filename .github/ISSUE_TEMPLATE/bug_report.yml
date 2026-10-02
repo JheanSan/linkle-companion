@@ -1,0 +1,38 @@
+name: Bug report
+description: Something doesn't work, crashes, or looks wrong
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Minecraft, Fabric Loader, Fabric API and Linkle Companion versions
+      placeholder: "Minecraft 26.3, Loader 0.19.5, Fabric API 0.161.0+26.3, Linkle Companion 1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where does it happen?
+      options:
+        - Single player
+        - Multiplayer server
+        - Both
+  - type: textarea
+    id: mods
+    attributes:
+      label: Other mods
+      description: List your other mods (or "none"). Many bugs come from mod combinations.
+  - type: textarea
+    id: log
+    attributes:
+      label: Log or crash report
+      description: Paste `logs/latest.log` or the crash report, or a link to mclo.gs
+      render: text

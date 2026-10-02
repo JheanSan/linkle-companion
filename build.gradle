@@ -93,3 +93,37 @@ jar {
 		rename { "${it}_$projectName" }
 	}
 }
+
+// Clean-install test: runs the BUILT jar the way a player would have it — a fresh game folder with
+// only Fabric Loader, Fabric API and linkle_companion.jar — as offline "DevTester", joining the local
+// test server in testserver/ (start that first). ./gradlew cleanInstallClient
+def cleanInstallMods = configurations.detachedConfiguration(
+	dependencies.create("net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}")
+)
+cleanInstallMods.transitive = false
+
+tasks.register("cleanInstallClient", net.fabricmc.loom.task.prod.ClientProductionRunTask) {
+	group = "verification"
+	description = "Launches the built jar with only Fabric Loader + Fabric API in a fresh folder."
+	// Loom adds this project's jar automatically; we add Fabric API next to it.
+	// -PwithoutLinkle replaces the list with Fabric API only (a control run for troubleshooting).
+	if (project.hasProperty("withoutLinkle")) {
+		mods.setFrom(cleanInstallMods)
+	} else {
+		mods.from(cleanInstallMods)
+	}
+	runDir = layout.projectDirectory.dir("run-cleaninstall")
+	jvmArgs.add("-XX:ErrorFile=" + layout.buildDirectory.file("crashlogs/hs_err_%p.log").get().asFile.path)
+	programArgs.addAll("--username", "DevTester")
+	// -PnoJoin stays on the title screen instead of joining the test server.
+	if (!project.hasProperty("noJoin")) {
+		programArgs.addAll("--quickPlayMultiplayer", "127.0.0.1:25566")
+	}
+	doFirst {
+		delete(layout.projectDirectory.dir("run-cleaninstall"))
+		// Start muted: these are unattended test runs.
+		def options = layout.projectDirectory.file("run-cleaninstall/options.txt").asFile
+		options.parentFile.mkdirs()
+		options.text = "soundCategory_master:0.0" + System.lineSeparator()
+	}
+}
