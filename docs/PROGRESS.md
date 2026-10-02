@@ -18,17 +18,19 @@ Honest status of the work. Updated after every feature.
 - [x] 13. Datagen: recipe, lang, tags, advancements
 - [x] 14. Game tests: 9 server tests + 2 client tests (showcase screenshots, combat play-test)
 - [x] 15. Dedicated server (runServer and a real Fabric server): no crash
-- [~] 16. Launcher play-test as DevTester: **blocked** (needs the DevTester offline account, see below).
-       Done instead with the dev client and the production launch as DevTester on a real server.
+- [x] 16. Launcher: the `dev-linkle_companion` instance starts in Freesm with the author's account (title screen,
+       Linkle + Mod Menu loaded). In-world play-testing was done with the dev client and the production launch
+       on a real server; hands-on play in the launcher is on the TESTING.md checklist.
 - [~] 17. Clean-install test: done with Loom's production launch (built jar + Fabric API only, fresh folder,
-       joins a real server). The launcher version of the test is blocked by the same account step.
+       joins a real server). A launcher clean-install instance is still a manual step (TESTING.md).
+- [x] 22. In-game settings menu (Mod Menu + gear button), master switch, QoL toggles, hotkeys G/H
 - [x] 18. Compatibility test (13 mods) + docs/COMPATIBILITY.md
 - [x] 19. Repo polish: README, CHANGELOG, CONTRIBUTING, issue templates, GitHub Actions
 - [x] 20. docs: ARCHITECTURE, TESTING, MODRINTH, RELEASE, COMPATIBILITY, DECISIONS
 - [x] 21. Final report (in the conversation; summary below)
 
 ## Evidence (all run on 2026-10-01)
-- `./gradlew build`: BUILD SUCCESSFUL, "All 10 required tests passed" (9 mod tests + Fabric's own).
+- `./gradlew build`: BUILD SUCCESSFUL, "All 11 required tests passed" (10 mod tests + Fabric's own).
 - `./gradlew runClientGameTest`: showcase screenshots + combat test PASSED (still husk at 12 blocks: 6 arrows;
   wave cleared; villager unharmed; volley fired; knockout + revive).
 - Real Fabric server + DevTester: summon, owner UUID, modes, follow-teleport after 40 blocks, Nether and back,
@@ -54,12 +56,5 @@ Honest status of the work. Updated after every feature.
   manual list in TESTING.md.
 
 ## Next step
-- Human: add the DevTester offline account in Freesm, then run the manual checklist in docs/TESTING.md.
+- Author: play in the open `dev-linkle_companion` instance and go through docs/TESTING.md.
 - Then follow docs/RELEASE.md.
-
-## Needs a human (launcher clicks etc.)
-- **Add the offline account "DevTester" in Freesm Launcher**: Settings > Accounts > Add Offline > `DevTester`.
-  Then `freesmlauncher.exe -l dev-linkle_companion -a DevTester` launches the prepared instance (Fabric Loader
-  0.19.5, Fabric API, the latest jar). Don't use `-o DevTester` (it used your profile name; see DECISIONS.md).
-- For the launcher clean-install test: make a new instance with only Fabric API + the jar, launch it with
-  DevTester, summon Linkle, then delete the instance.
