@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.regex.Pattern;
 
 /**
  * The small JSON config at {@code config/linkle_companion.json}.
@@ -28,6 +29,7 @@ public final class LinkleConfig {
 
 	private static LinkleConfig instance = new LinkleConfig();
 	private static final int CURRENT_VERSION = 2;
+	private static final Pattern LANGUAGE_CODE = Pattern.compile("[a-z0-9_]{2,16}");
 
 	/** Format version of the file, for one-time upgrades of old settings. */
 	public int configVersion = 0;
@@ -82,6 +84,12 @@ public final class LinkleConfig {
 
 	// ---------------- client / looks ----------------
 
+	/**
+	 * Language of everything Linkle says and shows: "auto" (same as the game) or a Minecraft
+	 * language code such as "de_de" or "ja_jp". Only changes this mod's text, not the rest of the game.
+	 */
+	public String language = "auto";
+
 	/** Show the twin-tail hair layer. */
 	public boolean hairEnabled = true;
 	/** Let the twin tails sway with movement. */
@@ -109,6 +117,7 @@ public final class LinkleConfig {
 	/** Resets only this player's own options (looks and dialogue display), leaving gameplay alone. */
 	public static void resetClientOptions() {
 		LinkleConfig defaults = new LinkleConfig();
+		instance.language = defaults.language;
 		instance.hairEnabled = defaults.hairEnabled;
 		instance.hairSway = defaults.hairSway;
 		instance.dialogueDisplay = defaults.dialogueDisplay;
@@ -172,6 +181,11 @@ public final class LinkleConfig {
 		dialoguePosition = oneOf(dialoguePosition, "dialoguePosition", "top_left", "top_center", "top_right");
 		chattiness = oneOf(chattiness, "chattiness", "normal", "quiet", "chatty");
 		dialogueSeconds = (int) clamp(dialogueSeconds, 2, 20, 5, "dialogueSeconds");
+		// Whether a translation exists is checked on the client once resources are loaded.
+		if (language == null || !LANGUAGE_CODE.matcher(language).matches()) {
+			LinkleCompanion.LOGGER.warn("Config: language = '{}' is not a language code; using 'auto'.", language);
+			language = "auto";
+		}
 	}
 
 	/** Returns the value if it is one of the allowed ones, else the first allowed (default) with a log line. */

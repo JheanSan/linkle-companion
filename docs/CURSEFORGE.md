@@ -21,6 +21,11 @@ CurseForge's editor accepts Markdown: switch the editor to **Markdown** and past
 
 **Unofficial fan project.** Linkle is a character from Hyrule Warriors, owned by Nintendo and Koei Tecmo. Not affiliated with or endorsed by them. All code, textures and dialogue in this mod are original.
 
+## What's new in 1.1.0: Linkle speaks your language
+- **16 languages**: English, Deutsch, Español, Français, Italiano, 日本語, 한국어, Polski, Português (Brasil), Русский, Türkçe, Українська, Tiếng Việt, Bahasa Indonesia, 简体中文, 繁體中文.
+- New **Mod language** button at the top of her settings: pick a language for everything Linkle says and shows, or "Same as game". The rest of Minecraft keeps its own language.
+- Regional game languages (Español (México), Português (Portugal)...) use the closest translation instead of English.
+
 ## Meet Linkle
 **Linkle Companion** adds Linkle, a cheerful adventurer with **two crossbows**, as your follower. Craft a **Wanderer's Compass**, use it, and she's at your side.
 
@@ -34,6 +39,7 @@ CurseForge's editor accepts Markdown: switch the editor to **Markdown** and past
 - **Inventory**: 4 armor slots + 9 pockets. She uses your arrows, eats when hurt and picks up stray arrows.
 - **Personality**: short original lines for nightfall, new biomes, big fights, low health, gifts... shown in a **speech bubble above her head**. Never spammy.
 - **Looks**: slim-arm model, swaying twin braids, five outfits, or your own skin via a resource pack.
+- **Speaks 16 languages**, chosen in her settings independently of the game's language.
 - **Light**: vanilla AI, throttled checks, vanilla sounds and particles.
 
 ## Getting started
@@ -50,7 +56,7 @@ CurseForge's editor accepts Markdown: switch the editor to **Markdown** and past
 | **H** | Switch her mode from anywhere |
 
 ## Settings
-Open the settings from **Mod Menu** (optional) or the **gear button** in her inventory: speech bubble or corner box, chattiness, a master on/off switch, follow and teleport distances, damage, the Twin Cyclone, infinite arrows, real death and more. Every option has a tooltip.
+Open the settings from **Mod Menu** (optional) or the **gear button** in her inventory: her language, speech bubble or corner box, chattiness, a master on/off switch, follow and teleport distances, damage, the Twin Cyclone, infinite arrows, real death and more. Every option has a tooltip.
 
 ## Install
 Needs **Fabric Loader** and **Fabric API** for **Minecraft 26.3**. Install it on **both** the client and the server.
@@ -75,15 +81,15 @@ Ideas, direction and play-testing: me. None of the tools above are credited as c
 ## File upload settings
 | Field | Value |
 |---|---|
-| File | `linkle_companion-1.0.0+mc26.3.jar` (NOT the `-sources` jar) |
-| Display name | Linkle Companion 1.0.0 |
+| File | `linkle_companion-1.1.0+mc26.3.jar` (NOT the `-sources` jar) |
+| Display name | Linkle Companion 1.1.0 |
 | Release type | Release |
 | Game version | 26.3 |
 | Mod loader | Fabric |
 | Environment | Client and Server |
 | Java version | Java 25 |
 | Related projects | **Fabric API**: Required Dependency. **Mod Menu**: Optional Dependency |
-| Changelog | Copy the 1.0.0 section of `CHANGELOG.md` |
+| Changelog | Copy the newest section of `CHANGELOG.md` |
 
 ## Images
 Upload the pictures in `docs/images/` (gallery):

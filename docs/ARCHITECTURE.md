@@ -56,11 +56,17 @@ the mod's own classes. Nothing in vanilla is replaced.
 | `command/LinkleCommand.java` | `/linkle summon|recall|mode|skin|info|dismiss`, each with a Fabric permission node. |
 | `datagen/*` | Data generation: recipe, English lang file, tags and advancements. Runs only with `./gradlew runDatagen`. |
 
+Translations other than English are hand-written files in `src/main/resources/assets/linkle_companion/lang/`.
+`./gradlew checkTranslations` (part of `build`) fails if any of them misses a key, has an unknown key or a
+different number of `%s` placeholders than `en_us.json`.
+
 ## src/client
 
 | File | What it does |
 |---|---|
-| `LinkleCompanionClient.java` | Registers the model layer, renderer, inventory screen, HUD element and packet receiver. |
+| `LinkleCompanionClient.java` | Registers the model layer, renderer, inventory screen, HUD element, packet receiver and the mod-language reload listener (ordered after vanilla's language reload). |
+| `lang/ModLanguage.java` | The "Mod language" setting. Finds every `linkle_companion` lang file, and after each language reload wraps Minecraft's `Language` in a thin overlay that answers only this mod's keys from the chosen language (other keys pass through). No overlay when the choice equals the game language. Borrows a close language for regional variants (es_mx -> es_es, zh_hk -> zh_tw). Uses the public `Language.inject`, no mixin. |
+| `screen/LinkleLanguageScreen.java` | The language picker (laid out like vanilla's): "Same as game" plus every language found. |
 | `render/LinkleRenderState.java` | Per-frame data for drawing (texture, pose flags, volley progress, hair settings). Deliberately not the player's render state (see DECISIONS.md). |
 | `render/LinkleModel.java` | The slim player mesh plus four cubes of twin braids; extra poses (dual aim, inspect, volley, knocked out) and the hair sway. |
 | `render/LinkleRenderer.java` | Picks the texture, arm poses, spin and knocked-out rotation; adds vanilla armor, held item, head item and elytra layers. |

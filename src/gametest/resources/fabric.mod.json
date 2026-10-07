@@ -10,7 +10,8 @@
 		],
 		"fabric-client-gametest": [
 			"dev.linklecompanion.gametest.LinkleShowcaseClientTest",
-			"dev.linklecompanion.gametest.LinkleCombatClientTest"
+			"dev.linklecompanion.gametest.LinkleCombatClientTest",
+			"dev.linklecompanion.gametest.LinkleLanguageClientTest"
 		]
 	},
 	"depends": {

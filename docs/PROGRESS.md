@@ -28,6 +28,8 @@ Honest status of the work. Updated after every feature.
 - [x] 19. Repo polish: README, CHANGELOG, CONTRIBUTING, issue templates, GitHub Actions
 - [x] 20. docs: ARCHITECTURE, TESTING, MODRINTH, RELEASE, COMPATIBILITY, DECISIONS
 - [x] 21. Final report (in the conversation; summary below)
+- [x] 23. 1.1.0: 15 translations + "Mod language" setting and picker, translation check in the build,
+       language client test (see "1.1.0" below)
 
 ## Evidence (all run on 2026-10-01)
 - `./gradlew build`: BUILD SUCCESSFUL, "All 11 required tests passed" (10 mod tests + Fabric's own).
@@ -67,6 +69,16 @@ Honest status of the work. Updated after every feature.
 - CurseForge: project 1721991 created, 1.0.0 file uploaded and waiting for moderation.
 - Modrinth: complete draft (linkle-companion), NOT submitted. Modrinth rule 6.2 forbids publishing projects whose
   contents are primarily AI output, which applies here; the author decides whether to ask Modrinth staff first.
+
+## 1.1.0: languages (2026-10-07)
+- Languages: en_us + de_de, es_es, fr_fr, it_it, ja_jp, ko_kr, pl_pl, pt_br, ru_ru, tr_tr, uk_ua, vi_vn,
+  id_id, zh_cn, zh_tw. Every key translated (191 per file). Written with AI help; corrections welcome.
+- "Mod language" button in the settings opens a picker ("Same as game" + all found languages). Changes only
+  Linkle's text, instantly, and survives resource reloads. Regional game languages borrow a close file.
+- `./gradlew build`: checkTranslations OK (15 files x 191 keys) and all server game tests passed.
+- `./gradlew runClientGameTest`: BUILD SUCCESSFUL; showcase + combat tests still pass; language test passed
+  (16 languages found; ja_jp override with vanilla still English; auto back to English; es_mx -> es_es;
+  game de_de + mod ko_kr; survives a resource reload). Screenshot of the picker: docs/images/language-picker.png.
 
 ## Next step
 - Wait for CurseForge moderation; answer any moderator message from the CurseForge author dashboard.

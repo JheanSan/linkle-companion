@@ -7,6 +7,8 @@
 | Server game tests (7) | `./gradlew build` | Ownership + save/load (owner, mode, guard point, inventory, skin); right-click mode cycle (and strangers can't change it); recall teleport and automatic follow-teleport; knockout + food revive; knockout timer recovery; real-death option; no friendly fire on villagers while monsters still take damage |
 | Showcase client test | `./gradlew runClientGameTest` | Screenshots: front/back/side, dual aim, charging, inspect, volley, sitting, knocked out, 5 skins, 10-block distance, dialogue box, inventory screen |
 | Combat client test | `./gradlew runClientGameTest` | Survival world: clears a zombie wave using inventory arrows, villager near the line of fire unharmed, volley fires when crowded, knockout + revive |
+| Language client test | `./gradlew runClientGameTest` | Mod language ja_jp changes Linkle's text while vanilla stays English; "Same as game" restores English; game in es_mx borrows es_es; game de_de + mod ko_kr keep their own languages; survives a resource reload; screenshots of the settings in Japanese and the picker |
+| Translation check | `./gradlew build` (`checkTranslations`) | Every lang file has exactly the en_us keys and the same number of `%s` placeholders |
 | Dedicated server | `./gradlew runServer`, and a real Fabric server in `testserver/` | Starts without client classes, summon/inspect over RCON |
 | Multiplayer | `testserver/` + `./gradlew runJoinTestServer` (dev client as DevTester) | `/linkle summon`, ownership, modes, follow-teleport, Nether and back, real fight |
 | Clean install (client) | `testserver/` + `./gradlew cleanInstallClient` | Built jar + Fabric API only, fresh folder, joins the server |

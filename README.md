@@ -22,6 +22,15 @@ fights beside you and talks to you.
 | ![Five outfits](docs/images/outfits.png) | ![Speech bubble above her head](docs/images/speech-bubble.png) |
 | ![Her inventory](docs/images/inventory.png) | ![Settings menu](docs/images/settings.png) |
 
+## What's new in 1.1.0
+
+**Linkle speaks your language.** She now talks in 16 languages, and a new **Mod language** button at
+the top of her settings lets you pick one (or "Same as game"). It only changes Linkle's text: her
+dialogue, messages, menus, tooltips, hotkeys, advancements and item names. The rest of Minecraft keeps
+its own language. See the [changelog](CHANGELOG.md) for everything.
+
+![Mod language picker](docs/images/language-picker.png)
+
 ## Features
 
 - **A real companion**: one Linkle per player, saved with your world, works in single player,
@@ -48,6 +57,9 @@ fights beside you and talks to you.
 - **Idle life**: she looks at you, glances around, checks her crossbows, sits down in Stay mode.
 - **Looks**: the player model with slim arms, an original skin, twin braids that sway as she moves,
   and four extra outfits (crimson, azure, violet, snow).
+- **16 languages**: English, Deutsch, Español, Français, Italiano, 日本語, 한국어, Polski,
+  Português (Brasil), Русский, Türkçe, Українська, Tiếng Việt, Bahasa Indonesia, 简体中文, 繁體中文.
+  Pick hers in the settings, independent of the game's language.
 - **Light on performance**: vanilla AI, expensive checks run at most once a second, nothing heavy
   runs while she's idle, vanilla sounds and particles only.
 
@@ -90,7 +102,8 @@ Change them in **Options > Controls > Key Binds > Linkle Companion**.
 Open it from **Mod Menu** (Mods > Linkle Companion > Configure) if you have Mod Menu, or with the
 **⚙ button** in Linkle's inventory (sneak + right-click her). Mod Menu is optional.
 
-- **Your game**: braids on/off, braid sway, where her lines appear (speech bubble above her head,
+- **Your game**: **Mod language** (pick the language of everything Linkle says and shows, or
+  "Same as game"), braids on/off, braid sway, where her lines appear (speech bubble above her head,
   corner box, action bar, off), box position and how long lines stay.
 - **General**: a master switch (**Linkle enabled**: off = she can't be summoned and an existing
   Linkle sits and pauses), chattiness (quiet / normal / chatty), default outfit, one per player.
@@ -142,7 +155,7 @@ mod too. A client with the mod can still join servers that don't have it.
 1. Download the **Fabric installer** from <https://fabricmc.net/use/>, run it, choose
    **Minecraft 26.3**, click **Install**.
 2. Download **Fabric API** for 26.3 from <https://modrinth.com/mod/fabric-api>.
-3. Download **Linkle Companion** (`linkle_companion-1.0.0.jar`).
+3. Download **Linkle Companion** (`linkle_companion-1.1.0+mc26.3.jar`).
 4. Press `Win + R`, type `%appdata%\.minecraft`, press Enter. Open (or create) the `mods` folder and
    put both jar files in it.
 5. In the Minecraft Launcher, pick the **fabric-loader-26.3** profile and press **Play**.
@@ -175,6 +188,7 @@ The easiest way is the in-game settings menu above. Everything is saved in
 | `guardRadius` | 12 | Area she defends in Guard mode |
 | `onePerPlayer` | true | One Linkle per player |
 | `defaultVariant` | classic | Outfit of new Linkles |
+| `language` | auto | Language of Linkle's text: `auto` (same as the game) or a code such as `de_de`, `ja_jp`, `pt_br` (client) |
 | `hairEnabled` | true | Show the twin braids (client) |
 | `hairSway` | true | Let the braids sway (client) |
 | `dialogueDisplay` | bubble | `bubble` (above her head), `hud` (corner box), `actionbar` or `off` (client) |
@@ -187,6 +201,25 @@ The easiest way is the in-game settings menu above. Everything is saved in
 | `volleyEnabled` | true | Use the Twin Cyclone |
 | `autoEat` | true | Eat food from her pockets when hurt |
 | `pickUpArrows` | true | Pick up arrow items next to her |
+
+## Languages
+
+| | | | |
+|---|---|---|---|
+| English (`en_us`) | Deutsch (`de_de`) | Español (`es_es`) | Français (`fr_fr`) |
+| Italiano (`it_it`) | 日本語 (`ja_jp`) | 한국어 (`ko_kr`) | Polski (`pl_pl`) |
+| Português (`pt_br`) | Русский (`ru_ru`) | Türkçe (`tr_tr`) | Українська (`uk_ua`) |
+| Tiếng Việt (`vi_vn`) | Bahasa Indonesia (`id_id`) | 简体中文 (`zh_cn`) | 繁體中文 (`zh_tw`) |
+
+By default Linkle uses the game's language. If your game is set to a regional variant without its own
+file, she uses the closest one (Español (México) -> Español, Português (Portugal) -> Português (Brasil),
+繁體中文 (香港) -> 繁體中文, and so on), otherwise English.
+
+**Found a mistake, or want to add a language?** Translations are plain JSON files in
+`src/main/resources/assets/linkle_companion/lang/`. Copy `src/main/generated/assets/linkle_companion/lang/en_us.json`
+to your language code (the same codes Minecraft uses), translate the values, keep every `%s`, and open a
+pull request. `./gradlew build` checks that no line or placeholder is missing. A resource pack with
+`assets/linkle_companion/lang/<code>.json` works too, and its language appears in the picker by itself.
 
 ## Skins (use your own look)
 

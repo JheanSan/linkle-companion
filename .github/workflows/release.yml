@@ -34,12 +34,15 @@ jobs:
       - name: Build and run game tests
         run: ./gradlew build
 
+      - name: Release notes (newest CHANGELOG section)
+        run: awk '/^## /{n++} n==1' CHANGELOG.md > RELEASE_NOTES.md
+
       - name: GitHub release
         uses: softprops/action-gh-release@v2
         with:
           name: Linkle Companion ${{ github.ref_name }}
           files: build/libs/linkle_companion-*.jar
-          body_path: CHANGELOG.md
+          body_path: RELEASE_NOTES.md
 
       - name: Modrinth
         if: ${{ vars.MODRINTH_ID != '' }}
@@ -51,7 +54,7 @@ jobs:
             build/libs/!(*-sources).jar
           name: Linkle Companion ${{ github.ref_name }}
           version-type: release
-          changelog-file: CHANGELOG.md
+          changelog-file: RELEASE_NOTES.md
           loaders: fabric
           game-versions: 26.3
           java: 25
@@ -69,7 +72,7 @@ jobs:
             build/libs/!(*-sources).jar
           name: Linkle Companion ${{ github.ref_name }}
           version-type: release
-          changelog-file: CHANGELOG.md
+          changelog-file: RELEASE_NOTES.md
           loaders: fabric
           game-versions: 26.3
           java: 25

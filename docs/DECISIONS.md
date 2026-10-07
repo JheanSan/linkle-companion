@@ -76,3 +76,13 @@ One line per decision: what was decided and why.
 ## Textures
 - All shipped PNGs are re-saved with Java's standard ImageIO encoder (`scripts/art/ReencodePng.java`, called by both art scripts). Reason: production launches with the hand-written encoder's PNGs crashed natively (0xC0000005, during resource loading or when Linkle first came into view) in 5 of 13 launches; with ImageIO-encoded files, 1 crash in 20; with no mod at all, 0 in 14. The old files were structurally valid, so the exact cause inside the native decoder is unknown; the re-encode is the evidence-based fix.
 - Bolt aiming uses the real gravity drop for her 3.15-speed bolts (`0.0028 * distance^2`) instead of vanilla's `0.2 * distance`, which is tuned for slow mob arrows and made her overshoot at range.
+
+## Languages (1.1.0, 2026-10-07)
+- Shipped languages: de_de, es_es, fr_fr, it_it, ja_jp, ko_kr, pl_pl, pt_br, ru_ru, tr_tr, uk_ua, vi_vn, id_id, zh_cn, zh_tw (plus en_us). Reason: the languages with the most Minecraft mod players; the author asked for Japanese and German explicitly.
+- One neutral Spanish file (es_es, "tú", no Spain-only slang) instead of separate Spain/Latin America files; es_mx, es_ar etc. borrow it. Reason: one good file serves every Spanish speaker; a dedicated es_mx file can be added later and wins automatically.
+- Translations were written with AI help and are marked as correctable (picker note points to GitHub). Lines addressed to the player avoid grammatical gender where the language has it (the player's gender is unknown).
+- Command arguments (`follow`, `classic`...) and file names stay in English inside translated messages, because the commands only accept those words.
+- The mod language is a client option (`language` in the shared config, default `auto`). It overrides only this mod's keys by wrapping vanilla's `Language` after each language reload via the public `Language.inject`; no mixin. Reason: a per-mod language without touching the rest of the game, and nothing to break when vanilla reloads (the wrapper is rebuilt every time).
+- Languages are discovered from `assets/linkle_companion/lang/*.json` instead of a hard-coded list, so a new file (or a resource pack) adds a language with no code change.
+- Translation files are hand-written resources, not datagen output; `checkTranslations` in `build` guards keys and `%s` counts.
+- Version 1.1.0: a feature release that adds options without changing saves or the network protocol.

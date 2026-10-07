@@ -145,3 +145,49 @@ tasks.register("cleanInstallClient", net.fabricmc.loom.task.prod.ClientProductio
 		options.text = "soundCategory_master:0.0" + System.lineSeparator()
 	}
 }
+
+// Translations: every file in lang/ must have exactly the English keys and the same number of %s
+// placeholders, so a missing or broken line fails the build instead of showing a raw key in game.
+// Runs as part of ./gradlew build (check).
+def checkTranslations = tasks.register("checkTranslations") {
+	group = "verification"
+	description = "Checks every Linkle language file against the generated en_us.json."
+	def english = file("src/main/generated/assets/linkle_companion/lang/en_us.json")
+	def langDir = file("src/main/resources/assets/linkle_companion/lang")
+	def marker = layout.buildDirectory.file("checkTranslations.ok")
+	inputs.file(english)
+	inputs.dir(langDir)
+	outputs.file(marker)
+	doLast {
+		def placeholders = { String text -> (text.replace("%%", "") =~ /%(\d+\$)?s/).size() }
+		def reference = new groovy.json.JsonSlurper().parse(english, "UTF-8") as Map<String, String>
+		def problems = []
+		def files = langDir.listFiles().findAll { it.name.endsWith(".json") }.sort { it.name }
+		files.each { lang ->
+			def strings
+			try {
+				strings = new groovy.json.JsonSlurper().parse(lang, "UTF-8") as Map<String, Object>
+			} catch (Exception e) {
+				problems << "${lang.name}: not valid JSON (${e.message})"
+				return
+			}
+			(reference.keySet() - strings.keySet()).each { problems << "${lang.name}: missing ${it}" }
+			(strings.keySet() - reference.keySet()).each { problems << "${lang.name}: unknown key ${it}" }
+			strings.each { key, value ->
+				if (!(value instanceof String) || value.trim().isEmpty()) {
+					problems << "${lang.name}: ${key} is empty"
+				} else if (reference.containsKey(key) && placeholders(value) != placeholders(reference[key])) {
+					problems << "${lang.name}: ${key} needs ${placeholders(reference[key])} %s placeholder(s)"
+				}
+			}
+		}
+		if (!problems.isEmpty()) {
+			throw new GradleException("Translation problems:\n  " + problems.join("\n  "))
+		}
+		marker.get().asFile.text = "${files.size()} language files OK" + System.lineSeparator()
+		println "checkTranslations: ${files.size()} language files match en_us (${reference.size()} keys)."
+	}
+}
+tasks.named("check") {
+	dependsOn checkTranslations
+}

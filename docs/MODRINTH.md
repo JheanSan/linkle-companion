@@ -27,6 +27,13 @@ Create the project at <https://modrinth.com> > **+** (top right) > **Create a pr
 **Linkle Companion** adds Linkle, a cheerful adventurer with **two crossbows**, as your follower.
 Craft a **Wanderer's Compass**, use it, and she's at your side.
 
+### What's new in 1.1.0: Linkle speaks your language
+- **16 languages**: English, Deutsch, Español, Français, Italiano, 日本語, 한국어, Polski, Português (Brasil),
+  Русский, Türkçe, Українська, Tiếng Việt, Bahasa Indonesia, 简体中文, 繁體中文.
+- New **Mod language** button at the top of her settings: pick a language for everything Linkle says and
+  shows, or "Same as game". The rest of Minecraft keeps its own language.
+- Regional game languages (Español (México), Português (Portugal)...) use the closest translation instead of English.
+
 ### What she does
 - **Follows you** at a comfortable distance, teleports when she falls behind or gets stuck, goes through
   portals with you, opens doors, avoids lava and cliffs, and steps aside in tight corridors.
@@ -40,6 +47,7 @@ Craft a **Wanderer's Compass**, use it, and she's at your side.
 - **Personality**: short original lines for nightfall, new biomes, big fights, low health, gifts... in a
   **speech bubble above her head**. Never spammy.
 - **Looks**: slim-arm model, swaying twin braids, five outfits, or your own skin via a resource pack.
+- **Speaks 16 languages**, chosen in her settings independently of the game's language.
 - **Light**: vanilla AI, throttled checks, nothing heavy while idle, vanilla sounds and particles.
 
 ### Getting started
@@ -57,7 +65,7 @@ Craft a **Wanderer's Compass**, use it, and she's at your side.
 | **H** | Switch her mode from anywhere |
 
 ### Settings
-Open them from **Mod Menu** (optional) or the **gear button** in her inventory: speech bubble or corner box,
+Open them from **Mod Menu** (optional) or the **gear button** in her inventory: her language, speech bubble or corner box,
 chattiness, a master on/off switch, follow and teleport distances, damage, the Twin Cyclone, infinite arrows,
 real death and more. Every option has a tooltip.
 
@@ -85,14 +93,14 @@ Ideas, direction and play-testing: me. None of the tools above are credited as c
 ## Version upload
 | Field | Value |
 |---|---|
-| File | `linkle_companion-1.0.0+mc26.3.jar` (NOT the `-sources` jar) |
-| Version number | `1.0.0+mc26.3` |
-| Version title | Linkle Companion 1.0.0 |
+| File | `linkle_companion-1.1.0+mc26.3.jar` (NOT the `-sources` jar) |
+| Version number | `1.1.0+mc26.3` |
+| Version title | Linkle Companion 1.1.0 |
 | Release channel | Release |
 | Loaders | Fabric |
 | Game versions | 26.3 |
 | Dependencies | Fabric API: **required**. Mod Menu: **optional** |
-| Changelog | Copy the 1.0.0 section of `CHANGELOG.md` |
+| Changelog | Copy the newest section of `CHANGELOG.md` |
 
 ## Gallery
 Ready now, in `docs/images/` (1920x1080 except the two menu shots):

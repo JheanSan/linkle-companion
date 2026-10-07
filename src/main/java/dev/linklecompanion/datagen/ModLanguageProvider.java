@@ -11,8 +11,9 @@ import net.minecraft.core.HolderLookup;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * English text for everything the mod shows. Translators: copy the generated
- * {@code assets/linkle_companion/lang/en_us.json} to your language code and translate the values.
+ * English text for everything the mod shows. Other languages are hand-written files in
+ * {@code src/main/resources/assets/linkle_companion/lang/}; {@code ./gradlew checkTranslations} (part of
+ * {@code build}) makes sure they have exactly these keys and placeholders.
  */
 public class ModLanguageProvider extends FabricLanguageProvider {
 	public ModLanguageProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
@@ -83,7 +84,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 		builder.add(o + "title", "Linkle Companion Settings");
 		builder.add(o + "reset", "Reset to defaults");
 		builder.add(o + "server_controlled", "Set by the server you're playing on. The server owner can change it in config/linkle_companion.json.");
-		builder.add(o + "section.client", "Your game: looks and dialogue");
+		builder.add(o + "section.client", "Your game: language, looks and dialogue");
 		builder.add(o + "section.general", "General");
 		builder.add(o + "section.movement", "Following");
 		builder.add(o + "section.combat", "Combat");
@@ -92,6 +93,11 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 		builder.add(o + "unit.blocks", "%s blocks");
 		builder.add(o + "unit.percent", "%s%%");
 		builder.add(o + "unit.count", "%s");
+		option(builder, "language", "Mod language", "Language of everything Linkle says and shows: her lines, messages, menus and item names. \"Same as game\" follows Minecraft's language. The rest of the game keeps its own language.");
+		builder.add(o + "language.auto", "Same as game");
+		builder.add(o + "language.auto_current", "Same as game: %s");
+		builder.add(o + "language.title", "Linkle's Language");
+		builder.add(o + "language.note", "Spotted a translation mistake? Tell us on GitHub.");
 		option(builder, "hairEnabled", "Twin braids", "Show Linkle's twin braids. Turn off if a custom skin looks odd with them.");
 		option(builder, "hairSway", "Braid sway", "Let the braids swing as she walks and spins.");
 		option(builder, "dialogueDisplay", "Her lines", "Where Linkle's lines appear: in a speech bubble above her head (everyone nearby sees it), in a small corner box with her face, on the action bar above your hotbar, or nowhere. The box and action bar only show your own Linkle.");
