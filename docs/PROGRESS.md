@@ -80,5 +80,12 @@ Honest status of the work. Updated after every feature.
   (16 languages found; ja_jp override with vanilla still English; auto back to English; es_mx -> es_es;
   game de_de + mod ko_kr; survives a resource reload). Screenshot of the picker: docs/images/language-picker.png.
 
+## Release status 1.1.0 (2026-10-07)
+- GitHub: v1.1.0 tag pushed; release workflow passed (Linux build + game tests) and published
+  github.com/JheanSan/linkle-companion/releases/tag/v1.1.0 with the jar. Contributors list: JheanSan only.
+- CurseForge: 1.1.0 file uploaded through the author dashboard (auto-publish once approved; status was
+  "Uploading" right after upload). 1.0.0 was approved. Description got a "What's new in 1.1.0" section.
+- Modrinth: still not public (API 404), skipped as the author asked.
+
 ## Next step
-- Wait for CurseForge moderation; answer any moderator message from the CurseForge author dashboard.
+- Wait for CurseForge moderation of 1.1.0; answer any moderator message from the CurseForge author dashboard.
