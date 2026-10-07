@@ -1,5 +1,6 @@
 package dev.linklecompanion.client.screen;
 
+import dev.linklecompanion.client.compat.ClientCompat;
 import dev.linklecompanion.LinkleCompanion;
 import dev.linklecompanion.client.hud.SpeechBubbles;
 import dev.linklecompanion.config.LinkleConfig;
@@ -35,7 +36,7 @@ public class LinkleScreen extends AbstractContainerScreen<LinkleMenu> {
 		super.init();
 		// Settings button in the top-right corner of the panel.
 		this.addRenderableWidget(Button.builder(Component.literal("⚙"), button ->
-				this.minecraft.gui.setScreen(new LinkleSettingsScreen(this)))
+				ClientCompat.setScreen(new LinkleSettingsScreen(this)))
 			.bounds(this.leftPos + this.imageWidth - 21, this.topPos + 3, 16, 13)
 			.tooltip(Tooltip.create(Component.translatable("options.linkle_companion.title")))
 			.build());

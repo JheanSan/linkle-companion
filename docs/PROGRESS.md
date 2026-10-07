@@ -28,6 +28,7 @@ Honest status of the work. Updated after every feature.
 - [x] 19. Repo polish: README, CHANGELOG, CONTRIBUTING, issue templates, GitHub Actions
 - [x] 20. docs: ARCHITECTURE, TESTING, MODRINTH, RELEASE, COMPATIBILITY, DECISIONS
 - [x] 21. Final report (in the conversation; summary below)
+- [x] 24. 1.2.0: Minecraft 26.1.x and 26.2 support next to 26.3 (one jar per version, all tested)
 - [x] 23. 1.1.0: 15 translations + "Mod language" setting and picker, translation check in the build,
        language client test (see "1.1.0" below)
 
@@ -79,6 +80,16 @@ Honest status of the work. Updated after every feature.
 - `./gradlew runClientGameTest`: BUILD SUCCESSFUL; showcase + combat tests still pass; language test passed
   (16 languages found; ja_jp override with vanilla still English; auto back to English; es_mx -> es_es;
   game de_de + mod ko_kr; survives a resource reload). Screenshot of the picker: docs/images/language-picker.png.
+
+## 1.2.0: more Minecraft versions (2026-10-07)
+- Supported: 26.1-26.1.2, 26.2, 26.3; one jar each from the same code (versions/*.properties, -Pmc=, small
+  compat classes per version family; see docs/VERSIONS.md). CI and the release workflow build all of them.
+- Evidence: `./gradlew build -Pmc=<v>` passes the 12 server game tests on 26.1, 26.2 and 26.3;
+  `runClientGameTest -Pmc=<v>` (showcase, combat play-test, language test) passes on 26.1, 26.2 and 26.3.
+  Bugs found by those runs and fixed: generated files (lang, recipe, tags, advancements) were missing from
+  non-primary jars; on 26.1 the mod language didn't reach I18n.
+- 1.21.x / 1.20.1 not supported (obfuscated, much larger API gap; trial compile vs 1.21.11: 39 errors in
+  shared code). Left as a separate port for the author to decide.
 
 ## Release status 1.1.0 (2026-10-07)
 - GitHub: v1.1.0 tag pushed; release workflow passed (Linux build + game tests) and published

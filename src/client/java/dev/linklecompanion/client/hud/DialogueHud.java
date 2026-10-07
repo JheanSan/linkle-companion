@@ -1,5 +1,6 @@
 package dev.linklecompanion.client.hud;
 
+import dev.linklecompanion.client.compat.ClientCompat;
 import dev.linklecompanion.LinkleCompanion;
 import dev.linklecompanion.config.LinkleConfig;
 import dev.linklecompanion.entity.LinkleEntity;
@@ -60,7 +61,7 @@ public final class DialogueHud implements HudElement {
 			return;
 		}
 		if ("actionbar".equals(mode)) {
-			minecraft.gui.hud.setOverlayMessage(Component.translatable("hud.linkle_companion.says", text), false);
+			ClientCompat.showActionBar(Component.translatable("hud.linkle_companion.says", text));
 			return;
 		}
 		line = text;

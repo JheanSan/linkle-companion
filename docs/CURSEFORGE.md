@@ -21,6 +21,9 @@ CurseForge's editor accepts Markdown: switch the editor to **Markdown** and past
 
 **Unofficial fan project.** Linkle is a character from Hyrule Warriors, owned by Nintendo and Koei Tecmo. Not affiliated with or endorsed by them. All code, textures and dialogue in this mod are original.
 
+## What's new in 1.2.0: more Minecraft versions
+Now available for **Minecraft 26.1, 26.1.1, 26.1.2, 26.2 and 26.3**. Each version has its own file (your launcher picks the right one). Same features and the same 16 languages everywhere.
+
 ## What's new in 1.1.0: Linkle speaks your language
 - **16 languages**: English, Deutsch, Español, Français, Italiano, 日本語, 한국어, Polski, Português (Brasil), Русский, Türkçe, Українська, Tiếng Việt, Bahasa Indonesia, 简体中文, 繁體中文.
 - New **Mod language** button at the top of her settings: pick a language for everything Linkle says and shows, or "Same as game". The rest of Minecraft keeps its own language.
@@ -59,7 +62,7 @@ CurseForge's editor accepts Markdown: switch the editor to **Markdown** and past
 Open the settings from **Mod Menu** (optional) or the **gear button** in her inventory: her language, speech bubble or corner box, chattiness, a master on/off switch, follow and teleport distances, damage, the Twin Cyclone, infinite arrows, real death and more. Every option has a tooltip.
 
 ## Install
-Needs **Fabric Loader** and **Fabric API** for **Minecraft 26.3**. Install it on **both** the client and the server.
+Needs **Fabric Loader** and **Fabric API**. Supports **Minecraft 26.1, 26.1.1, 26.1.2, 26.2 and 26.3**: download the file for your version (`+mc26.3`, `+mc26.2` or `+mc26.1` at the end of the name). Install it on **both** the client and the server.
 
 ## License
 Code: MIT. Original textures and icon: CC BY 4.0. Source code and issue tracker on [GitHub](https://github.com/JheanSan/linkle-companion).
@@ -81,10 +84,10 @@ Ideas, direction and play-testing: me. None of the tools above are credited as c
 ## File upload settings
 | Field | Value |
 |---|---|
-| File | `linkle_companion-1.1.0+mc26.3.jar` (NOT the `-sources` jar) |
-| Display name | Linkle Companion 1.1.0 |
+| File | one upload per Minecraft version: `linkle_companion-1.2.0+mc26.3.jar`, `...+mc26.2.jar`, `...+mc26.1.jar` (NOT the `-sources` jars) |
+| Display name | Linkle Companion 1.2.0 for MC 26.3 (26.2, 26.1) |
 | Release type | Release |
-| Game version | 26.3 |
+| Game version | the `game_versions` of that file's `versions/<mc>.properties` (26.3 / 26.2 / 26.1 + 26.1.1 + 26.1.2) |
 | Mod loader | Fabric |
 | Environment | Client and Server |
 | Java version | Java 25 |

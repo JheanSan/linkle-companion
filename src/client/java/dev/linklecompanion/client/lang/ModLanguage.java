@@ -1,6 +1,7 @@
 package dev.linklecompanion.client.lang;
 
 import dev.linklecompanion.LinkleCompanion;
+import dev.linklecompanion.client.compat.ClientCompat;
 import dev.linklecompanion.config.LinkleConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.LanguageInfo;
@@ -78,7 +79,7 @@ public final class ModLanguage {
 		String target = target(gameCode);
 
 		Map<String, String> strings = target == null || target.equals(gameCode) ? null : load(resources, target);
-		Language.inject(strings == null ? base : new Overlay(base, strings));
+		ClientCompat.installLanguage(strings == null ? base : new Overlay(base, strings));
 	}
 
 	/** The shipped language to show, or null for "whatever the game shows" (English if we don't have it). */

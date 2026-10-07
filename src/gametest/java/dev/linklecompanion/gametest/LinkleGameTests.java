@@ -17,7 +17,10 @@ import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
@@ -35,6 +38,15 @@ import java.lang.reflect.Method;
  * Each test gets a fresh stone floor so Linkle and the mock player have ground to stand on.
  */
 public class LinkleGameTests implements CustomTestMethodInvoker {
+	// Looked up by id: the class holding vanilla's entity type constants differs between Minecraft versions.
+	private static final EntityType<Zombie> ZOMBIE = vanilla("zombie");
+	private static final EntityType<Villager> VILLAGER = vanilla("villager");
+
+	@SuppressWarnings("unchecked")
+	private static <T extends Entity> EntityType<T> vanilla(String id) {
+		return (EntityType<T>) BuiltInRegistries.ENTITY_TYPE.getValue(Identifier.withDefaultNamespace(id));
+	}
+
 	private static final int FLOOR = 24;
 
 	@Override
@@ -226,7 +238,7 @@ public class LinkleGameTests implements CustomTestMethodInvoker {
 	public void masterSwitchPauses(GameTestHelper helper) {
 		ServerPlayer owner = player(helper, 2, 2);
 		LinkleEntity linkle = linkleFor(helper, owner, 3, 3);
-		Zombie zombie = helper.spawnWithNoFreeWill(EntityTypes.ZOMBIE, new BlockPos(6, 1, 6));
+		Zombie zombie = helper.spawnWithNoFreeWill(ZOMBIE, new BlockPos(6, 1, 6));
 		boolean enabled = LinkleConfig.get().enabled;
 		LinkleConfig.get().enabled = false;
 		try {
@@ -268,8 +280,8 @@ public class LinkleGameTests implements CustomTestMethodInvoker {
 		ServerPlayer owner = player(helper, 2, 2);
 		LinkleEntity linkle = linkleFor(helper, owner, 3, 3);
 		ServerLevel level = helper.getLevel();
-		Villager villager = helper.spawnWithNoFreeWill(EntityTypes.VILLAGER, new BlockPos(6, 1, 6));
-		Zombie zombie = helper.spawnWithNoFreeWill(EntityTypes.ZOMBIE, new BlockPos(8, 1, 8));
+		Villager villager = helper.spawnWithNoFreeWill(VILLAGER, new BlockPos(6, 1, 6));
+		Zombie zombie = helper.spawnWithNoFreeWill(ZOMBIE, new BlockPos(8, 1, 8));
 		Arrow bolt = new Arrow(level, linkle, new ItemStack(Items.ARROW), linkle.getMainHandItem());
 		DamageSource source = level.damageSources().arrow(bolt, linkle);
 

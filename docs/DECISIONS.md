@@ -86,3 +86,11 @@ One line per decision: what was decided and why.
 - Languages are discovered from `assets/linkle_companion/lang/*.json` instead of a hard-coded list, so a new file (or a resource pack) adds a language with no code change.
 - Translation files are hand-written resources, not datagen output; `checkTranslations` in `build` guards keys and `%s` counts.
 - Version 1.1.0: a feature release that adds options without changing saves or the network protocol.
+
+## Minecraft versions (1.2.0, 2026-10-07)
+- Supported: 26.1.x, 26.2, 26.3. Reason: the author asked for the most used versions without a long project. Fabric mods per version on Modrinth (2026-10-07): 1.21.1 19.4k, 1.21.11 17.8k, 1.20.1 17.6k, 1.21.8 14.2k, 26.1.2 12.9k, 26.2 12.7k, 26.3 6.8k. The 26.x line shares almost all code (a handful of calls differ), so it was added now; 1.21.x and 1.20.1 are obfuscated and differ much more (39 compile errors in shared code alone on 1.21.11), so they would be a separate port and are left as an offer to the author.
+- One codebase, one jar per Minecraft version (`versions/<mc>.properties`, `-Pmc=`), instead of one multi-version jar. Reason: each jar is compiled and game-tested against its own Minecraft; no risk of calling a method that doesn't exist at runtime.
+- No preprocessor plugin (Stonecutter etc.): two small compat classes per version family cover the differences. Reason: simpler build, plain Java. Revisit if a port to 1.21.x happens.
+- 26.1 jar covers 26.1-26.1.2 (`>=26.1 <26.2`), built against 26.1.2: hotfixes don't change the APIs used.
+- On 26.1 command permissions fall back to vanilla operator levels (Fabric API 0.145 has no permission API).
+- Linkle's armor slots use the mod's own `LinkleArmorSlot` (vanilla's `ArmorSlot` isn't public on 26.1).

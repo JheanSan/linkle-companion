@@ -1,7 +1,8 @@
-# Push a tag like v1.0.0 to build, test and publish a release.
+# Push a tag like v1.2.0 to build, test and publish a release for every supported Minecraft version
+# (one file per version in versions/).
 #
-# Always: creates a GitHub release with the jar attached.
-# Optional: also uploads the same file to Modrinth and/or CurseForge. Turn that on by adding, in the
+# Always: one GitHub release with a jar per Minecraft version.
+# Optional: also uploads each jar to Modrinth and/or CurseForge. Turn that on by adding, in the
 # GitHub repo under Settings > Secrets and variables > Actions:
 #   Variables: MODRINTH_ID (project id from the Modrinth page), CURSEFORGE_ID (project id from CurseForge)
 #   Secrets:   MODRINTH_TOKEN (modrinth.com > Settings > PATs, scope "Create versions"),
@@ -17,8 +18,21 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  versions:
     runs-on: ubuntu-24.04
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: list
+        run: echo "list=$(ls versions/*.properties | xargs -n1 basename | sed 's/\.properties$//' | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: versions
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        mc: ${{ fromJson(needs.versions.outputs.list) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -31,18 +45,21 @@ jobs:
           distribution: 'temurin'
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-      - name: Build and run game tests
-        run: ./gradlew build
+      - name: Build and run game tests (Minecraft ${{ matrix.mc }})
+        run: ./gradlew build -Pmc=${{ matrix.mc }}
 
-      - name: Release notes (newest CHANGELOG section)
-        run: awk '/^## /{n++} n==1' CHANGELOG.md > RELEASE_NOTES.md
+      - name: Release notes and game versions
+        id: meta
+        run: |
+          awk '/^## /{n++} n==1' CHANGELOG.md > RELEASE_NOTES.md
+          echo "game_versions=$(grep '^game_versions=' versions/${{ matrix.mc }}.properties | cut -d= -f2 | tr ',' ' ')" >> "$GITHUB_OUTPUT"
+          echo "jar=$(ls build/libs/*.jar | grep -v -- '-sources' | head -1)" >> "$GITHUB_OUTPUT"
 
-      - name: GitHub release
-        uses: softprops/action-gh-release@v2
+      - name: Keep the jar for the GitHub release
+        uses: actions/upload-artifact@v7
         with:
-          name: Linkle Companion ${{ github.ref_name }}
-          files: build/libs/linkle_companion-*.jar
-          body_path: RELEASE_NOTES.md
+          name: jar-mc${{ matrix.mc }}
+          path: ${{ steps.meta.outputs.jar }}
 
       - name: Modrinth
         if: ${{ vars.MODRINTH_ID != '' }}
@@ -50,13 +67,12 @@ jobs:
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          files: |
-            build/libs/!(*-sources).jar
-          name: Linkle Companion ${{ github.ref_name }}
+          files: ${{ steps.meta.outputs.jar }}
+          name: Linkle Companion ${{ github.ref_name }} for Minecraft ${{ matrix.mc }}
           version-type: release
           changelog-file: RELEASE_NOTES.md
           loaders: fabric
-          game-versions: 26.3
+          game-versions: ${{ steps.meta.outputs.game_versions }}
           java: 25
           dependencies: |
             fabric-api(required)
@@ -68,14 +84,34 @@ jobs:
         with:
           curseforge-id: ${{ vars.CURSEFORGE_ID }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          files: |
-            build/libs/!(*-sources).jar
-          name: Linkle Companion ${{ github.ref_name }}
+          files: ${{ steps.meta.outputs.jar }}
+          name: Linkle Companion ${{ github.ref_name }} for Minecraft ${{ matrix.mc }}
           version-type: release
           changelog-file: RELEASE_NOTES.md
           loaders: fabric
-          game-versions: 26.3
+          game-versions: ${{ steps.meta.outputs.game_versions }}
           java: 25
           dependencies: |
             fabric-api(required)
             modmenu(optional)
+
+  release:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Release notes (newest CHANGELOG section)
+        run: awk '/^## /{n++} n==1' CHANGELOG.md > RELEASE_NOTES.md
+      - name: Collect the jars
+        uses: actions/download-artifact@v7
+        with:
+          pattern: jar-mc*
+          path: jars
+          merge-multiple: true
+      - name: GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Linkle Companion ${{ github.ref_name }}
+          files: jars/*.jar
+          body_path: RELEASE_NOTES.md

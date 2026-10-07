@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Builds the mod (with game tests) and gathers everything needed for a release upload into
-dist/linkle_companion-<version>/ :
+Builds the mod (with game tests) for every supported Minecraft version (versions/*.properties) and
+gathers everything needed for a release upload into dist/linkle_companion-<version>/ :
 
     python scripts/release/make_release_kit.py
 
@@ -24,26 +24,34 @@ def prop(name):
     sys.exit("missing " + name + " in gradle.properties")
 
 
+def targets():
+    """Supported Minecraft versions: one file per version in versions/, newest first."""
+    names = [n[:-len(".properties")] for n in os.listdir(os.path.join(ROOT, "versions")) if n.endswith(".properties")]
+    return sorted(names, key=lambda v: [int(x) for x in v.split(".")], reverse=True)
+
+
 def main():
-    version = f"{prop('mod_version')}+mc{prop('minecraft_version')}"
+    version = prop("mod_version")
     gradlew = os.path.join(ROOT, "gradlew.bat" if os.name == "nt" else "gradlew")
-    print("Building and testing", version, "...")
-    subprocess.run([gradlew, "build", "--no-configuration-cache", "-q"], cwd=ROOT, check=True)
-
-    jar = os.path.join(ROOT, "build", "libs", f"linkle_companion-{version}.jar")
-    sources = os.path.join(ROOT, "build", "libs", f"linkle_companion-{version}-sources.jar")
-    if not os.path.exists(jar):
-        sys.exit("jar not found: " + jar)
-
     out = os.path.join(ROOT, "dist", f"linkle_companion-{version}")
     if os.path.exists(out):
         shutil.rmtree(out)
     os.makedirs(os.path.join(out, "gallery"))
+    os.makedirs(os.path.join(out, "extra"))
 
-    shutil.copy2(jar, out)
-    if os.path.exists(sources):
-        os.makedirs(os.path.join(out, "extra"), exist_ok=True)
-        shutil.copy2(sources, os.path.join(out, "extra"))
+    jars = []
+    for mc in targets():
+        full = f"{version}+mc{mc}"
+        print("Building and testing", full, "...")
+        subprocess.run([gradlew, "build", f"-Pmc={mc}", "-q"], cwd=ROOT, check=True)
+        jar = os.path.join(ROOT, "build", "libs", f"linkle_companion-{full}.jar")
+        if not os.path.exists(jar):
+            sys.exit("jar not found: " + jar)
+        shutil.copy2(jar, out)
+        jars.append(os.path.basename(jar))
+        sources = os.path.join(ROOT, "build", "libs", f"linkle_companion-{full}-sources.jar")
+        if os.path.exists(sources):
+            shutil.copy2(sources, os.path.join(out, "extra"))
     shutil.copy2(os.path.join(ROOT, "docs", "branding", "icon-512.png"), out)
     for name in sorted(os.listdir(os.path.join(ROOT, "docs", "images"))):
         shutil.copy2(os.path.join(ROOT, "docs", "images", name), os.path.join(out, "gallery"))
@@ -60,8 +68,10 @@ def main():
     with open(os.path.join(out, "README.txt"), "w", encoding="utf-8") as f:
         f.write(f"""Linkle Companion {version} - upload kit
 
-UPLOAD THIS FILE to Modrinth and CurseForge:  linkle_companion-{version}.jar
-(extra/ holds the sources jar: optional, GitHub only)
+UPLOAD THESE FILES to Modrinth and CurseForge, one upload per jar, each tagged with the
+Minecraft versions listed in versions/<mc>.properties (game_versions):
+{chr(10).join("  " + j for j in jars)}
+(extra/ holds the sources jars: optional, GitHub only)
 
 icon-512.png       project icon (Modrinth icon, CurseForge avatar)
 gallery/           screenshots for the gallery (front.png = featured)

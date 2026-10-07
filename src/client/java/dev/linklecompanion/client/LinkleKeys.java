@@ -1,5 +1,6 @@
 package dev.linklecompanion.client;
 
+import dev.linklecompanion.client.compat.ClientCompat;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.linklecompanion.LinkleCompanion;
 import dev.linklecompanion.client.screen.LinkleSettingsScreen;
@@ -45,8 +46,8 @@ public final class LinkleKeys {
 			send(LinkleActionPayload.OPEN_INVENTORY);
 		}
 		while (settings.consumeClick()) {
-			if (minecraft.gui.screen() == null) {
-				minecraft.gui.setScreen(new LinkleSettingsScreen(null));
+			if (ClientCompat.currentScreen() == null) {
+				ClientCompat.setScreen(new LinkleSettingsScreen(null));
 			}
 		}
 	}

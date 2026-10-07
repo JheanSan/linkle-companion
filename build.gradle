@@ -2,8 +2,22 @@ plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 }
 
-// e.g. 1.0.0+mc26.3: the store-friendly convention of naming the Minecraft version in the mod version.
-version = "${project.mod_version}+mc${project.minecraft_version}"
+// Supported Minecraft versions: one small file per version in versions/ (see docs/VERSIONS.md).
+// ./gradlew build builds the primary version; ./gradlew build -Pmc=26.1 builds another one.
+// scripts/release/build_all_versions.py builds and tests every version.
+def mcTarget = (project.findProperty("mc") ?: project.primary_mc).toString()
+def targetFile = file("versions/${mcTarget}.properties")
+if (!targetFile.exists()) {
+	throw new GradleException("Unknown Minecraft target '${mcTarget}'. Pick one of: " + file("versions").list().findAll { it.endsWith(".properties") }.collect { it - ".properties" }.sort().join(", "))
+}
+def target = new Properties()
+targetFile.withInputStream { target.load(it) }
+def isPrimary = mcTarget == project.primary_mc.toString()
+def minecraftVersion = target.minecraft_version
+def fabricApiVersion = target.fabric_api_version
+
+// e.g. 1.1.1+mc26.3: the store-friendly convention of naming the Minecraft version in the mod version.
+version = "${project.mod_version}+mc${mcTarget}"
 group = project.maven_group
 
 base {
@@ -47,9 +61,21 @@ loom {
 	}
 }
 
+// The few version-specific calls live in src/compat/<family>; the rest of the code is shared.
+sourceSets.main.java.srcDir("src/compat/${target.compat}/java")
+sourceSets.client.java.srcDir("src/compat/${target.compat}/client/java")
+if (!isPrimary) {
+	// Data generation targets the primary version's APIs; other versions ship the same generated files
+	// (configureDataGeneration below adds that folder only for the primary version).
+	sourceSets.main.java.exclude("dev/linklecompanion/datagen/**")
+	sourceSets.main.resources.srcDir("src/main/generated")
+}
+
 fabricApi {
 	// ./gradlew runDatagen writes recipes, lang, tags and advancements to src/main/generated.
-	configureDataGeneration()
+	if (isPrimary) {
+		configureDataGeneration()
+	}
 
 	// Server game tests (src/gametest) run as part of ./gradlew build.
 	// ./gradlew runClientGameTest opens the game and takes showcase screenshots of Linkle.
@@ -63,9 +89,9 @@ fabricApi {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	minecraft "com.mojang:minecraft:${minecraftVersion}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}"
 
 	// Optional integration: compile against Mod Menu's API only; it is not bundled or required.
 	clientCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
@@ -74,11 +100,15 @@ dependencies {
 }
 
 processResources {
-	def version = project.version
-	inputs.property "version", version
+	def props = [
+		"version": project.version.toString(),
+		"minecraft_range": target.minecraft_range,
+		"fabric_api_min": target.fabric_api_min
+	]
+	inputs.properties props
 
 	filesMatching("fabric.mod.json") {
-		expand "version": version
+		expand props
 	}
 }
 
@@ -109,7 +139,7 @@ jar {
 // only Fabric Loader, Fabric API and linkle_companion.jar — as offline "DevTester", joining the local
 // test server in testserver/ (start that first). ./gradlew cleanInstallClient
 def cleanInstallMods = configurations.detachedConfiguration(
-	dependencies.create("net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}")
+	dependencies.create("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
 )
 cleanInstallMods.transitive = false
 

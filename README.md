@@ -5,11 +5,11 @@
 [![Modrinth](https://img.shields.io/badge/Modrinth-linkle--companion-1bd96a?logo=modrinth)](https://modrinth.com/mod/linkle-companion)
 [![CurseForge](https://img.shields.io/badge/CurseForge-Linkle%20Companion-f16436?logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/linkle-companion)
 [![Build](https://github.com/JheanSan/linkle-companion/actions/workflows/build.yml/badge.svg)](https://github.com/JheanSan/linkle-companion/actions/workflows/build.yml)
-![Minecraft 26.3](https://img.shields.io/badge/Minecraft-26.3-62b47a)
+![Minecraft 26.1 | 26.2 | 26.3](https://img.shields.io/badge/Minecraft-26.1%20%7C%2026.2%20%7C%2026.3-62b47a)
 ![Fabric](https://img.shields.io/badge/loader-Fabric-dbd0b4)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-A Fabric mod for Minecraft **26.3** that adds **Linkle**, a dual-crossbow companion who follows you,
+A Fabric mod for Minecraft **26.1, 26.2 and 26.3** that adds **Linkle**, a dual-crossbow companion who follows you,
 fights beside you and talks to you.
 
 > **Unofficial fan project.** Linkle is a character from Hyrule Warriors, owned by Nintendo and
@@ -21,6 +21,11 @@ fights beside you and talks to you.
 | ![Linkle](docs/images/front.png) | ![Both crossbows raised](docs/images/dual-aim.png) |
 | ![Five outfits](docs/images/outfits.png) | ![Speech bubble above her head](docs/images/speech-bubble.png) |
 | ![Her inventory](docs/images/inventory.png) | ![Settings menu](docs/images/settings.png) |
+
+## What's new in 1.2.0
+
+**More Minecraft versions.** Linkle Companion now runs on **Minecraft 26.1, 26.1.1, 26.1.2, 26.2 and
+26.3**. Each version has its own download; see [Supported versions](#supported-versions).
 
 ## What's new in 1.1.0
 
@@ -62,6 +67,19 @@ its own language. See the [changelog](CHANGELOG.md) for everything.
   Pick hers in the settings, independent of the game's language.
 - **Light on performance**: vanilla AI, expensive checks run at most once a second, nothing heavy
   runs while she's idle, vanilla sounds and particles only.
+
+## Supported versions
+
+| Minecraft | Download (file name ends in) | Fabric API |
+|---|---|---|
+| 26.3 | `+mc26.3.jar` | 0.161.0 or newer |
+| 26.2 | `+mc26.2.jar` | 0.161.0 or newer |
+| 26.1, 26.1.1, 26.1.2 | `+mc26.1.jar` | 0.145.1 or newer |
+
+Launchers (Prism, Modrinth App, CurseForge) pick the right file for your instance automatically. Every
+version has the same features and languages. On 26.1.x the `/linkle` permissions use the vanilla
+operator levels only (no permission-mod support there). Older versions such as 1.21.x and 1.20.1 aren't
+supported.
 
 ## How to play
 
@@ -132,38 +150,39 @@ Linkle that joins the first player (without a Linkle) who right-clicks her.
 
 ## Installing
 
-You need **Minecraft 26.3**, **Fabric Loader** and **Fabric API**. You do **not** need Java,
+You need **Minecraft 26.1, 26.2 or 26.3**, **Fabric Loader** and **Fabric API**. You do **not** need Java,
 Python or any build tools: launchers bring their own Java.
 
 **Where:** install it on **both** the client and the server. On a server, every player needs the
 mod too. A client with the mod can still join servers that don't have it.
 
 ### 1. Prism Launcher (the same steps work in forks such as Freesm Launcher)
-1. Click **Add Instance**, pick **Minecraft 26.3**, and under **Mod loader** choose **Fabric**. Click OK.
+1. Click **Add Instance**, pick **Minecraft 26.3** (or 26.2, 26.1.x), and under **Mod loader** choose **Fabric**. Click OK.
 2. Select the instance, click **Edit** > **Mods** > **Download mods**.
 3. Search for **Linkle Companion**, select it, click **Review and confirm** > **OK**.
    Prism adds Fabric API automatically.
 4. Click **Launch**.
 
 ### 2. Modrinth App
-1. Click **+** (Create an instance), pick **Fabric** and **Minecraft 26.3**, and create it.
+1. Click **+** (Create an instance), pick **Fabric** and **Minecraft 26.3** (or 26.2, 26.1.x), and create it.
 2. Open the instance, click **Add content**, search for **Linkle Companion**, click **Install**.
    Fabric API is installed with it.
 3. Click **Play**.
 
 ### 3. Manual (official launcher)
 1. Download the **Fabric installer** from <https://fabricmc.net/use/>, run it, choose
-   **Minecraft 26.3**, click **Install**.
-2. Download **Fabric API** for 26.3 from <https://modrinth.com/mod/fabric-api>.
-3. Download **Linkle Companion** (`linkle_companion-1.1.0+mc26.3.jar`).
+   your Minecraft version (26.3, 26.2 or 26.1.x), click **Install**.
+2. Download **Fabric API** for that version from <https://modrinth.com/mod/fabric-api>.
+3. Download the **Linkle Companion** file for that version, e.g. `linkle_companion-1.2.0+mc26.3.jar`
+   (see [Supported versions](#supported-versions)).
 4. Press `Win + R`, type `%appdata%\.minecraft`, press Enter. Open (or create) the `mods` folder and
    put both jar files in it.
-5. In the Minecraft Launcher, pick the **fabric-loader-26.3** profile and press **Play**.
+5. In the Minecraft Launcher, pick the **fabric-loader-<version>** profile and press **Play**.
 
 ### Troubleshooting
-- **"Incompatible mods" / "requires minecraft ~26.3"**: your instance isn't Minecraft 26.3.
-  Make a 26.3 instance.
-- **"requires fabric-api"** or the game won't start: Fabric API is missing. Add Fabric API for 26.3.
+- **"Incompatible mods" / "requires minecraft ..."**: the Linkle file doesn't match your Minecraft
+  version. Download the file whose name ends in your version (`+mc26.3`, `+mc26.2` or `+mc26.1`).
+- **"requires fabric-api"** or the game won't start: Fabric API is missing. Add Fabric API for your version.
 - **"requires java >=25"**: your launcher is using an old Java. Prism and the Modrinth App pick the
   right Java automatically; in the official launcher, update the launcher.
 - **Can't join a server**: the server and every player need the mod (same version).
@@ -230,8 +249,8 @@ This mod only ships its own original skins and never bundles other people's work
    ```json
    { "pack": { "description": "My Linkle skin", "min_format": 97, "max_format": 97 } }
    ```
-   (97 is the resource pack format of Minecraft 26.3. If the game marks the pack as made for
-   another version, it usually still works.)
+   (97 is the resource pack format of Minecraft 26.3; use your version's number. If the game marks
+   the pack as made for another version, it usually still works.)
 2. Put your 64x64 player skin (slim-arm "Alex" layout) at
    `MyLinkleSkin/assets/linkle_companion/textures/entity/linkle/custom.png`.
 3. Put the folder in `resourcepacks/`, enable it in **Options > Resource Packs**.
@@ -252,6 +271,9 @@ Players don't need this. For developers:
    ./gradlew build
    ```
    The mod jar is in `build/libs/`. `build` also runs the server game tests.
+   That builds the main version (26.3). For another one add `-Pmc=<version>`, e.g.
+   `./gradlew build -Pmc=26.1`; `python scripts/release/make_release_kit.py` builds and tests them all.
+   See `docs/VERSIONS.md` for how version support works and how to add a new Minecraft version.
 3. Useful tasks: `runClient`, `runServer`, `runDatagen` (recipes, lang, tags, advancements),
    `runClientGameTest` (screenshot showcase and combat play-test), `cleanInstallClient`.
 4. Art is generated by scripts (Python 3, no packages needed):

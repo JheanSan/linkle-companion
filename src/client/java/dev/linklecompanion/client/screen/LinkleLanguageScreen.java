@@ -1,5 +1,6 @@
 package dev.linklecompanion.client.screen;
 
+import dev.linklecompanion.client.compat.ClientCompat;
 import dev.linklecompanion.client.lang.ModLanguage;
 import dev.linklecompanion.config.LinkleConfig;
 import net.minecraft.client.Minecraft;
@@ -67,7 +68,7 @@ public class LinkleLanguageScreen extends OptionsSubScreen {
 			LinkleConfig.save();
 			ModLanguage.apply();
 			// Rebuild the settings screen so its own labels switch language too.
-			minecraft.gui.setScreen(new LinkleSettingsScreen(settingsParent));
+			ClientCompat.setScreen(new LinkleSettingsScreen(settingsParent));
 			return;
 		}
 		onClose();

@@ -9,6 +9,7 @@
 | Combat client test | `./gradlew runClientGameTest` | Survival world: clears a zombie wave using inventory arrows, villager near the line of fire unharmed, volley fires when crowded, knockout + revive |
 | Language client test | `./gradlew runClientGameTest` | Mod language ja_jp changes Linkle's text while vanilla stays English; "Same as game" restores English; game in es_mx borrows es_es; game de_de + mod ko_kr keep their own languages; survives a resource reload; screenshots of the settings in Japanese and the picker |
 | Translation check | `./gradlew build` (`checkTranslations`) | Every lang file has exactly the en_us keys and the same number of `%s` placeholders |
+| Every Minecraft version | `./gradlew build -Pmc=<mc>` / `runClientGameTest -Pmc=<mc>` | The server game tests run for each file in `versions/` (locally and in CI); the client play-tests were run on 26.1, 26.2 and 26.3 for 1.2.0 |
 | Dedicated server | `./gradlew runServer`, and a real Fabric server in `testserver/` | Starts without client classes, summon/inspect over RCON |
 | Multiplayer | `testserver/` + `./gradlew runJoinTestServer` (dev client as DevTester) | `/linkle summon`, ownership, modes, follow-teleport, Nether and back, real fight |
 | Clean install (client) | `testserver/` + `./gradlew cleanInstallClient` | Built jar + Fabric API only, fresh folder, joins the server |

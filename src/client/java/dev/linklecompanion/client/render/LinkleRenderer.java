@@ -1,5 +1,6 @@
 package dev.linklecompanion.client.render;
 
+import dev.linklecompanion.client.compat.ClientCompat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.linklecompanion.LinkleCompanion;
@@ -20,6 +21,7 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
@@ -99,7 +101,7 @@ public class LinkleRenderer extends HumanoidMobRenderer<LinkleEntity, LinkleRend
 		int bottom = state.nameTag != null ? -11 : 0;
 		for (int i = 0; i < lines; i++) {
 			int offset = bottom - (lines - 1 - i) * 10;
-			collector.submitNameTag(poseStack, state.speechAttachment, offset, state.speech.get(i), true, state.lightCoords, camera);
+			ClientCompat.submitNameTag(collector, poseStack, state.speechAttachment, offset, state.speech.get(i), state.lightCoords, state, camera);
 		}
 	}
 
@@ -110,11 +112,16 @@ public class LinkleRenderer extends HumanoidMobRenderer<LinkleEntity, LinkleRend
 		if (stack.isEmpty()) {
 			return HumanoidModel.ArmPose.EMPTY;
 		}
-		if (entity.isUsingItem() && entity.getUsedItemHand().asArm(entity.getMainArm()) == arm
+		if (entity.isUsingItem() && usedArm(entity) == arm
 			&& stack.getUseAnimation() == ItemUseAnimation.CROSSBOW) {
 			return HumanoidModel.ArmPose.CROSSBOW_CHARGE;
 		}
 		return HumanoidModel.ArmPose.ITEM;
+	}
+
+	/** The arm holding the item being used (spelled out so it compiles on every supported version). */
+	private static HumanoidArm usedArm(LinkleEntity entity) {
+		return entity.getUsedItemHand() == InteractionHand.MAIN_HAND ? entity.getMainArm() : entity.getMainArm().getOpposite();
 	}
 
 	@Override
@@ -131,7 +138,7 @@ public class LinkleRenderer extends HumanoidMobRenderer<LinkleEntity, LinkleRend
 		super.setupRotations(state, poseStack, bodyRot, entityScale);
 		if (state.knockedOut) {
 			// Lies on her side, like the final frame of the vanilla death animation.
-			poseStack.rotateDegrees(Axis.ZP, this.getFlipDegrees());
+			poseStack.last().rotate(Axis.ZP.rotationDegrees(this.getFlipDegrees()));
 		}
 	}
 

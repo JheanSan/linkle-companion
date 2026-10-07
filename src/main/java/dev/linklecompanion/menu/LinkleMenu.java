@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ArmorSlot;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +48,7 @@ public class LinkleMenu extends AbstractContainerMenu {
 		for (int i = 0; i < ARMOR.length; i++) {
 			int y = ARMOR_Y + i * 18;
 			if (linkle != null) {
-				this.addSlot(new ArmorSlot(linkle.createEquipmentSlotContainer(ARMOR[i]), linkle, ARMOR[i], 0, ARMOR_X, y, ARMOR_ICONS[i]));
+				this.addSlot(new LinkleArmorSlot(linkle.createEquipmentSlotContainer(ARMOR[i]), linkle, ARMOR[i], 0, ARMOR_X, y, ARMOR_ICONS[i]));
 			} else {
 				// Fallback only if the client can't find her (should not happen).
 				this.addSlot(new Slot(new SimpleContainer(1), 0, ARMOR_X, y));

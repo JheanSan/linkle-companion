@@ -1,5 +1,6 @@
 package dev.linklecompanion.client.screen;
 
+import dev.linklecompanion.client.compat.ClientCompat;
 import com.mojang.serialization.Codec;
 import dev.linklecompanion.client.lang.ModLanguage;
 import dev.linklecompanion.config.LinkleConfig;
@@ -46,8 +47,8 @@ public class LinkleSettingsScreen extends OptionsSubScreen {
 		gameplayOptions.clear();
 
 		list.addHeader(Component.translatable(P + "section.client"));
-		list.addBig(Button.builder(Options.genericValueLabel(Component.translatable(P + "language"), ModLanguage.currentName()),
-				button -> minecraft.gui.setScreen(new LinkleLanguageScreen(this, lastScreen)))
+		ClientCompat.addWide(list, Button.builder(Options.genericValueLabel(Component.translatable(P + "language"), ModLanguage.currentName()),
+				button -> ClientCompat.setScreen(new LinkleLanguageScreen(this, lastScreen)))
 			.tooltip(tooltip("language"))
 			.build());
 		list.addSmall(
@@ -117,7 +118,7 @@ public class LinkleSettingsScreen extends OptionsSubScreen {
 			}
 			LinkleConfig.save();
 			ModLanguage.apply();
-			minecraft.gui.setScreen(new LinkleSettingsScreen(lastScreen));
+			ClientCompat.setScreen(new LinkleSettingsScreen(lastScreen));
 		}).width(150).build());
 		footer.addChild(Button.builder(CommonComponents.GUI_DONE, button -> onClose()).width(150).build());
 	}

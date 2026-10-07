@@ -4,7 +4,7 @@ import dev.linklecompanion.config.LinkleConfig;
 import dev.linklecompanion.dialogue.Topic;
 import dev.linklecompanion.registry.ModAttachments;
 import dev.linklecompanion.registry.ModEntities;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
+import dev.linklecompanion.compat.VersionCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -95,7 +95,7 @@ public final class LinkleSummoning {
 
 		level.sendParticles(ParticleTypes.HAPPY_VILLAGER, linkle.getX(), linkle.getY() + 1.0, linkle.getZ(), 16, 0.4, 0.8, 0.4, 0.0);
 		level.playSound(null, linkle.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.NEUTRAL, 1.0F, 1.2F);
-		CriteriaTriggers.SUMMONED_ENTITY.trigger(player, linkle);
+		VersionCompat.triggerSummoned(player, linkle);
 		linkle.dialogue().say(Topic.GREETING);
 		return Result.SUMMONED;
 	}
@@ -116,7 +116,7 @@ public final class LinkleSummoning {
 		linkle.setupBefriended(player, generation);
 		player.setAttached(ModAttachments.COMPANION, new ModAttachments.CompanionData(linkle.getUUID(), generation));
 		player.level().sendParticles(ParticleTypes.HEART, linkle.getX(), linkle.getEyeY() + 0.3, linkle.getZ(), 6, 0.4, 0.3, 0.4, 0.0);
-		CriteriaTriggers.SUMMONED_ENTITY.trigger(player, linkle);
+		VersionCompat.triggerSummoned(player, linkle);
 		linkle.dialogue().say(Topic.GREETING);
 		return true;
 	}

@@ -1,10 +1,25 @@
-# Builds the mod and runs the server game tests on every push and pull request.
+# Builds the mod and runs the server game tests for every supported Minecraft version
+# (one file per version in versions/) on every push and pull request.
 name: build
 on: [push, pull_request]
 
 jobs:
-  build:
+  versions:
     runs-on: ubuntu-24.04
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: list
+        run: echo "list=$(ls versions/*.properties | xargs -n1 basename | sed 's/\.properties$//' | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: versions
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        mc: ${{ fromJson(needs.versions.outputs.list) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -17,10 +32,10 @@ jobs:
           distribution: 'temurin'
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-      - name: Build and run game tests
-        run: ./gradlew build
+      - name: Build and run game tests (Minecraft ${{ matrix.mc }})
+        run: ./gradlew build -Pmc=${{ matrix.mc }}
       - name: Upload jar
         uses: actions/upload-artifact@v7
         with:
-          name: linkle_companion
+          name: linkle_companion-mc${{ matrix.mc }}
           path: build/libs/

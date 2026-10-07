@@ -1,5 +1,6 @@
 package dev.linklecompanion.gametest;
 
+import dev.linklecompanion.client.compat.ClientCompat;
 import dev.linklecompanion.LinkleCompanion;
 import dev.linklecompanion.client.lang.ModLanguage;
 import dev.linklecompanion.client.screen.LinkleLanguageScreen;
@@ -33,13 +34,13 @@ public class LinkleLanguageClientTest implements FabricClientGameTest {
 		expect(context, ENTITY, "リンクル");
 		expect(context, COMPASS, "旅人のコンパス");
 		expect(context, VANILLA, vanillaEnglish);
-		context.runOnClient(client -> client.gui.setScreen(new LinkleSettingsScreen(null)));
+		context.runOnClient(client -> ClientCompat.setScreen(new LinkleSettingsScreen(null)));
 		context.waitTicks(5);
 		shot(context, "language_01_settings_ja");
-		context.runOnClient(client -> client.gui.setScreen(new LinkleLanguageScreen(new LinkleSettingsScreen(null), null)));
+		context.runOnClient(client -> ClientCompat.setScreen(new LinkleLanguageScreen(new LinkleSettingsScreen(null), null)));
 		context.waitTicks(5);
 		shot(context, "language_02_picker");
-		context.runOnClient(client -> client.gui.setScreen(null));
+		context.runOnClient(client -> ClientCompat.setScreen(null));
 
 		// Back to "Same as game": English again.
 		setModLanguage(context, ModLanguage.AUTO);
@@ -90,7 +91,7 @@ public class LinkleLanguageClientTest implements FabricClientGameTest {
 
 	private static void reload(ClientGameTestContext context) {
 		CompletableFuture<Void> done = context.computeOnClient(client -> client.reloadResourcePacks());
-		context.waitFor(client -> done.isDone() && client.gui.overlay() == null, 1200);
+		context.waitFor(client -> done.isDone() && !ClientCompat.isLoading(), 1200);
 	}
 
 	private static String text(ClientGameTestContext context, String key) {

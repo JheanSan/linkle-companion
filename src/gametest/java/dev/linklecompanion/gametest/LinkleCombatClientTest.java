@@ -14,7 +14,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +24,7 @@ import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Combat play-test ({@code ./gradlew runClientGameTest}): a real survival world, Linkle versus a
@@ -30,6 +33,21 @@ import java.util.List;
  * takes screenshots along the way.
  */
 public class LinkleCombatClientTest implements FabricClientGameTest {
+	// Looked up by id: the class holding vanilla's entity type constants differs between Minecraft versions.
+	@SuppressWarnings("unchecked")
+	private static final EntityType<Zombie> ZOMBIE = (EntityType<Zombie>) BuiltInRegistries.ENTITY_TYPE.getValue(Identifier.withDefaultNamespace("zombie"));
+
+	/** Waits until the condition holds on the server; returns the ticks it took. Works with every supported test API. */
+	private static int waitFor(ClientGameTestContext context, TestServerContext server, Predicate<MinecraftServer> condition, int maxTicks) {
+		for (int tick = 0; tick <= maxTicks; tick++) {
+			if (server.computeOnServer(condition::test)) {
+				return tick;
+			}
+			context.waitTick();
+		}
+		throw new AssertionError("Condition not met within " + maxTicks + " ticks");
+	}
+
 	private static final double Y = -60.0;
 
 	@Override
@@ -58,7 +76,7 @@ public class LinkleCombatClientTest implements FabricClientGameTest {
 			context.waitTicks(20);
 			int arrowsAtStart = server.computeOnServer(srv -> arrows(linkle(srv)));
 			server.runCommand("summon minecraft:husk 1.5 " + Y + " 14.0 {NoAI:1b,PersistenceRequired:1b}");
-			int huskTicks = server.waitFor(srv -> !anyAlive(srv, "husk"), 600);
+			int huskTicks = waitFor(context, server, srv -> !anyAlive(srv, "husk"), 600);
 			int arrowsForHusk = arrowsAtStart - server.computeOnServer(srv -> arrows(linkle(srv)));
 			LinkleCompanion.LOGGER.info("Combat play-test: still husk at 12 blocks killed after {} ticks with {} arrows", huskTicks, arrowsForHusk);
 			if (arrowsForHusk > 8) {
@@ -77,7 +95,7 @@ public class LinkleCombatClientTest implements FabricClientGameTest {
 			context.waitTicks(60);
 			shot(context, "combat_2_firing");
 
-			int ticks = server.waitFor(srv -> zombies(srv).isEmpty(), 900);
+			int ticks = waitFor(context, server, srv -> zombies(srv).isEmpty(), 900);
 			LinkleCompanion.LOGGER.info("Combat play-test: wave cleared after {} ticks", ticks);
 			context.waitTicks(20);
 			shot(context, "combat_3_cleared");
@@ -99,17 +117,17 @@ public class LinkleCombatClientTest implements FabricClientGameTest {
 				LinkleCompanion.LOGGER.info("Combat play-test: volley cooldown left after wave 1: {} ticks (>0 means she already used it)", linkle.getVolleyCooldown());
 				linkle.setVolleyCooldown(0);
 				for (int i = 0; i < 3; i++) {
-					Zombie zombie = EntityTypes.ZOMBIE.create(srv.overworld(), EntitySpawnReason.COMMAND);
+					Zombie zombie = ZOMBIE.create(srv.overworld(), EntitySpawnReason.COMMAND);
 					zombie.snapTo(linkle.getX() + (i - 1) * 2.5, Y, linkle.getZ() + 3.0, 180.0F, 0.0F);
 					zombie.setPersistenceRequired();
 					srv.overworld().addFreshEntity(zombie);
 				}
 			});
-			int volleyTicks = server.waitFor(srv -> linkle(srv).isVolleying(), 200);
+			int volleyTicks = waitFor(context, server, srv -> linkle(srv).isVolleying(), 200);
 			context.waitTicks(6);
 			shot(context, "combat_4_volley");
 			LinkleCompanion.LOGGER.info("Combat play-test: volley started after {} ticks", volleyTicks);
-			server.waitFor(srv -> zombies(srv).isEmpty(), 900);
+			waitFor(context, server, srv -> zombies(srv).isEmpty(), 900);
 
 			// Knock her out, then wake her with food.
 			server.runOnServer(srv -> {

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0: More Minecraft versions
+
+- **Now available for Minecraft 26.1, 26.1.1, 26.1.2, 26.2 and 26.3** (Fabric). Each Minecraft version
+  has its own download: pick the file whose name ends in your version (`+mc26.1` covers 26.1 to 26.1.2).
+- Same features and the same 16 languages on every version. Every version is built and passes the
+  automated game tests before release, and the in-game play-tests (combat, looks, menus, languages)
+  were run on each one.
+- On 26.1.x, `/linkle` permissions use the vanilla operator levels only: Fabric API for 26.1 has no
+  permission API, so permission mods can't change them there.
+- Nothing changes for players already on 26.3.
+
 ## 1.1.0: Linkle speaks your language
 
 - **16 languages**: English, Deutsch, Español, Français, Italiano, 日本語, 한국어, Polski,

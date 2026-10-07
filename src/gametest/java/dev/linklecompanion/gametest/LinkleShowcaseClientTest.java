@@ -1,5 +1,6 @@
 package dev.linklecompanion.gametest;
 
+import dev.linklecompanion.client.compat.ClientCompat;
 import dev.linklecompanion.LinkleCompanion;
 import dev.linklecompanion.entity.LinkleEntity;
 import dev.linklecompanion.entity.LinkleMode;
@@ -149,11 +150,7 @@ public class LinkleShowcaseClientTest implements FabricClientGameTest {
 	}
 
 	private static void setHudHidden(ClientGameTestContext context, boolean hidden) {
-		context.runOnClient(client -> {
-			if (client.gui.hud.isHidden() != hidden) {
-				client.gui.hud.toggle();
-			}
-		});
+		context.runOnClient(client -> ClientCompat.setHudHidden(hidden));
 	}
 
 	private static void shot(ClientGameTestContext context, String name) {

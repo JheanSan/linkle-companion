@@ -27,6 +27,10 @@ Create the project at <https://modrinth.com> > **+** (top right) > **Create a pr
 **Linkle Companion** adds Linkle, a cheerful adventurer with **two crossbows**, as your follower.
 Craft a **Wanderer's Compass**, use it, and she's at your side.
 
+### What's new in 1.2.0: more Minecraft versions
+Now available for **Minecraft 26.1, 26.1.1, 26.1.2, 26.2 and 26.3**. Each version has its own file (your launcher
+picks the right one). Same features and the same 16 languages everywhere.
+
 ### What's new in 1.1.0: Linkle speaks your language
 - **16 languages**: English, Deutsch, Español, Français, Italiano, 日本語, 한국어, Polski, Português (Brasil),
   Русский, Türkçe, Українська, Tiếng Việt, Bahasa Indonesia, 简体中文, 繁體中文.
@@ -72,7 +76,7 @@ real death and more. Every option has a tooltip.
 ### Install
 Works out of the box with the **Prism Launcher** (and forks like Freesm), the **Modrinth App** or the official
 launcher with Fabric. Fabric API is fetched automatically by Prism and the Modrinth App. Install on **both**
-client and server.
+client and server. Supports **Minecraft 26.1, 26.1.1, 26.1.2, 26.2 and 26.3** (one file per version).
 
 Code: MIT. Art: CC BY 4.0. Source and issues: [GitHub](https://github.com/JheanSan/linkle-companion)
 
@@ -93,12 +97,12 @@ Ideas, direction and play-testing: me. None of the tools above are credited as c
 ## Version upload
 | Field | Value |
 |---|---|
-| File | `linkle_companion-1.1.0+mc26.3.jar` (NOT the `-sources` jar) |
-| Version number | `1.1.0+mc26.3` |
-| Version title | Linkle Companion 1.1.0 |
+| File | one version per Minecraft version: `linkle_companion-1.2.0+mc26.3.jar`, `...+mc26.2.jar`, `...+mc26.1.jar` (NOT `-sources`) |
+| Version number | `1.2.0+mc26.3` (and `+mc26.2`, `+mc26.1`) |
+| Version title | Linkle Companion 1.2.0 for MC 26.3 (26.2, 26.1) |
 | Release channel | Release |
 | Loaders | Fabric |
-| Game versions | 26.3 |
+| Game versions | the `game_versions` of that file's `versions/<mc>.properties` |
 | Dependencies | Fabric API: **required**. Mod Menu: **optional** |
 | Changelog | Copy the newest section of `CHANGELOG.md` |
 

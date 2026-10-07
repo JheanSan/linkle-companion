@@ -5,18 +5,17 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.linklecompanion.LinkleCompanion;
+import dev.linklecompanion.compat.VersionCompat;
 import dev.linklecompanion.entity.LinkleEntity;
 import dev.linklecompanion.entity.LinkleMode;
 import dev.linklecompanion.entity.LinkleSummoning;
 import dev.linklecompanion.entity.LinkleVariant;
 import dev.linklecompanion.registry.ModAttachments;
-import net.fabricmc.fabric.api.permission.v1.PermissionPredicates;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.permissions.PermissionLevel;
 
 import java.util.Arrays;
 
@@ -37,28 +36,28 @@ public final class LinkleCommand {
 				.executes(ctx -> summon(ctx, false))
 				.then(Commands.literal("new").executes(ctx -> summon(ctx, true))))
 			.then(Commands.literal("recall")
-				.requires(PermissionPredicates.require(LinkleCompanion.id("command.recall"), PermissionLevel.ALL))
+				.requires(VersionCompat.permission("command.recall", false))
 				.executes(LinkleCommand::recall))
 			.then(Commands.literal("mode")
-				.requires(PermissionPredicates.require(LinkleCompanion.id("command.mode"), PermissionLevel.ALL))
+				.requires(VersionCompat.permission("command.mode", false))
 				.then(Commands.argument("mode", StringArgumentType.word())
 					.suggests((ctx, builder) -> SharedSuggestionProvider.suggest(Arrays.stream(LinkleMode.values()).map(LinkleMode::id), builder))
 					.executes(LinkleCommand::mode)))
 			.then(Commands.literal("skin")
-				.requires(PermissionPredicates.require(LinkleCompanion.id("command.skin"), PermissionLevel.ALL))
+				.requires(VersionCompat.permission("command.skin", false))
 				.then(Commands.argument("skin", StringArgumentType.word())
 					.suggests((ctx, builder) -> SharedSuggestionProvider.suggest(Arrays.stream(LinkleVariant.values()).map(LinkleVariant::id), builder))
 					.executes(LinkleCommand::skin)))
 			.then(Commands.literal("info")
-				.requires(PermissionPredicates.require(LinkleCompanion.id("command.info"), PermissionLevel.ALL))
+				.requires(VersionCompat.permission("command.info", false))
 				.executes(LinkleCommand::info))
 			.then(Commands.literal("dismiss")
-				.requires(PermissionPredicates.require(LinkleCompanion.id("command.dismiss"), PermissionLevel.ALL))
+				.requires(VersionCompat.permission("command.dismiss", false))
 				.then(Commands.literal("confirm").executes(LinkleCommand::dismiss))));
 	}
 
 	private static final java.util.function.Predicate<CommandSourceStack> CAN_SUMMON =
-		PermissionPredicates.require(LinkleCompanion.id("command.summon"), PermissionLevel.GAMEMASTERS);
+		VersionCompat.permission("command.summon", true);
 
 	private static int summon(CommandContext<CommandSourceStack> ctx, boolean forceNew) throws CommandSyntaxException {
 		if (!CAN_SUMMON.test(ctx.getSource())) {
