@@ -91,6 +91,14 @@ Honest status of the work. Updated after every feature.
 - 1.21.x / 1.20.1 not supported (obfuscated, much larger API gap; trial compile vs 1.21.11: 39 errors in
   shared code). Left as a separate port for the author to decide.
 
+## Release status 1.2.0 (2026-10-07)
+- GitHub: v1.2.0 release workflow passed (build + server game tests for 26.1, 26.2, 26.3 in CI);
+  github.com/JheanSan/linkle-companion/releases/tag/v1.2.0 has the three jars.
+- CurseForge: three files uploaded (auto-publish once approved): "for MC 26.3" (approved), "for MC 26.2"
+  (tagged 26.2), "for MC 26.1" (tagged 26.1, 26.1.1, 26.1.2). Description: "What's new in 1.2.0" and the
+  Install line list the versions.
+- Modrinth: still not public, skipped.
+
 ## Release status 1.1.0 (2026-10-07)
 - GitHub: v1.1.0 tag pushed; release workflow passed (Linux build + game tests) and published
   github.com/JheanSan/linkle-companion/releases/tag/v1.1.0 with the jar. Contributors list: JheanSan only.
@@ -99,4 +107,4 @@ Honest status of the work. Updated after every feature.
 - Modrinth: still not public (API 404), skipped as the author asked.
 
 ## Next step
-- Wait for CurseForge moderation of 1.1.0; answer any moderator message from the CurseForge author dashboard.
+- Wait for CurseForge moderation of the 1.2.0 files (26.2, 26.1); answer any moderator message from the CurseForge author dashboard.
